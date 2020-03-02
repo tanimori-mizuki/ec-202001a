@@ -1,5 +1,7 @@
 package com.example9.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,9 @@ public class LoginLogoutController {
 
 	@Autowired
 	private LoginService loginService;
+
+	@Autowired
+	private HttpSession session;
 
 	@ModelAttribute
 	public LoginForm setUpLoginForm() {
@@ -61,9 +66,31 @@ public class LoginLogoutController {
 			return "/login";
 		}
 
+		session.setAttribute("user", user);
+		// 以下2行はセッションスコープ内確認用（動作確認後削除）
+		User user2 = (User) session.getAttribute("user");
+		System.out.println(user2.toString());
 		// ToDo：ShowItemListController- showList()のパスへ変更
-		return "item_list_curry";
+		return "forward:/login/test";
 
+	}
+
+	// ToDo: ShowItemListController完成次第削除
+	@RequestMapping("/test")
+	public String showCartLost() {
+		return "order_finished";
+	}
+
+	/**
+	 * ログアウトする.
+	 * 
+	 * @return 商品一覧ページ
+	 */
+	@RequestMapping("/logout")
+	public String logout() {
+		session.invalidate();
+		// ToDo：ShowItemListController- showList()のパスへ変更
+		return "forward:/login/test";
 	}
 
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,8 +36,8 @@
 					<p class="navbar-text navbar-right">
 						<a href="cart_list.html" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
 						<a href="order_history.html" class="navbar-link">注文履歴</a>&nbsp;&nbsp;
-						<a href="login.html" class="navbar-link">ログイン</a>&nbsp;&nbsp;
-						<a href="item_list.html" class="navbar-link">ログアウト</a>
+						<a href="login.html" class="navbar-link" th:unless="${session.user}" th:href="@{/login}" th:text="ログイン">ログイン</a>&nbsp;&nbsp;
+						<a href="item_list.html" class="navbar-link" th:if="${session.user}" th:href="@{/login/logout}" th:text="ログアウト">ログアウト</a>
 					</p>
 				</div>
 				<!-- /.navbar-collapse -->
