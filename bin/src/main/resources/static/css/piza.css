@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+/* サイズをオレンジ〇で囲む */
+span.price {
+ /* サイズ指定 */
+ width:175px;
+ height:175px;
+ /* 背景色 */
+ background-color:#ff4500;
+ /* 角を丸くする */
+ border-radius: 50%;
+ -webkit-border-radius: 50%;
+ -moz-border-radius: 50%;
+ 
+}
+/* 合計金額の文字の大きさを変える */
+span#total-price {
+	font-size: 35px;
+}
+

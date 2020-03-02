@@ -2,6 +2,7 @@ package com.example9.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,19 +48,22 @@ public class LoginLogoutController {
 	 * @return 商品一覧ページ(メールアドレス/パスワード不正の場合、ログイン画面)
 	 */
 	@RequestMapping("/input")
-	public String login(@Validated LoginForm loginForm, BindingResult result) {
-		User user = loginService.login(loginForm);
-
-		if (user == null) {
-			result.rejectValue("inputError", null, "メールアドレス、またはパスワードが間違っています");
-		}
+	public String login(@Validated LoginForm loginForm, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
 			return "/login";
 		}
 
+		User user = loginService.login(loginForm);
+
+		if (user == null) {
+			model.addAttribute("inputError", "メールアドレスまたはパスワードが不正です");
+			return "/login";
+		}
+
 		// ToDo：ShowItemListController- showList()のパスへ変更
 		return "item_list_curry";
+
 	}
 
 }

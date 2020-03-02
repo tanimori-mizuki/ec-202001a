@@ -26,8 +26,14 @@ public class LoginService {
 	 * @return ユーザー情報（パスワード/メールアドレス不正の場合null）
 	 */
 	public User login(LoginForm loginForm) {
-		User user = userRepository.findByEmail(loginForm.getEmail());
-		if (!user.getPassword().equals(loginForm.getPassword())) {
+
+		User user = userRepository.findByEmail(loginForm);
+
+		if (user == null) {
+			return null;
+		}
+
+		if (!loginForm.getPassword().equals(user.getPassword())) {
 			return null;
 		}
 		return user;

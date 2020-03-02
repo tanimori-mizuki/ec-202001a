@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.example9.domain.User;
+import com.example9.form.LoginForm;
 
 /**
  * ユーザー情報を扱うリポジトリ.
@@ -39,9 +40,10 @@ public class UserRepository {
 	 * @param email メールアドレス
 	 * @return ユーザー情報(該当なしの場合null)
 	 */
-	public User findByEmail(String email) {
-		String sql = "SELECT id, name, email, password, zipcode, address, telephone FROM users WHERE email=':email';";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
+	public User findByEmail(LoginForm loginForm) {
+		String sql = "SELECT id, name, email, password, zipcode, address, telephone FROM users WHERE email=:email;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("email", loginForm.getEmail());
+		// 該当データなしの場合、NullPointerException発生
 		try {
 			User user = template.queryForObject(sql, param, USER_ROW_MAPPER);
 			return user;
