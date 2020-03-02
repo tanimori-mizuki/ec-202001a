@@ -1,6 +1,7 @@
 package com.example9.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example9.domain.User;
 import com.example9.form.LoginForm;
@@ -12,6 +13,7 @@ import com.example9.repository.UserRepository;
  * @author mayumiono
  *
  */
+@Service
 public class LoginService {
 
 	@Autowired

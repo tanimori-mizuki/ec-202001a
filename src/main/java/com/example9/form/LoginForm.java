@@ -1,5 +1,7 @@
 package com.example9.form;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * ログインフォームへの入力情報
  * 
@@ -9,8 +11,10 @@ package com.example9.form;
 public class LoginForm {
 
 	/** メールアドレス */
+	@NotBlank(message = "メールアドレスを入力してください")
 	private String email;
 	/** パスワード */
+	@NotBlank(message = "パスワードを入力してください")
 	private String password;
 
 	public String getEmail() {
