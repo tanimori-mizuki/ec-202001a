@@ -4,12 +4,19 @@ import java.util.List;
 
 public class Item {
 
+	/** ID */
 	private Integer id;
+	/** 名前 */
 	private String name;
+	/** 説明 */
 	private String description;
+	/** Mの価格 */
 	private Integer priceM;
+	/** Lの価格 */
 	private Integer priceL;
+	/** 画像のパス */
 	private String imagePath;
+	/** 削除フラグ */
 	private Boolean deleted;
 	private List<Topping> toppingList;
 

@@ -2,9 +2,13 @@ package com.example9.domain;
 
 public class Topping {
 
+	/** ID */
 	private Integer id;
+	/** 名前 */
 	private String name;
+	/** Mの価格 */
 	private Integer priceM;
+	/** Lの価格 */
 	private Integer priceL;
 
 	@Override
