@@ -60,7 +60,7 @@ public class ItemRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT id,name,description,description,price_m,price_l,image_path,deleted ");
 		sql.append("FROM items ");
-		sql.append("WHERE name=:name ");
+		sql.append("WHERE name LIKE :name ");
 		sql.append("ORDER BY price_m");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
 		return template.query(sql.toString(), param, ITEM_ROW_MAPPER);

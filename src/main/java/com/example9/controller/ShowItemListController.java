@@ -36,16 +36,16 @@ public class ShowItemListController {
 	 * @return　商品一覧画面
 	 */
 	@RequestMapping("/searchResult")
-	public String serchByLikeName(String name,Model model) {
-		List<Item>serchItemList = null;
-		if(name == null) {
-			serchItemList = showItemListService.showList();
+	public String serchByLikeName(String code,Model model) {
+		List<Item>itemList = null;
+		if(code == null) {
+			itemList = showItemListService.showList();
 		} else {
-			serchItemList = showItemListService.searchByLikeName(name);
-			if(serchItemList == null) {
-				serchItemList = showItemListService.showList();
+			itemList = showItemListService.searchByLikeName(code);
+			if(itemList == null) {
+				itemList = showItemListService.showList();
 			}
-			model.addAttribute("serchItemList", serchItemList);
+			model.addAttribute("itemList", itemList);
 		}
 		return "item_list_curry";
 	}
