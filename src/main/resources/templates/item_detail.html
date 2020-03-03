@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ピザ屋のネット注文</title>
+<title>カレー屋のネット注文</title>
 <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
 <link href="../static/css/piza.css" th:href="@{/css/piza.css}" rel="stylesheet">
 <!--[if lt IE 9]>
@@ -73,13 +73,13 @@
 								<div class="col-sm-12">
 									<label class="radio-inline">
 										<input type="radio"
-											name="responsibleCompany" checked="checked">
-										<span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;<span th:text="${#numbers.formatInteger(item.priceM,1,'COMMA')}+'円(税抜)'">1,380円(税抜)</span>
+											name="responsibleCompany" checked="checked" value="M">
+										<span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;<span th:text="${#numbers.formatInteger(item.priceM,1,'COMMA')}" id="priceSizeM">1,380</span>円(税抜)
 									</label>
 									<label class="radio-inline">
 										<input type="radio"
-											name="responsibleCompany">
-										<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;<span th:text="${#numbers.formatInteger(item.priceL,1,'COMMA')}+'円(税抜)'">2,380円(税抜)</span>
+											name="responsibleCompany" value="L">
+										<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;<span th:text="${#numbers.formatInteger(item.priceL,1,'COMMA')}" id="priceSizeL">2,380</span>円(税抜)
 									</label>
 								</div>
 							</div>
@@ -94,9 +94,9 @@
 									<label for="inputResponsibleCompany">
 										トッピング：&nbsp;1つにつき
 										<span>&nbsp;М&nbsp;</span>&nbsp;&nbsp;
-										<span th:text="${toppingPriceM}+'円(税抜)'">200円(税抜)</span>
+										<span th:text="${toppingPriceM}" id="toppingUnitPriceSizeM">200</span>円(税抜)
 										<span>&nbsp;Ｌ</span>&nbsp;&nbsp;
-										<span th:text="${toppingPriceL}+'円(税抜)'">300円(税抜)</span>
+										<span th:text="${toppingPriceL}" id="toppingUnitPriceSizeL">300</span>円(税抜)
 									</label>
 								</div>
 								<div class="col-sm-12">
@@ -139,7 +139,7 @@
 				<div class="row">
 					<div class="col-xs-offset-2 col-xs-10">
 						<div class="form-group">
-							<span id="total-price">この商品金額：38,000 円(税抜)</span>
+							<span id="total-price">この商品金額：<span id="totalprice">38,000</span> 円(税抜)</span>
 						</div>
 					</div>
 				</div>
@@ -162,7 +162,8 @@
 	<!-- end container -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script th:src="/js/bootstrap.min.js" src="../static/js/bootstrap.min.js"></script>
+	<script th:src="@{/js/bootstrap.min.js}" src="../static/js/bootstrap.min.js"></script>
+	<script th:src="@{/js/item_detail.js}" src="../static/js/item_detail.js"></script>
 </body>
 </html>
 
