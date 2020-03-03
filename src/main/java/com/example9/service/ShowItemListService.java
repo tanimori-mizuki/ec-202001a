@@ -10,8 +10,9 @@ import com.example9.domain.Item;
 import com.example9.repository.ItemRepository;
 
 /**
- * 商品検索、一覧表示を行うサービスクラスです.
- * @author mizuki.tanimori
+ * 商品一覧を表示するサービスクラスです.
+ * 
+ * @author mizuki
  *
  */
 @Service
