@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example9.domain.Item;
 import com.example9.service.ShowItemListService;
 
+/**
+ * 商品を一覧表示するコントローラーです.
+ * @author mizuki
+ *
+ */
 @Controller
 @RequestMapping("/item")
 public class ShowItemListController {
@@ -77,12 +82,12 @@ public class ShowItemListController {
 	 */
 	@RequestMapping("/searchResult")
 	public String serchByLikeName(String code,Model model) {
-		List<List<Item>>itemListList = new ArrayList<>();
-
 		List<Item>itemList = showItemListService.searchByLikeName(code);
 		if(itemList.size() == 0) {
 			return showList(model);
 		} else {
+			List<List<Item>>itemListList = new ArrayList<>();
+			itemListList.add(itemList);
 			model.addAttribute("itemListList", itemListList);
 		}
 		return "item_list_curry";
