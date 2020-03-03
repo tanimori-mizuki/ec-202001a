@@ -27,7 +27,7 @@ public class LoginService {
 	 */
 	public User login(LoginForm loginForm) {
 
-		User user = userRepository.findByEmail(loginForm);
+		User user = userRepository.findByEmail(loginForm.getEmail());
 
 		if (user == null) {
 			return null;

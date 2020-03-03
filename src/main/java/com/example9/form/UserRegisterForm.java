@@ -4,7 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 /**
- * ユーザ登録への入力情報
+ * ユーザ登録への入力情報.
  * 
  * @author suzukikunpei
  *
