@@ -78,7 +78,7 @@ public class LoginLogoutController {
 	// ToDo: ShowItemListController完成次第削除
 	@RequestMapping("/test")
 	public String showCartLost() {
-		return "order_finished";
+		return "register_user";
 	}
 
 	/**

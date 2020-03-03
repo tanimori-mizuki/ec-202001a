@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ピザ屋のネット注文</title>
-<link href="../static/css/bootstrap.css" th:href="/css/bootstrap.css" rel="stylesheet">
-<link href="../static/css/piza.css" th:href="/css/piza.css" rel="stylesheet">
+<title>カレー屋のネット注文</title>
+<link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+<link href="../static/css/piza.css" th:href="@{/css/piza.css}" rel="stylesheet">
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -26,7 +26,7 @@
 							class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="item_list.html"> <!-- 企業ロゴ --> <img
-						alt="main log" src="../static/img_curry/header_logo.png" th:src="/img_curry/header_logo.png" height="35">
+						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35">
 					</a>
 				</div>
 
@@ -44,13 +44,135 @@
 			</div>
 			<!-- /.container-fluid -->
 		</nav>
-
-
-		<!-- table -->
+		
+		<!--注文受付情報 table -->
 		<div class="row">
 			<div
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
-				<h3 class="text-center">ショッピングカート</h3>
+				<h4>●注文履歴詳細</h4>
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<th>
+								<div class="text-center">
+									注文日時
+								</div>
+							</th>
+							<th>
+								<div class="text-center">
+									注文/配送状況
+								</div>
+							</th>
+							<th>
+								<div class="text-center">
+									決済方法
+								</div>
+							</th>
+							<th>
+								<div class="text-center">
+									注文番号
+								</div>
+							</th>
+						<tr>
+							<td>
+							<div class="text-center">
+								2020/01/01
+								</div>
+							</td>
+							<td>
+							<div class="text-center">
+								未入金
+								</div>
+							</td>
+							<td>
+							<div class="text-center">
+								クレジットカード決済
+								</div>
+							</td>
+							<td>
+							<div class="text-center">
+								XXXXX-XXXXX
+							</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<!-- 		配送先情報 -->
+		<div class="row">
+			<div
+				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+				<h4>●配送先情報</h4>
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<th>
+								<div class="text-center">
+									名前
+								</div>
+							</th>
+							<th>
+								<div class="text-center">
+									郵便番号
+								</div>
+							</th>
+							<th>
+								<div class="text-center">
+									住所
+								</div>
+							</th>
+							<th>
+								<div class="text-center">
+									電話番号
+								</div>
+							</th>
+							<th>
+								<div class="text-center">
+									メールアドレス
+								</div>
+							</th>
+						<tr>
+							<td>
+							<div class="text-center">
+								カレー太郎
+								</div>
+							</td>
+							<td>
+							<div class="text-center">
+								000-0000
+								</div>
+							</td>
+							<td>
+							<div class="text-center">
+								東京都新宿区新宿１－１－１
+								</div>
+							</td>
+							<td>
+							<div class="text-center">
+								XXX-XX-XXXXX
+							</div>
+							</td>
+							<td>
+							<div class="text-center">
+								curry@xx.com
+							</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<br><br>
+
+		<!-- 商品一覧table -->
+		<div class="row">
+			<div
+				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+				<h3 class="text-center">商品一覧</h3>
 				<table class="table table-striped">
 					<tbody>
 						<tr>
@@ -150,12 +272,24 @@
 								</div>
 							</td>
 						</tr>
+						<tr>
+						<td></td>
+						<td></td>
+						<th>
+								<div class="text-center">
+									合計金額
+								</div>
+						</th>
+						<td>
+						10,000円
+						</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
-
-		<div class="row">
+		
+<!-- 		<div class="row"> -->
 			<div class="col-xs-offset-5 col-xs-3">
 				<div class="form-group">
 				<a href="order_history.html">
@@ -165,10 +299,10 @@
 				</div>
 			</div>
 		</div>
-	</div>
+<!-- 	</div> -->
 	<!-- end container -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script th:src="/js/bootstrap.min.js" src="../static/js/bootstrap.min.js"></script>
+	<script th:src="@{/js/bootstrap.min.js}" src="../static/js/bootstrap.min.js"></script>
 </body>
 </html>
