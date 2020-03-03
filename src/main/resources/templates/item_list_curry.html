@@ -78,8 +78,7 @@
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 				<table class="table table-striped" >
 					<tbody>
-						<tr th:each="item:${itemList}">
-
+						<tr  th:each="item:${itemList}">
 							<th>
 								<a href="item_detail.html" th:href="@{'/item-detail/?id=' + ${item.id}}">
 									<img src="../static/img_curry/1.jpg"
