@@ -37,14 +37,10 @@ public class ShowItemListController {
 	 */
 	@RequestMapping("/searchResult")
 	public String serchByLikeName(String code,Model model) {
-		List<Item>itemList = null;
-		if(code == null) {
-			itemList = showItemListService.showList();
+		List<Item>itemList = showItemListService.searchByLikeName(code);
+		if(itemList.size() == 0) {
+			return showList(model);
 		} else {
-			itemList = showItemListService.searchByLikeName(code);
-			if(itemList == null) {
-				itemList = showItemListService.showList();
-			}
 			model.addAttribute("itemList", itemList);
 		}
 		return "item_list_curry";
