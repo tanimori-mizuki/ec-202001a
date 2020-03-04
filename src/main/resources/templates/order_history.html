@@ -90,7 +90,8 @@
 									<img src="../static/img_pizza/1.jpg" th:src="@{'/img_curry/'+${order.orderItemList[0].item.imagePath}}"
 										class="img-responsive img-rounded" width="100" height="300"><br>
 								&nbsp;&nbsp;&nbsp;&nbsp;
-								<span th:text="${order.orderItemList[0].item.name}">じゃがバターベーコン</span>他
+								<span th:text="${order.orderItemList[0].item.name}">じゃがバターベーコン</span>
+								<span th:if="${order.orderItemList.size()}>1" th:text="'他'">他</span>
 								</div>
 							</td>
 							<td>

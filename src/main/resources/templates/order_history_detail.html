@@ -219,10 +219,13 @@
 								</div>
 							</td>
 							<td>
+							<div th:if="${orderItem.orderToppingList.size()>0}">
 								<ul th:each="orderTopping:${orderItem.orderToppingList}">
 									<li th:if="${orderItem.size} == 'M'" th:text="${orderTopping.topping.name} + ' ' + ${orderTopping.topping.priceM} + '円'"></li>
 									<li th:if="${orderItem.size} == 'L'" th:text="${orderTopping.topping.name} + ' ' + ${orderTopping.topping.priceL} + '円'"></li>
 								</ul>
+							</div>
+							<div class="text-center" th:unless="${orderItem.orderToppingList.size()>0}" th:text="'なし'"></div>
 							</td>
 							<td>
 								<div class="text-center" th:text="${#numbers.formatInteger(orderItem.subTotal,1,'COMMA')}+'円'">
