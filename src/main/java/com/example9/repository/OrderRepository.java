@@ -127,7 +127,7 @@ public class OrderRepository {
 	};
 
 	/**
-	 * 引数のユーザーIDとステータスで、注文情報を注文ID昇順で取得する.
+	 * 引数のユーザーIDとステータスで、注文情報を注文ID降順で取得する.
 	 * 
 	 * @param userId ユーザーID
 	 * @param status ステータス
@@ -157,10 +157,10 @@ public class OrderRepository {
 		SqlParameterSource param;
 		int statusInt = status;
 		if (statusInt == 0) {
-			sql.append("AND A.status=:status ORDER BY A.id; ");
+			sql.append("AND A.status=:status ORDER BY A.id DESC; ");
 			param = new MapSqlParameterSource().addValue("id", userId).addValue("status", status);
 		} else {
-			sql.append("AND NOT A.status=0 ORDER BY A.id; ");
+			sql.append("AND NOT A.status=0 ORDER BY A.id DESC; ");
 			param = new MapSqlParameterSource().addValue("id", userId);
 		}
 
