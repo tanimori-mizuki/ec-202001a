@@ -1,5 +1,6 @@
 package com.example9.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,29 @@ public class ShowItemListService {
 	 */
 	public List<Item>searchByLikeName(String name){
 		return itemRepository.findByLikeName(name);
+	}
+	
+	
+	/**
+	 * 3個のItemオブジェクトを1セットにしてリストで返す.
+	 * 
+	 * @param itemList 商品リスト
+	 * @return　3個1セットの商品リスト
+	 */
+	public List <List<Item>> getThreeItemList(List <Item> itemList){
+		List<List<Item>>itemListList = new ArrayList<>();
+		List <Item> threeItemList = new ArrayList<>(); 
+		int i = 1 ;
+		
+		while (i <= itemList.size()) {
+			threeItemList.add(itemList.get(i-1));
+			
+			if (i  % 3 == 0 || i == itemList.size()) {
+				itemListList.add(threeItemList);
+				threeItemList = new ArrayList<>(); 
+			}
+			i++;
+		}
+		return itemListList;
 	}
 }
