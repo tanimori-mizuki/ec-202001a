@@ -48,7 +48,7 @@ public class OrderRepository {
 				order.setDestinationName(rs.getString("destination_name"));
 				order.setDestinationEmail(rs.getString("destination_email"));
 				order.setDestinationZipcode(rs.getString("destination_zipcode"));
-				order.setDestinationAddress("destination_address");
+				order.setDestinationAddress(rs.getString("destination_address"));
 				order.setDestinationTel(rs.getString("destination_tel"));
 				order.setPaymentMethod(rs.getInt("payment_method"));
 				orderItemList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class OrderRepository {
 	};
 
 	/**
-	 * 引数のユーザーIDとステータスで、注文情報を取得する.
+	 * 引数のユーザーIDとステータスで、注文情報を注文ID昇順で取得する.
 	 * 
 	 * @param userId ユーザーID
 	 * @param        status ステータス
@@ -131,7 +131,7 @@ public class OrderRepository {
 		sql.append("(SELECT B.id AS order_item_id, B.item_id, B.order_id, B.quantity, B.size, ");
 		sql.append("C.name AS item_name, C.price_m AS item_price_m, C.price_l AS item_price_l, C.image_path ");
 		sql.append("FROM order_items AS B JOIN items AS C ON B.item_id=C.id) AS F ");
-		sql.append("ON A.id=F.order_id JOIN ");
+		sql.append("ON A.id=F.order_id LEFT OUTER JOIN ");
 		sql.append("(SELECT D.id AS order_toppings_id, D.topping_id, D.order_item_id, ");
 		sql.append("E.name AS toppings_name, E.price_m AS topping_price_m, E.price_l AS topping_price_l ");
 		sql.append("FROM order_toppings AS D JOIN toppings AS E ");
@@ -151,6 +151,38 @@ public class OrderRepository {
 		if (orderList.size() == 0) {
 			return null;
 		}
+		return orderList;
+	}
+	
+	/**
+	 * 注文IDで注文情報を検索・取得する.
+	 * @param orderId 注文ID
+	 * @return 注文情報
+	 */
+	public List<Order> findByOrderId(Integer orderId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(
+				"SELECT A.id AS order_id, A.user_id, A.status, A.total_price, A.order_date, A.destination_name, A.destination_email, ");
+		sql.append(
+				"A.destination_zipcode, A.destination_address, A.destination_tel, A.delivery_time, A.payment_method, ");
+		sql.append(
+				"F.order_item_id, F.item_id, F.quantity, F.size, F.item_name, F.item_price_m, F.item_price_l, F.image_path, ");
+		sql.append(
+				"G.order_toppings_id, G.topping_id, G.order_item_id, G.toppings_name, G.topping_price_m, G.topping_price_l ");
+		sql.append("FROM orders AS A JOIN ");
+		sql.append("(SELECT B.id AS order_item_id, B.item_id, B.order_id, B.quantity, B.size, ");
+		sql.append("C.name AS item_name, C.price_m AS item_price_m, C.price_l AS item_price_l, C.image_path ");
+		sql.append("FROM order_items AS B JOIN items AS C ON B.item_id=C.id) AS F ");
+		sql.append("ON A.id=F.order_id LEFT OUTER JOIN ");
+		sql.append("(SELECT D.id AS order_toppings_id, D.topping_id, D.order_item_id, ");
+		sql.append("E.name AS toppings_name, E.price_m AS topping_price_m, E.price_l AS topping_price_l ");
+		sql.append("FROM order_toppings AS D JOIN toppings AS E ");
+		sql.append("ON D.topping_id=E.id) AS G ON F.order_item_id=G.order_item_id ");
+		sql.append("WHERE A.id=:id;");
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", orderId);
+
+		List<Order> orderList = template.query(sql.toString(), param, RESULT_SET_EXTRACTOR);
 		return orderList;
 	}
 

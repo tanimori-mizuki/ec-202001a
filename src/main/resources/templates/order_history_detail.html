@@ -75,22 +75,22 @@
 							</th>
 						<tr>
 							<td>
-							<div class="text-center">
+							<div class="text-center"  th:text="${order.orderDate}">
 								2020/01/01
 								</div>
 							</td>
 							<td>
-							<div class="text-center">
+							<div class="text-center" th:text="${order.status}">
 								未入金
 								</div>
 							</td>
 							<td>
-							<div class="text-center">
+							<div class="text-center" th:text="${order.paymentMethod}">
 								クレジットカード決済
 								</div>
 							</td>
 							<td>
-							<div class="text-center">
+							<div class="text-center" th:text="${order.id}">
 								XXXXX-XXXXX
 							</div>
 							</td>
@@ -136,27 +136,27 @@
 							</th>
 						<tr>
 							<td>
-							<div class="text-center">
+							<div class="text-center" th:text="${order.destinationName}">
 								カレー太郎
 								</div>
 							</td>
 							<td>
-							<div class="text-center">
+							<div class="text-center" th:text="${order.destinationZipcode}">
 								000-0000
 								</div>
 							</td>
 							<td>
-							<div class="text-center">
+							<div class="text-center" th:text="${order.destinationAddress}">
 								東京都新宿区新宿１－１－１
 								</div>
 							</td>
 							<td>
-							<div class="text-center">
+							<div class="text-center" th:text="${order.destinationTel}">
 								XXX-XX-XXXXX
 							</div>
 							</td>
 							<td>
-							<div class="text-center">
+							<div class="text-center" th:text="${order.destinationEmail}">
 								curry@xx.com
 							</div>
 							</td>
@@ -197,77 +197,33 @@
 								</div>
 							</th>
 						</tr>
-						<tr>
+						<tr th:each="orderItem:${order.orderItemList}">
 							<td>
 								<div class="center">
-									<img src="../static/img_pizza/1.jpg"
+									<img src="../static/img_pizza/1.jpg"  th:src="@{'/img_curry/'+${orderItem.item.imagePath}}"
 										class="img-responsive img-rounded" width="100" height="300"><br>
-									じゃがバターベーコン
+									<span th:text="${orderItem.item.name}">じゃがバターベーコン</span>
 								</div>
-							</td>
-							<td>
-								<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円
-								&nbsp;&nbsp;1個
-							</td>
-							<td>
-								<ul>
-									<li>ピーマン300円</li>
-									<li>オニオン300円</li>
-									<li>あらびきソーセージ300円</li>
-								</ul>
 							</td>
 							<td>
 								<div class="text-center">
-									3,280円
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="center">
-									<img src="../static/img_pizza/1.jpg"
-										class="img-responsive img-rounded" width="100" height="300"><br>
-									じゃがバターベーコン
+								<span class="price" th:text="'&nbsp;&nbsp;'+${orderItem.size}+'&nbsp;&nbsp;'">&nbsp;Ｌ</span>&nbsp;&nbsp;
+								<span  th:if="${orderItem.size}=='M'" th:text="${#numbers.formatInteger(orderItem.item.priceM,1,'COMMA')}+'円'">2,380</span>
+								<span  th:if="${orderItem.size}=='L'" th:text="${#numbers.formatInteger(orderItem.item.priceL,1,'COMMA')}+'円'">2,380</span>
+								&nbsp;&nbsp;<span th:text="${orderItem.quantity}">1</span>個
 								</div>
 							</td>
 							<td>
-								<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円
-								&nbsp;&nbsp;1個
-							</td>
-							<td>
-								<ul>
-									<li>ピーマン300円</li>
-									<li>オニオン300円</li>
-									<li>あらびきソーセージ300円</li>
-								</ul>
-							</td>
-							<td>
+								<ol th:each="orderTopping:${orderItem.orderToppingList}">
+									<li th:text="${orderTopping.topping.name}">ピーマン</li>
+								</ol>
 								<div class="text-center">
-									3,280円
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="center">
-									<img src="../static/img_pizza/1.jpg"
-										class="img-responsive img-rounded" width="100" height="300"><br>
-									じゃがバターベーコン
+										<span th:if="${orderItem.size}=='M'" th:text="'各'+${orderItem.orderToppingList[0].topping.priceM+'円'}">各200円</span>
+										<span th:if="${orderItem.size}=='L'" th:text="'各'+${orderItem.orderToppingList[0].topping.priceL+'円'}">各200円</span>
 								</div>
 							</td>
 							<td>
-								<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円
-								&nbsp;&nbsp;1個
-							</td>
-							<td>
-								<ul>
-									<li>ピーマン300円</li>
-									<li>オニオン300円</li>
-									<li>あらびきソーセージ300円</li>
-								</ul>
-							</td>
-							<td>
-								<div class="text-center">
+								<div class="text-center" >
 									3,280円
 								</div>
 							</td>
@@ -277,11 +233,11 @@
 						<td></td>
 						<th>
 								<div class="text-center">
-									合計金額
+									合計金額(税抜)
 								</div>
 						</th>
 						<td>
-						10,000円
+						<span  th:text="${#numbers.formatInteger(order.totalPrice,1,'COMMA')}+'円'">10,000円</span>
 						</td>
 						</tr>
 					</tbody>
