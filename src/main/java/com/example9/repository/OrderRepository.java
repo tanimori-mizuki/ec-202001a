@@ -3,11 +3,16 @@ package com.example9.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import com.example9.domain.Item;
@@ -27,7 +32,18 @@ public class OrderRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
-
+	
+	private SimpleJdbcInsert insert;
+	
+	@PostConstruct
+	public void init() {
+		SimpleJdbcInsert simpleJdbcInsert 
+		= new SimpleJdbcInsert((JdbcTemplate) template.getJdbcOperations());
+		SimpleJdbcInsert withTableName
+			= simpleJdbcInsert.withTableName("orders");
+		insert = withTableName.usingGeneratedKeyColumns("id");
+	}
+	
 	private ResultSetExtractor<List<Order>> RESULT_SET_EXTRACTOR = (rs) -> {
 		List<Order> orderList = new ArrayList<>();
 		List<OrderItem> orderItemList;
@@ -185,5 +201,40 @@ public class OrderRepository {
 		List<Order> orderList = template.query(sql.toString(), param, RESULT_SET_EXTRACTOR);
 		return orderList;
 	}
-
+	
+	
+	/**
+	 * DBにorderオブジェクトを追加.
+	 * 
+	 * @param order orderオブジェクト
+	 * @return
+	 */
+	public Order insertOrder(Order order) {
+		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
+		
+		if (order.getId() == null) {
+			Number key = insert.executeAndReturnKey(param);
+			order.setId(key.intValue());
+		} else {
+			String sql = "INSERT INTO orders "
+					+ "(user_id, status, total_price, order_date, destination_name, destination_email, "
+					+ "destination_zipcode, destination_address, destination_tel, delivery_time, payment_method) "
+					+ "VALUES (:userId, :status, :totalPrice, :orderDate, :destinationName, :destinationEmail, "
+					+ ":destinationZipcode, :destinationAddress, :destinationTel, :deliveryTime, :paymentMethod) ";
+		    template.update(sql, param);
+		}
+		return order;
+	}
+	
+	
+	/**
+	 * 主キーを元にDBから削除.
+	 * 
+	 * @param id 主キー
+	 */
+	public void deleteById(Integer id) {
+		String sql = "DELETE FROM orders WHERE id = :id ";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		template.update(sql, param);
+	}	
 }
