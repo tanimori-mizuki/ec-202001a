@@ -6,8 +6,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example9.domain.Order;
+import com.example9.form.OrderForm;
 import com.example9.repository.OrderRepository;
 
 /**
@@ -24,6 +26,11 @@ public class OrderService {
 
 	@Autowired
 	private HttpSession session;
+
+	@ModelAttribute
+	public OrderForm setUpOrderForm() {
+		return new OrderForm();
+	}
 
 	/**
 	 * 注文前(status=0)の注文を、注文済(status=1または2)へ更新する.
