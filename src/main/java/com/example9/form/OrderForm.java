@@ -32,7 +32,7 @@ public class OrderForm {
 	private String telephone;
 
 	/** 配達時間 */
-	@NotBlank(message = "配達日時を入力して下さい")
+	// @NotBlank(message = "配達日時を入力して下さい")
 	private Timestamp deliveryTime;
 
 	/** 支払方法 */
@@ -100,4 +100,5 @@ public class OrderForm {
 	public void setPaymentMethod(Integer paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
+
 }
