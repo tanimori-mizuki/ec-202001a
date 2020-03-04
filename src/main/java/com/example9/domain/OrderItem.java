@@ -23,9 +23,7 @@ public class OrderItem {
 	private Item item;
 	/** 注文トッピングリスト */
 	private List<OrderTopping> orderToppingList;
-	/** 金額小計 */
-	private Integer subTotal;
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -66,10 +64,6 @@ public class OrderItem {
 		this.size = size;
 	}
 
-	public void setSubTotal(Integer subTotal) {
-		this.subTotal = subTotal;
-	}
-
 	public Item getItem() {
 		return item;
 	}
@@ -86,39 +80,35 @@ public class OrderItem {
 		this.orderToppingList = orderToppingList;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "OrderItem [id=" + id + ", itemId=" + itemId + ", orderId=" + orderId + ", quantity=" + quantity
-				+ ", size=" + size + ", item=" + item + ", orderToppingList=" + orderToppingList + ", subtotal="
-				+ subTotal + "]";
+				+ ", size=" + size + ", item=" + item + ", orderToppingList=" + orderToppingList + "]";
 	}
 
+	
 	/**
 	 * 注文商品の小計を求める.
 	 * 
 	 * @return 小計
 	 */
-//	public int getSubTotal() {
-//		int subTotalPrice = 0;
-//
-//		if (size == 'M') {
-//			subTotalPrice = (item.getPriceM()
-//					+ orderToppingList.get(0).getTopping().getPriceM() * orderToppingList.size()) * quantity;
-//		} else if (size == 'L') {
-//			subTotalPrice = (item.getPriceL()
-//					+ orderToppingList.get(0).getTopping().getPriceL() * orderToppingList.size()) * quantity;
-//		}
-//		return subTotalPrice;
-//	}
 	public int getSubTotal() {
 		int subTotalPrice = 0;
 		
-		if (size == 'M') {
-			subTotalPrice = (item.getPriceM() + 200 * orderToppingList.size()) * quantity;
-		} else if (size == 'L') {
-			subTotalPrice = (item.getPriceL() + 300 * orderToppingList.size()) * quantity;
+		if (orderToppingList.size() == 0 && size == 'M'){
+			subTotalPrice = item.getPriceM();
+		} else if (orderToppingList.size() == 0 && size == 'L') {
+			subTotalPrice = item.getPriceL();
+		} else if (orderToppingList.size() != 0 && size == 'M') {
+			subTotalPrice = (item.getPriceM()+ orderToppingList.get(0).getTopping().getPriceM() * orderToppingList.size()) * quantity;
+		} else if (orderToppingList.size() != 0 && size == 'L') {
+			subTotalPrice = (item.getPriceL()+ orderToppingList.get(0).getTopping().getPriceL() * orderToppingList.size()) * quantity;
 		}
 		return subTotalPrice;
 	}
+	
+	
+	
 
 }
