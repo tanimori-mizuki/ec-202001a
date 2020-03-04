@@ -1,6 +1,8 @@
 package com.example9.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,12 @@ public class ShowItemListController {
 	 */
 	@RequestMapping("/showList")
 	public String showList(Model model) {
+		
+		Map<Integer,String>orderMap = new LinkedHashMap<>();
+		orderMap.put(0,"価格の低い順");
+		orderMap.put(1,"価格の高い順");
+		model.addAttribute("orderMap", orderMap);
+		
 		List<Item>itemList = showItemListService.showList();
 		List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);
 	

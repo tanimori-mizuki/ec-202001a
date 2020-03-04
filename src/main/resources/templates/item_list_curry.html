@@ -78,10 +78,10 @@
 		</font>
 	</div><br>
 	
-		<div style="text-align: center">
+		
+		<div style="text-align: center" th:each="order:${orderMap}">
 		<font size="3">商品一覧ソート順&nbsp;&nbsp;：&nbsp;&nbsp;
-			<input type="radio" name="orderby" value="asc">価格の低い順&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="radio" name="orderby" value="desc">価格の高い順
+			<input type="radio" name="orderby" th:text="${order.value}" th:value="${order.key}">
 		</font>
 	</div><br>
 	
