@@ -103,9 +103,11 @@
 									</label>
 								</div>
 								<div class="col-sm-12">
-									<label class="checkbox-inline"  th:each="topping:${item.toppingList}">
+									<span   th:each="topping:${item.toppingList}">
+									<label class="checkbox-inline">
 										<input type="checkbox" name="toppingId" th:value="${topping.id}"><span th:text="${topping.name}">オニオン</span>
 									</label>
+									</span>
 								</div>
 							</div>
 						</div>
@@ -117,8 +119,7 @@
 							<div class="row">
 								<div class="col-xs-5 col-sm-5">
 									<label for="">数量:</label>
-									<label class="control-label"
-										style="color: red" for="inputError">数量を選択してください</label> <select
+									 <select
 										name="quantity" class="form-control">
 										<option value="1">1</option>
 										<option value="2">2</option>
