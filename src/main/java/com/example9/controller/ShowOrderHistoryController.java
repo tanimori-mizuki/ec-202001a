@@ -53,7 +53,7 @@ public class ShowOrderHistoryController {
 		} catch (Exception e) {
 			// 注文履歴がnullの場合は、その旨のメッセージをリクエストスコープに格納する
 			String nonOrderMessage = "注文履歴がありません";
-			model.addAttribute(nonOrderMessage);
+			model.addAttribute("nonOrderMessage", nonOrderMessage);
 		}
 		return "order_history";
 	}

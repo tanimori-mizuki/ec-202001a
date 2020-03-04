@@ -47,7 +47,6 @@
 			<!-- /.container-fluid -->
 		</nav>
 
-		<h2 th:if="${nonOrderMessage}" th:text="${nonOrderMessage}"></h2>
 
 		<!-- table -->
 		<div class="row">
@@ -133,7 +132,9 @@
 			</div>
 		</div>
 
-
+		<div class="text-center">
+		<h2 th:if="${nonOrderMessage}" th:text="${nonOrderMessage}"></h2>
+		</div>
 	</div>
 	<!-- end container -->
 	<script
