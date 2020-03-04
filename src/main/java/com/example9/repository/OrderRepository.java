@@ -130,7 +130,7 @@ public class OrderRepository {
 	 * 引数のユーザーIDとステータスで、注文情報を注文ID昇順で取得する.
 	 * 
 	 * @param userId ユーザーID
-	 * @param        status ステータス
+	 * @param status ステータス
 	 * @return 注文情報一覧(該当データなしの場合null)
 	 */
 	public List<Order> findByUserIdAndStatus(Integer userId, Integer status) {
@@ -155,7 +155,8 @@ public class OrderRepository {
 		sql.append("WHERE A.user_id=:id ");
 
 		SqlParameterSource param;
-		if (status == 0) {
+		int statusInt = status;
+		if (statusInt == 0) {
 			sql.append("AND A.status=:status ORDER BY A.id; ");
 			param = new MapSqlParameterSource().addValue("id", userId).addValue("status", status);
 		} else {
@@ -169,9 +170,10 @@ public class OrderRepository {
 		}
 		return orderList;
 	}
-	
+
 	/**
 	 * 注文IDで注文情報を検索・取得する.
+	 * 
 	 * @param orderId 注文ID
 	 * @return 注文情報
 	 */
@@ -201,7 +203,6 @@ public class OrderRepository {
 		List<Order> orderList = template.query(sql.toString(), param, RESULT_SET_EXTRACTOR);
 		return orderList;
 	}
-	
 	
 	/**
 	 * DBにorderオブジェクトを追加.
@@ -237,4 +238,25 @@ public class OrderRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		template.update(sql, param);
 	}	
+
+	/**
+	 * 引数の注文情報に該当するデータの、ステータスを更新する.
+	 * 
+	 * @param order 注文情報
+	 */
+	public void updateStatus(Order order) {
+		String sql = "UPDATE orders SET status=:status WHERE id=:orderId;";
+		SqlParameterSource param;
+		int paymentMethod = order.getPaymentMethod();
+		if (paymentMethod == 1) {
+			// 決済方法が代金引換（paymentMethod=1）の場合はステータスを注文前(0)→未入金(1)へ更新
+			param = new MapSqlParameterSource().addValue("status", 1).addValue("orderId", order.getId());
+		} else {
+			// 決済方法が代金引換（paymentMethod=1）以外の場合はステータスを注文前(0)→入金済(2)へ更新
+			param = new MapSqlParameterSource().addValue("status", 2).addValue("orderId", order.getId());
+		}
+		template.update(sql, param);
+	}
+
+
 }

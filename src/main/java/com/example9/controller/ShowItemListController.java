@@ -46,6 +46,8 @@ public class ShowItemListController {
 	public String serchByLikeName(String code,Model model) {
 		List<Item>itemList = showItemListService.searchByLikeName(code);
 		if(itemList.size() == 0) {
+			String message = "該当する商品がありません";
+			model.addAttribute("message", message);
 			return showList(model);
 		} else {
 			List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);

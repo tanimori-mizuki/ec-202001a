@@ -93,6 +93,7 @@ public class AddToCartService {
 			// NullPointerException回避のため
 		} else {
 			for (String strToppingId : form.getToppingId()) {
+				System.out.println(strToppingId);
 				// フォームから送られてくるトッピングidはString型なのでIntegerに変換
 				Integer intToppingId = Integer.parseInt(strToppingId);
 

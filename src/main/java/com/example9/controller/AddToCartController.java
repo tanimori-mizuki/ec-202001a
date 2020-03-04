@@ -28,6 +28,6 @@ public class AddToCartController {
 		// cartAddサービスにformを渡す
 		addToCartService.addToCart(form);
 		
-		return "redirect:/cart_list";
+		return "redirect:/show_cart_list";
 	}
 }
