@@ -32,9 +32,7 @@ public class ShowItemDetailController {
 	 * @return 商品詳細画面
 	 */
 	@RequestMapping("")
-	public String toItemDetail(Model model) {
-		//ToDo 動作確認用変数。谷森さんの商品一覧P完成次第削除→引数にInteger id追加
-		Integer id = 1;
+	public String toItemDetail(Model model,Integer id) {
 		
 		Item item = showItemDetailService.getAnItem(id);
 		List<Topping> toppingList = showItemDetailService.getAllToppings();
