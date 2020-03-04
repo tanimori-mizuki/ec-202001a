@@ -1,7 +1,8 @@
 package com.example9.form;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
+import javax.validation.constraints.NotBlank;
 
 /**
  * 注文内容確認の入力フォーム
@@ -12,27 +13,36 @@ import java.util.Date;
 public class OrderForm {
 
 	/** 名前 */
+	@NotBlank(message = "お名前を入力して下さい")
 	private String name;
 
 	/** メールアドレス */
+	@NotBlank(message = "メールアドレスを入力して下さい")
 	private String email;
 
 	/** 郵便番号 */
 	private String zipcode;
 
+	/** 住所 */
+	@NotBlank(message = "住所を入力して下さい")
+	private String address;
+
 	/** 電話番号 */
+	@NotBlank(message = "電話番号を入力して下さい")
 	private String telephone;
 
 	/** 配達時間 */
-	private Date deliverlyTime;
+	@NotBlank(message = "配達日時を入力して下さい")
+	private Timestamp deliveryTime;
 
 	/** 支払方法 */
 	private Integer paymentMethod;
 
 	@Override
 	public String toString() {
-		return "OrderForm [name=" + name + ", email=" + email + ", zipcode=" + zipcode + ", telephone=" + telephone
-				+ ", deliverlyTime=" + deliverlyTime + ", paymentMethod=" + paymentMethod + "]";
+		return "OrderForm [name=" + name + ", email=" + email + ", zipcode=" + zipcode + ", address=" + address
+				+ ", telephone=" + telephone + ", deliveryTime=" + deliveryTime + ", paymentMethod=" + paymentMethod
+				+ "]";
 	}
 
 	public String getName() {
@@ -59,6 +69,14 @@ public class OrderForm {
 		this.zipcode = zipcode;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public String getTelephone() {
 		return telephone;
 	}
@@ -67,12 +85,12 @@ public class OrderForm {
 		this.telephone = telephone;
 	}
 
-	public Date getDeliverlyTime() {
-		return deliverlyTime;
+	public Timestamp getDeliveryTime() {
+		return deliveryTime;
 	}
 
-	public void setDeliverlyTime(Date deliverlyTime) {
-		this.deliverlyTime = deliverlyTime;
+	public void setDeliveryTime(Timestamp deliveryTime) {
+		this.deliveryTime = deliveryTime;
 	}
 
 	public Integer getPaymentMethod() {
@@ -82,5 +100,4 @@ public class OrderForm {
 	public void setPaymentMethod(Integer paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
-
 }
