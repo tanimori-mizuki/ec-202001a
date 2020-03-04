@@ -88,12 +88,13 @@ public class AddToCartService {
 
 		// order_itemsテーブルに保存
 		orderItem = orderItemRepository.insertOrderItem(orderItem);
-
+		
+		
 		if (form.getToppingId() == null) {
 			// NullPointerException回避のため
 		} else {
 			for (String strToppingId : form.getToppingId()) {
-				System.out.println(strToppingId);
+				
 				// フォームから送られてくるトッピングidはString型なのでIntegerに変換
 				Integer intToppingId = Integer.parseInt(strToppingId);
 

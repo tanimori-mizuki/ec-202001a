@@ -98,18 +98,27 @@ public class OrderItem {
 	 * 
 	 * @return 小計
 	 */
+//	public int getSubTotal() {
+//		int subTotalPrice = 0;
+//
+//		if (size == 'M') {
+//			subTotalPrice = (item.getPriceM()
+//					+ orderToppingList.get(0).getTopping().getPriceM() * orderToppingList.size()) * quantity;
+//		} else if (size == 'L') {
+//			subTotalPrice = (item.getPriceL()
+//					+ orderToppingList.get(0).getTopping().getPriceL() * orderToppingList.size()) * quantity;
+//		}
+//		return subTotalPrice;
+//	}
 	public int getSubTotal() {
 		int subTotalPrice = 0;
-
+		
 		if (size == 'M') {
-			subTotalPrice = (item.getPriceM()
-					+ orderToppingList.get(0).getTopping().getPriceM() * orderToppingList.size()) * quantity;
+			subTotalPrice = (item.getPriceM() + 200 * orderToppingList.size()) * quantity;
 		} else if (size == 'L') {
-			subTotalPrice = (item.getPriceL()
-					+ orderToppingList.get(0).getTopping().getPriceL() * orderToppingList.size()) * quantity;
+			subTotalPrice = (item.getPriceL() + 300 * orderToppingList.size()) * quantity;
 		}
 		return subTotalPrice;
 	}
-	
 
 }
