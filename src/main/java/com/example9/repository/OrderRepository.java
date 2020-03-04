@@ -267,13 +267,11 @@ public class OrderRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append("UPDATE orders SET destination_name = :destinationName, destination_email = :destinationEmail, ");
 		sql.append("destination_zipcode = :destinationZipcode, destination_address = :destinationAddress, ");
-		sql.append("destination_tel = :desdestinationTeltination_tel , delivery_time = :deliveryTime, payment_method = :paymentMethod ");
+		sql.append("destination_tel = :destinationTel , delivery_time = :deliveryTime, payment_method = :paymentMethod ");
 		sql.append("WHERE user_id = :userId AND status = 0");
 		
 		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
 		
 		template.update(sql.toString(), param);
 	}
-
-
 }
