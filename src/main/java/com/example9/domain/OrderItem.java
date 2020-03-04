@@ -24,7 +24,7 @@ public class OrderItem {
 	/** 注文トッピングリスト */
 	private List<OrderTopping> orderToppingList;
 	/** 金額小計 */
-	private Integer subtotal;
+	private Integer subTotal;
 
 	public Integer getId() {
 		return id;
@@ -66,12 +66,8 @@ public class OrderItem {
 		this.size = size;
 	}
 
-	public Integer getSubtotal() {
-		return subtotal;
-	}
-
-	public void setSubtotal(Integer subtotal) {
-		this.subtotal = subtotal;
+	public void setSubTotal(Integer subTotal) {
+		this.subTotal = subTotal;
 	}
 
 	public Item getItem() {
@@ -94,7 +90,7 @@ public class OrderItem {
 	public String toString() {
 		return "OrderItem [id=" + id + ", itemId=" + itemId + ", orderId=" + orderId + ", quantity=" + quantity
 				+ ", size=" + size + ", item=" + item + ", orderToppingList=" + orderToppingList + ", subtotal="
-				+ subtotal + "]";
+				+ subTotal + "]";
 	}
 
 	/**
@@ -106,9 +102,11 @@ public class OrderItem {
 		int subTotalPrice = 0;
 
 		if (size == 'M') {
-			subTotalPrice = (item.getPriceM() + 200 * orderToppingList.size()) * quantity;
+			subTotalPrice = (item.getPriceM()
+					+ orderToppingList.get(0).getTopping().getPriceM() * orderToppingList.size()) * quantity;
 		} else if (size == 'L') {
-			subTotalPrice = (item.getPriceL() + 300 * orderToppingList.size()) * quantity;
+			subTotalPrice = (item.getPriceL()
+					+ orderToppingList.get(0).getTopping().getPriceL() * orderToppingList.size()) * quantity;
 		}
 		return subTotalPrice;
 	}
