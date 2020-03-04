@@ -67,7 +67,6 @@ public class LoginLogoutController {
 		}
 
 		session.setAttribute("user", user);
-
 		return "forward:/item/showList";
 
 	}
@@ -80,7 +79,7 @@ public class LoginLogoutController {
 	@RequestMapping("/logout")
 	public String logout() {
 		session.invalidate();
-		return "forward:/item/showList";
+		return "forward:/item/showListS";
 	}
 
 }
