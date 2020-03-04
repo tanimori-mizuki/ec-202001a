@@ -16,7 +16,7 @@ import com.example9.service.ShowItemListService;
  *
  */
 @Controller
-@RequestMapping("/item")
+@RequestMapping("/")
 public class ShowItemListController {
 	
 	@Autowired
@@ -27,7 +27,7 @@ public class ShowItemListController {
 	 * @param model リクエストスコープ
 	 * @return　商品一覧画面
 	 */
-	@RequestMapping("/showList")
+	@RequestMapping("")
 	public String showList(Model model) {
 		List<Item>itemList = showItemListService.showList();
 		List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);
