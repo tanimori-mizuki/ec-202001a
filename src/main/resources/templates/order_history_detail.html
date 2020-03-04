@@ -80,13 +80,18 @@
 								</div>
 							</td>
 							<td>
-							<div class="text-center" th:text="${order.status}">
-								未入金
+							<div class="text-center">
+							<span  th:if="${order.status}==1" th:text="'未金済'">入金済</span>
+							<span  th:if="${order.status}==2" th:text="'入金済'"></span>
+							<span  th:if="${order.status}==3" th:text="'発送済'"></span>
+							<span  th:if="${order.status}==4" th:text="'配送完了'"></span>
+							<span  th:if="${order.status}==9" th:text="'キャンセル'"></span>
 								</div>
 							</td>
 							<td>
-							<div class="text-center" th:text="${order.paymentMethod}">
-								クレジットカード決済
+							<div class="text-center">
+							<span  th:if="${order.paymentMethod}==1" th:text="'代金引換'">代金引換</span>
+							<span  th:if="${order.paymentMethod}==2" th:text="'クレジットカード決済'"></span>
 								</div>
 							</td>
 							<td>
@@ -223,7 +228,7 @@
 								</div>
 							</td>
 							<td>
-								<div class="text-center" >
+								<div class="text-center" th:text="${#numbers.formatInteger(orderItem.subtotal,1,'COMMA')}+'円'">
 									3,280円
 								</div>
 							</td>
@@ -248,7 +253,7 @@
 <!-- 		<div class="row"> -->
 			<div class="col-xs-offset-5 col-xs-3">
 				<div class="form-group">
-				<a href="order_history.html">
+				<a href="order_history.html" th:href="@{/order-history}">
 						<input class="form-control btn btn-warning btn-block"
 							type="button" value="注文履歴一覧へ戻る">
 				</a>
