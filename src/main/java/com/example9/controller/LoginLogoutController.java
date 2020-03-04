@@ -71,14 +71,8 @@ public class LoginLogoutController {
 		User user2 = (User) session.getAttribute("user");
 		System.out.println(user2.toString());
 		// ToDo：ShowItemListController- showList()のパスへ変更
-		return "forward:/login/test";
+		return "forward:/item/showList";
 
-	}
-
-	// ToDo: ShowItemListController完成次第削除
-	@RequestMapping("/test")
-	public String showCartLost() {
-		return "register_user";
 	}
 
 	/**
@@ -90,7 +84,7 @@ public class LoginLogoutController {
 	public String logout() {
 		session.invalidate();
 		// ToDo：ShowItemListController- showList()のパスへ変更
-		return "forward:/login/test";
+		return "forward:/item/showListS";
 	}
 
 }

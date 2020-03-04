@@ -68,7 +68,7 @@
 								<label for="inputZipcode">郵便番号:</label>
 								<label
 									class="control-label" style="color: red" for="inputError" th:errors="*{zipcode}">郵便番号を入力してください</label>
-									<input type="button" value="住所検索">
+									<input type="button" value="住所検索" id="search_address">
 								<input type="text" id="inputZipcode" name="zipcode" th:field="*{zipcode}" class="form-control"
 									placeholder="Zipcode">
 								
@@ -117,5 +117,7 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script th:src="@{/js/bootstrap.min.js}" src="../static/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script th:src="@{/js/get_address.js}" src="../static/js/get_address.js"></script>
 </body>
 </html>
