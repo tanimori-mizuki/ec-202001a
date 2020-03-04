@@ -166,7 +166,7 @@
 		</div>
 
 		<!-- table -->
-		<form action="order_finished.html" th:action="@{/order}">
+		<form action="order_finished.html" th:action="@{/order}" th:object="${orderForm}">
 			<div class="row">
 				<div
 					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
@@ -175,22 +175,22 @@
 						<tbody>
 							<tr>
 								<td>
-									<div class="text-center">
+									<div class="text-center" th:errors="*{name}">
 										お名前
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="name" th:field="*{name}">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<div class="text-center">
+									<div class="text-center" th:errors="*{email}">
 										メールアドレス
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="email" th:field="*{email}">
 								</td>
 							</tr>
 							<tr>
@@ -200,27 +200,27 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">&nbsp;&nbsp;<button>住所検索</button>
+									<input type="text" name="zipcode" th:field="*{zipcode}">&nbsp;&nbsp;<button>住所検索</button>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<div class="text-center">
+									<div class="text-center" th:erros="*{address}">
 										住所
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="address" th:field="*{address}">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<div class="text-center">
+									<div class="text-center" th:erros="*{telephone}">
 										電話番号
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="telephone" th:field="*{telephone}">
 								</td>
 							</tr>
 							<tr>
@@ -234,7 +234,7 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<label
-													class="control-label" style="color: red" for="inputPeriod">配達日時を入力してください</label>
+													class="control-label" style="color: red" for="inputPeriod" th:erros="*{deliveryTime}">配達日時を入力してください</label>
 											</div>
 											<div class="col-sm-5">
 												<input type="date" name="name" id="name"
