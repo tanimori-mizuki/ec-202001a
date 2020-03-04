@@ -39,7 +39,7 @@ public class ItemRepository {
 	};
 
 	/**
-	 * 全件検索を行います.
+	 * 全件検索を行います.（金額昇順）
 	 * 
 	 * @return Itemリスト
 	 */
@@ -51,7 +51,7 @@ public class ItemRepository {
 	}
 
 	/**
-	 * 商品名の曖昧検索を行います.
+	 * 商品名の曖昧検索を行います.（金額昇順）
 	 * 
 	 * @param name 名前
 	 * @return Itemリスト
@@ -77,4 +77,33 @@ public class ItemRepository {
 		Item item = template.queryForObject(sql, param, ITEM_ROW_MAPPER);
 		return item;
 	}
+	
+	/**
+	 * 全件検索を行います.（金額降順）
+	 * 
+	 * @return Itemリスト
+	 */
+	public List<Item> findAllOrderByDesc() {
+		StringBuilder sql = new StringBuilder();
+		sql.append(
+				"SELECT id,name,description,description,price_m,price_l,image_path,deleted FROM items ORDER BY price_m DESC");
+		return template.query(sql.toString(), ITEM_ROW_MAPPER);
+	}
+	
+	/**
+	 * 商品名の曖昧検索を行います.（金額降順）
+	 * 
+	 * @param name 名前
+	 * @return Itemリスト
+	 */
+	public List<Item> findByLikeNameOrderByDesc(String name) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT id,name,description,description,price_m,price_l,image_path,deleted ");
+		sql.append("FROM items ");
+		sql.append("WHERE name LIKE :name ");
+		sql.append("ORDER BY price_m DESC");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+		return template.query(sql.toString(), param, ITEM_ROW_MAPPER);
+	}
+	
 }
