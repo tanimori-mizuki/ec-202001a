@@ -1,8 +1,6 @@
 package com.example9.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example9.domain.Order;
-import com.example9.domain.OrderItem;
-import com.example9.domain.OrderTopping;
 import com.example9.domain.User;
 import com.example9.service.ShowOrderHistoryService;
 
@@ -68,31 +64,6 @@ public class ShowOrderHistoryController {
 		Order order = orderList.get(0);
 		model.addAttribute(order);
 
-		// 商品毎の小計を計算する
-		List<OrderItem> orderItemList = order.getOrderItemList();
-		Map<Integer, Integer> itemPriceMap = new HashMap<>();
-		Integer curryPrice = 0;
-		Integer toppingsPrice = 0;
-		for (OrderItem orderItem : orderItemList) {
-			// 本体価格を算出
-			if (orderItem.getSize() == 'M') {
-				curryPrice = orderItem.getItem().getPriceM();
-			} else if (orderItem.getSize() == 'L') {
-				curryPrice = orderItem.getItem().getPriceL();
-			}
-			// トッピング合計額を算出
-			List<OrderTopping> toppingList = orderItem.getOrderToppingList();
-			if (toppingList.size() == 0) {
-			} else if (orderItem.getSize() == 'M') {
-				toppingsPrice = toppingList.size() * toppingList.get(0).getTopping().getPriceM();
-			} else if (orderItem.getSize() == 'L') {
-				toppingsPrice = toppingList.size() * toppingList.get(0).getTopping().getPriceL();
-			}
-			// 商品小計を算出
-			Integer sum = (curryPrice + toppingsPrice) * orderItem.getQuantity();
-			// 算出した商品小計を注文商品情報に格納
-			orderItem.setSubtotal(sum);
-		}
 		return "order_history_detail";
 	}
 

@@ -46,7 +46,7 @@ public class ShowCartListController {
 		List <OrderItem> orderItemList = order.getOrderItemList(); 
 		List <Integer> orderItemSubTotalList = new ArrayList<>();
 		for (OrderItem orderItem : orderItemList) {
-			orderItem.setSubtotal(orderItem.getSubTotal());
+			orderItem.setSubTotal(orderItem.getSubTotal());
 			orderItemSubTotalList.add(orderItem.getSubTotal());
 		}
 		model.addAttribute("orderItemSubTotalList", orderItemSubTotalList);
