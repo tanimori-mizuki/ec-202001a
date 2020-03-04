@@ -100,8 +100,12 @@
 								</div>
 							</td>
 							<td>
-							<div class="text-center" th:text="${order.status}">
-								未入金
+							<div class="text-center">
+							<span  th:if="${order.status}==1" th:text="'未金済'">入金済</span>
+							<span  th:if="${order.status}==2" th:text="'入金済'"></span>
+							<span  th:if="${order.status}==3" th:text="'発送済'"></span>
+							<span  th:if="${order.status}==4" th:text="'配送完了'"></span>
+							<span  th:if="${order.status}==9" th:text="'キャンセル'"></span>
 								</div>
 							</td>
 							<td>

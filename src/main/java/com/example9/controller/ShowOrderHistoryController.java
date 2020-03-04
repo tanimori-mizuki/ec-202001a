@@ -88,13 +88,11 @@ public class ShowOrderHistoryController {
 			} else if (orderItem.getSize() == 'L') {
 				toppingsPrice = toppingList.size() * toppingList.get(0).getTopping().getPriceL();
 			}
+			// 商品小計を算出
 			Integer sum = (curryPrice + toppingsPrice) * orderItem.getQuantity();
-			System.out.println(sum);
-			// Mapに金額格納(key:orderItemId, value:金額)
-			itemPriceMap.put(orderItem.getId(), sum);
+			// 算出した商品小計を注文商品情報に格納
+			orderItem.setSubtotal(sum);
 		}
-		model.addAttribute(itemPriceMap);
-		System.out.println(order);
 		return "order_history_detail";
 	}
 
