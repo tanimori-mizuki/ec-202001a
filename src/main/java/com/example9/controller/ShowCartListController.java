@@ -1,6 +1,5 @@
 package com.example9.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example9.domain.Order;
-import com.example9.domain.OrderItem;
 import com.example9.service.ShowCartListService;
 
 @Controller
@@ -41,17 +39,7 @@ public class ShowCartListController {
 		}
 		
 		Order order = orderList.get(0);
-		
-		// 小計を表示するための処理
-		List <OrderItem> orderItemList = order.getOrderItemList(); 
-		List <Integer> orderItemSubTotalList = new ArrayList<>();
-		for (OrderItem orderItem : orderItemList) {
-			orderItem.setSubTotal(orderItem.getSubTotal());
-			orderItemSubTotalList.add(orderItem.getSubTotal());
-		}
-		model.addAttribute("orderItemSubTotalList", orderItemSubTotalList);
-		
-		
+			
 		order.setTotalPrice(order.getCalcTotalPrice() + order.getTax());
 		model.addAttribute("tax", order.getTax());
 		model.addAttribute("order", order);
