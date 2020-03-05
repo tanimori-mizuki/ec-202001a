@@ -78,22 +78,4 @@ public class ItemRepository {
 		return item;
 	}
 	
-	/**
-	 * 任意の検索条件で並び替えて全件検索を行います.
-	 * 
-	 * @return Itemリスト
-	 */
-	public List<Item> sortFindAll(String sortConditionNumber) {
-		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT id,name,description,description,price_m,price_l,image_path,deleted FROM items ORDER BY ");
-		if ("0".equals(sortConditionNumber)) {
-			sql.append("price_m");
-		} else if ("1".equals(sortConditionNumber)) {
-			sql.append("price_m DESC");
-		}
-		
-		return template.query(sql.toString(), ITEM_ROW_MAPPER);
-	}
-	
-	
 }

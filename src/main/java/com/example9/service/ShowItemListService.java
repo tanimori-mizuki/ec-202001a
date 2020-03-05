@@ -40,15 +40,5 @@ public class ShowItemListService {
 		return itemRepository.findByLikeName(name);
 	}
 	
-
-	/**
-	 * 商品一覧を金額の降順で表示します.
-	 * @return　金額降順商品一覧
-	 */
-	public List<Item>getSortedItemList(SortConditionNumberForm form){
-		List<Item>itemList = itemRepository.sortFindAll(form.getSortConditionNumber());
-		
-		return itemList;
-	}
 	
 }
