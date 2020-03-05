@@ -45,9 +45,13 @@
 			<!-- /.container-fluid -->
 		</nav>
 
+		<!-- 注文履歴なしの場合のメッセージ -->
+		<div class="text-center">
+		<h2 th:if="${nonOrderMessage}" th:text="${nonOrderMessage}"></h2>
+		</div>
 
 		<!-- table -->
-		<div class="row">
+		<div class="row" th:unless="${nonOrderMessage}">
 			<div
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 				<h3 class="text-center">注文履歴</h3>
@@ -131,9 +135,6 @@
 			</div>
 		</div>
 
-		<div class="text-center">
-		<h2 th:if="${nonOrderMessage}" th:text="${nonOrderMessage}"></h2>
-		</div>
 	</div>
 	<!-- end container -->
 	<script
