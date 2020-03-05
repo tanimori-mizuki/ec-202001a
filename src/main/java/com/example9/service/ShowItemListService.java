@@ -45,8 +45,14 @@ public class ShowItemListService {
 	 * 商品一覧を金額の降順で表示します.
 	 * @return　金額降順商品一覧
 	 */
-	public List<Item>showListDesc(){
-		return itemRepository.findAllOrderByDesc();
+	public List<Item>getSortedItemList(String searchConditionNumber){
+		List<Item>itemList = null;
+		if("0".equals(searchConditionNumber)) {
+			 itemList = itemRepository.sortFindAll("price_m");
+		} else if("1".equals(searchConditionNumber)) {
+			itemList = itemRepository.sortFindAll("price_m DESC");
+		}
+		return itemList;
 	}
 	
 	/**

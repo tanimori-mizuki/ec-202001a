@@ -79,10 +79,14 @@
 	</div><br>
 	
 		
-		<div style="text-align: center" th:each="order:${orderMap}">
+		<div style="text-align: center" >
+		<form th:action="@{/item/showListOrderBy}" method="post">
 		<font size="3">商品一覧ソート順&nbsp;&nbsp;：&nbsp;&nbsp;
-			<input type="radio" name="orderby" th:text="${order.value}" th:value="${order.key}">
+			<input type="radio" name="searchConditionNumber" value="0">価格の低い順&nbsp;&nbsp;
+			<input type="radio" name="searchConditionNumber" value="1">価格の高い順&nbsp;&nbsp;
+			<button>並び替える</button>ひ
 		</font>
+		</form>
 	</div><br>
 	
 		<!-- table -->
