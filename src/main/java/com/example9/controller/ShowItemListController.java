@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class ShowItemListController {
 	@Autowired
 	private HttpSession session;
 	
+	@Autowired
+	private ServletContext application;
+	
 	@ModelAttribute
 	public SortConditionNumberForm setUpSortConditionNumberForm() {
 		SortConditionNumberForm form = new SortConditionNumberForm();
@@ -48,8 +52,14 @@ public class ShowItemListController {
 	@RequestMapping("")
 	public String showList(Model model) {
 		
-		List<Item>itemList = showItemListService.showList();	
+		List<Item>itemList = showItemListService.showList();
+		
+		// 並び替え用にsessionスコープに残しておく
 		session.setAttribute("itemList", itemList);
+		
+		// オートコンプリート用の記述
+		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(itemList);
+		application.setAttribute("itemListForAutocomplete", itemListForAutocomplete);
 		
 		List<List<Item>>itemListList = getThreeItemList(itemList);
 	
@@ -72,6 +82,7 @@ public class ShowItemListController {
 			model.addAttribute("message", message);
 			return showList(model);
 		} else {
+			// 並び替え用にsessionスコープに残しておく
 			session.setAttribute("itemList", itemList);
 			List<List<Item>>itemListList = getThreeItemList(itemList);
 			model.addAttribute("itemListList", itemListList);

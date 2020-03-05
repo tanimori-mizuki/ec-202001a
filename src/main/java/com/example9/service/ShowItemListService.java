@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example9.domain.Item;
-import com.example9.form.SortConditionNumberForm;
 import com.example9.repository.ItemRepository;
 
 /**
@@ -40,5 +39,24 @@ public class ShowItemListService {
 		return itemRepository.findByLikeName(name);
 	}
 	
-	
+	/**
+	 * オートコンプリート用にJavaScriptの配列の中身を文字列で作る.
+	 * 
+	 * @param itemList 商品一覧
+	 * @return　オートコンプリート用JavaScriptの配列の文字列
+	 */
+	public StringBuilder getItemListForAutocomplete(List <Item> itemList) {
+		StringBuilder itemListForAutocomplete = new StringBuilder();
+		for (int i = 0; i < itemList.size(); i++) {
+			if (i != 0) {
+				itemListForAutocomplete.append(",");
+			}
+			Item item = itemList.get(i);
+			itemListForAutocomplete.append("\"");
+			itemListForAutocomplete.append(item.getName());
+			itemListForAutocomplete.append("\"");		
+		}
+		return itemListForAutocomplete;
+	}
+
 }
