@@ -52,9 +52,9 @@ public class AddToCartService {
 		// userIdを取得
 		Integer userId = (Integer) session.getAttribute("userId");
 		
-		// 仮対応 非ログインユーザーのuserIdを適当に設定しておく
+		// 非ログインユーザーがカートを表示する際の処理
 		if (userId == null) {
-			userId = 10000;
+			userId = session.getId().hashCode();
 		}
 		// userIdで注文前のorderを検索
 		List<Order> orderList = orderRepository.findByUserIdAndStatus(userId, 0);

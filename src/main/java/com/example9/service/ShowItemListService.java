@@ -50,16 +50,14 @@ public class ShowItemListService {
 	public List <List<Item>> getThreeItemList(List <Item> itemList){
 		List<List<Item>>itemListList = new ArrayList<>();
 		List <Item> threeItemList = new ArrayList<>(); 
-		int i = 1 ;
 		
-		while (i <= itemList.size()) {
+		for (int i = 1; i <= itemList.size(); i++) {
 			threeItemList.add(itemList.get(i-1));
 			
 			if (i  % 3 == 0 || i == itemList.size()) {
 				itemListList.add(threeItemList);
 				threeItemList = new ArrayList<>(); 
 			}
-			i++;
 		}
 		return itemListList;
 	}

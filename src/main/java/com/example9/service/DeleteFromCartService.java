@@ -34,9 +34,9 @@ public class DeleteFromCartService {
 	public void cartDelete(Integer orderItemId) {
 		// 削除前に判定
 		Integer userId = (Integer) session.getAttribute("userId");
-		// 仮の対応　後で直す
+		// 非ログインユーザーがカートを表示する際の処理
 		if (userId == null) {
-			userId = 10000;
+			userId = session.getId().hashCode();
 		}
 		
 		List <Order> orderList = orderRepository.findByUserIdAndStatus(userId, 0);
