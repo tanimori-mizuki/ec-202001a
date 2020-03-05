@@ -39,7 +39,7 @@ public class ItemRepository {
 	};
 
 	/**
-	 * 全件検索を行います.
+	 * 全件検索を行います.（金額昇順）
 	 * 
 	 * @return Itemリスト
 	 */
@@ -51,7 +51,7 @@ public class ItemRepository {
 	}
 
 	/**
-	 * 商品名の曖昧検索を行います.
+	 * 商品名の曖昧検索を行います.（金額昇順）
 	 * 
 	 * @param name 名前
 	 * @return Itemリスト
@@ -77,4 +77,21 @@ public class ItemRepository {
 		Item item = template.queryForObject(sql, param, ITEM_ROW_MAPPER);
 		return item;
 	}
+	
+	/**
+	 * 任意の検索条件で並び替えて全件検索を行います.
+	 * 
+	 * @return Itemリスト
+	 */
+	public List<Item> sortFindAll(String searchCondition) {
+		StringBuilder sql = new StringBuilder();
+		System.out.println(searchCondition);
+		sql.append(
+				"SELECT id,name,description,description,price_m,price_l,image_path,deleted FROM items ORDER BY :searchCondition");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("searchCondition", searchCondition);
+		System.out.println(template.query(sql.toString(), param ,ITEM_ROW_MAPPER));
+		return template.query(sql.toString(), param ,ITEM_ROW_MAPPER);
+	}
+	
+	
 }
