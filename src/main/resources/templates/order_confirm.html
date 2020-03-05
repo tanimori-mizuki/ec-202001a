@@ -325,7 +325,7 @@
 										<div class="col-sm-12">
 											<label class="radio-inline">
 												<input type="radio"
-													name="responsibleCompany" checked="checked">
+													name="paymentMethod" value="1" checked="checked">
 												代金引換
 											</label>
 										</div>
@@ -338,14 +338,98 @@
 										クレジットカード決済
 									</div>
 								</td>
-								<td align="center">
+								<td>
 									<div class="row">
 										<div class="col-sm-12">
 											<label class="radio-inline">
-												<input type="radio"
-													name="responsibleCompany" checked="checked">
+												<input type="radio" id="payByCard"
+													name="paymentMethod" value="2" checked="checked">
 												クレジットカード
-											</label><br><br>
+											</label>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+			<!-- table -->
+			<div class="row" id="cardInfo">
+				<div
+					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+					<h3 class="text-center">クレジットカード情報</h3>
+					<table class="table table-striped">
+						<tbody>
+							<tr>
+								<td>
+									<div class="text-center">
+										カード番号
+									</div>
+								</td>
+								<td>
+									<div class="row">
+										<div class="col-sm-12">
+											<input type="text" name="cardNum">
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="text-center">
+										有効期限
+									</div>
+								</td>
+								<td>
+									<div class="row">
+										<div class="col-sm-12">
+											<select name="month">
+												<option>01</option>
+												<option>02</option>
+												<option>03</option>
+												<option>04</option>
+												<option>05</option>
+												<option>06</option>
+												<option>07</option>
+												<option>08</option>
+												<option>09</option>
+												<option>10</option>
+												<option>11</option>
+												<option>12</option>
+											</select>
+											<select name="year">
+												<option th:each="year:${yearList}" th:text="${year}">2020</option>
+											</select>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="text-center">
+										カード名義人
+									</div>
+								</td>
+								<td>
+									<div class="row">
+										<div class="col-sm-12">
+											<input type="text" name="cardUserName">
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="text-center">
+										セキュリティコード
+									</div>
+								</td>
+								<td>
+									<div class="row">
+										<div class="col-sm-12">
+											<input type="text" name="securityCord">
 										</div>
 									</div>
 								</td>
@@ -367,5 +451,6 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="../static/js/input-credit-card.js" th:src="@{/js/input-credit-card.js}"></script>
 </body>
 </html>

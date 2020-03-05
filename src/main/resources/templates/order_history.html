@@ -91,7 +91,7 @@
 										class="img-responsive img-rounded" width="100" height="300"><br>
 								&nbsp;&nbsp;&nbsp;&nbsp;
 								<span th:text="${order.orderItemList[0].item.name}">じゃがバターベーコン</span>
-								<span th:if="${order.orderItemList.size()}>1" th:text="'他'">他</span>
+								<span th:if="${order.orderItemList.size()}>1" th:text="'他'+${order.orderItemList.size()-1}+'点'">他</span>
 								</div>
 							</td>
 							<td>

@@ -265,7 +265,7 @@ public class OrderRepository {
 	 */
 	public void updateByUserId(Order order) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("UPDATE orders SET destination_name = :destinationName, destination_email = :destinationEmail, ");
+		sql.append("UPDATE orders SET total_price=:totalPrice, order_date=:orderDate, destination_name = :destinationName, destination_email = :destinationEmail, ");
 		sql.append("destination_zipcode = :destinationZipcode, destination_address = :destinationAddress, ");
 		sql.append("destination_tel = :destinationTel , delivery_time = :deliveryTime, payment_method = :paymentMethod ");
 		sql.append("WHERE user_id = :userId AND status = 0");

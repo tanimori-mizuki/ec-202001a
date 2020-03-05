@@ -132,14 +132,22 @@ public class Order {
 				+ destinationAddress + ", destinationTel=" + destinationTel + ", deliveryTime=" + deliveryTime
 				+ ", paymentMethod=" + paymentMethod + ", user=" + user + ", orderItemList=" + orderItemList + "]";
 	} 
-	// getTax()メソッドを実装予定
+
+	/**
+	 * 合計金額の税額を算出.
+	 * @return 税額
+	 */
 	public int getTax() {
 		int tax = getCalcTotalPrice() * 10 / 100;
 		return tax;
 	}
 	
 	
-	// getCalcTotalPrice()メソッドを実装予定
+	
+	/**
+	 * 合計金額（税抜き）を算出.
+	 * @return　合計金額（税抜き）
+	 */
 	public int getCalcTotalPrice() {
 		int totalPrice = 0;
 		for (OrderItem orderItem : orderItemList) {

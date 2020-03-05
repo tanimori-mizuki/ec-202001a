@@ -1,7 +1,7 @@
 $(function() {
 	calc_price();
 	
-	$("input[name='responsibleCompany']").on("change",function() {
+	$("input:radio").on("change",function() {
 		calc_price();
 	});
 
@@ -9,7 +9,7 @@ $(function() {
 		calc_price();
 	});
 
-	$("select[name='area']").on("change",function() {
+	$("select[name='quantity']").on("change",function() {
 		calc_price();
 	});
 

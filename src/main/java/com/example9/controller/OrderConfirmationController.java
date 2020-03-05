@@ -1,5 +1,8 @@
 package com.example9.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -58,20 +61,20 @@ public class OrderConfirmationController {
 		order.setTotalPrice(order.getCalcTotalPrice() + order.getTax());
 		model.addAttribute("tax", order.getTax());
 		model.addAttribute("order", order);
+		
+		//クレジットカード情報入力欄の有効期限年リストを作成する
+		List<Integer> yearList = new ArrayList<>();
+		LocalDate date = LocalDate.now();
+		int topOfYear = date.getYear();
+		int endOfYear = topOfYear+20;
+		for(int i=topOfYear; i<=endOfYear; i++) {
+			yearList.add(i);
+		}
+		model.addAttribute("yearList", yearList);
 
 		return "order_confirm";
 	}
 
-	/**
-	 * 注文「完了」画面を表示する(OrderControllerのorderメソッドへフォワードします).
-	 * 
-	 * @return 注文「完了」画面.
-	 */
-	@RequestMapping("/orders")
-	public String doOrder() {
-		
-		return "forward:/order";
-	}
 
 	/**
 	 * 注文「確認」画面に表示されている商品を注文する.
@@ -85,8 +88,22 @@ public class OrderConfirmationController {
 			return "order_confirm";
 		}
 		
+		
+		
 		Order updateOrder = new Order();
+		
+		//注文の合計金額（税抜）を算出し注文ドメインに格納
+		Integer userId = (Integer) session.getAttribute("userId");
+		List<Order> orderList=orderConfirmationService.showOrderList(userId);
+		Integer totalPrice = orderList.get(0).getCalcTotalPrice();
+		updateOrder.setTotalPrice(totalPrice);
 
+		//注文日を取得し注文ドメインに格納
+		LocalDate now = LocalDate.now();
+		Date orderDate = java.sql.Date.valueOf(now);
+		updateOrder.setOrderDate(orderDate);
+		
+		//フォームへの入力内容を注文ドメインに格納
 		updateOrder.setDestinationName(form.getName());
 		updateOrder.setDestinationEmail(form.getEmail());
 		updateOrder.setDestinationZipcode(form.getZipcode());
@@ -94,9 +111,12 @@ public class OrderConfirmationController {
 		updateOrder.setDestinationTel(form.getTelephone());
 		updateOrder.setDeliveryTime(form.getDeliveryTime());
 		updateOrder.setPaymentMethod(form.getPaymentMethod());
+		
+		//ログイン中ユーザーのユーザーIDを注文ドメインに格納
+		updateOrder.setUserId(userId);
 
 		orderConfirmationService.updateOrder(updateOrder);
 
-		return "order_finished";
+		return "forward:/order";
 	}
 }
