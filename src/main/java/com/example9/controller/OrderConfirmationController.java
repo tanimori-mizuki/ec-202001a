@@ -1,5 +1,7 @@
 package com.example9.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -49,7 +51,7 @@ public class OrderConfirmationController {
 
 		// ログインしていない状態であればログイン画面へ遷移する
 		if (userId == null) {
-			return "forward:login";
+			return "forward:/login";
 		}
 
 		List<Order> orderList = orderConfirmationService.showOrderList(userId);
@@ -62,17 +64,7 @@ public class OrderConfirmationController {
 		return "order_confirm";
 	}
 
-	/**
-	 * 注文「完了」画面を表示する(OrderControllerのorderメソッドへフォワードします).
-	 * 
-	 * @return 注文「完了」画面.
-	 */
-	@RequestMapping("/orders")
-	public String doOrder() {
-		
-		return "forward:/order";
-	}
-
+	
 	/**
 	 * 注文「確認」画面に表示されている商品を注文する.
 	 * 
@@ -86,17 +78,32 @@ public class OrderConfirmationController {
 		}
 		
 		Order updateOrder = new Order();
-
+		
+		//注文日に関するオブジェクト生成(注文履歴確認で使用する)
+		LocalDate now = LocalDate.now();
+		Date orderDate = java.sql.Date.valueOf(now);
+		updateOrder.setOrderDate(orderDate);;		
+		
+		//formからのパラメータをドメインに移す
 		updateOrder.setDestinationName(form.getName());
 		updateOrder.setDestinationEmail(form.getEmail());
 		updateOrder.setDestinationZipcode(form.getZipcode());
 		updateOrder.setDestinationAddress(form.getAddress());
 		updateOrder.setDestinationTel(form.getTelephone());
 		updateOrder.setDeliveryTime(form.getDeliveryTime());
-		updateOrder.setPaymentMethod(form.getPaymentMethod());
-
+		updateOrder.setPaymentMethod(form.getPaymentMethodInteger());
+		
+		//userId取得する
+		Integer userId = (Integer) session.getAttribute("userId");
+		updateOrder.setUserId(userId);
+		
+		//合計金額を取得する 
+		List<Order> orderList = orderConfirmationService.showOrderList(userId);
+		Order order = orderList.get(0);
+		updateOrder.setTotalPrice(order.getCalcTotalPrice());
+		
 		orderConfirmationService.updateOrder(updateOrder);
 
-		return "order_finished";
+		return "forward:/order";
 	}
 }
