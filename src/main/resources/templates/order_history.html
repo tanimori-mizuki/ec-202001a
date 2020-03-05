@@ -78,7 +78,7 @@
 							</th>
 							<th>
 								<div class="text-center">
-									注文合計
+									注文合計(税込)
 								</div>
 							</th>
 							<th>
@@ -118,9 +118,7 @@
 							</div>
 							</td>
 							<td>
-								<div class="text-center" th:text="${#numbers.formatInteger(order.totalPrice,1,'COMMA')+'円'}">
-									3,280円
-								</div>
+	  							<div  class="text-center" th:text="${#numbers.formatInteger(order.tax+order.totalPrice,1,'COMMA')}+'円'">10,000円</div>
 							</td>
 							<td>
 							<a href="order_history_detail.html" th:href="@{'/order-history/detail?orderId='+${order.id}}">
