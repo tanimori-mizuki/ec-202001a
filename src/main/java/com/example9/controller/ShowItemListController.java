@@ -57,7 +57,7 @@ public class ShowItemListController {
 		return "item_list_curry";
 	}
 	
-	@RequestMapping("/showListOrderBy")
+	@RequestMapping("/sortShowList")
 	public String sortShowList(String searchConditionNumber, Model model) {
 		List<Item>itemList = showItemListService.getSortedItemList(searchConditionNumber);
 		List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);
