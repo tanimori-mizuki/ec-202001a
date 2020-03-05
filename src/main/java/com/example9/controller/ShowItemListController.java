@@ -29,6 +29,7 @@ public class ShowItemListController {
 	 */
 	@RequestMapping("")
 	public String showList(Model model) {
+		
 		List<Item>itemList = showItemListService.showList();
 		List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);
 	
@@ -53,6 +54,14 @@ public class ShowItemListController {
 			List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);
 			model.addAttribute("itemListList", itemListList);
 		}
+		return "item_list_curry";
+	}
+	
+	@RequestMapping("/sortShowList")
+	public String sortShowList(String searchConditionNumber, Model model) {
+		List<Item>itemList = showItemListService.getSortedItemList(searchConditionNumber);
+		List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);
+		model.addAttribute("itemListList", itemListList);
 		return "item_list_curry";
 	}
 }

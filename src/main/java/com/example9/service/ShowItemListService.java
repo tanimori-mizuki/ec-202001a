@@ -40,6 +40,20 @@ public class ShowItemListService {
 		return itemRepository.findByLikeName(name);
 	}
 	
+
+	/**
+	 * 商品一覧を金額の降順で表示します.
+	 * @return　金額降順商品一覧
+	 */
+	public List<Item>getSortedItemList(String searchConditionNumber){
+		List<Item>itemList = null;
+		if("0".equals(searchConditionNumber)) {
+			 itemList = itemRepository.sortFindAll("price_m");
+		} else if("1".equals(searchConditionNumber)) {
+			itemList = itemRepository.sortFindAll("price_m DESC");
+		}
+		return itemList;
+	}
 	
 	/**
 	 * 3個のItemオブジェクトを1セットにしてリストで返す.
@@ -50,16 +64,14 @@ public class ShowItemListService {
 	public List <List<Item>> getThreeItemList(List <Item> itemList){
 		List<List<Item>>itemListList = new ArrayList<>();
 		List <Item> threeItemList = new ArrayList<>(); 
-		int i = 1 ;
 		
-		while (i <= itemList.size()) {
+		for (int i = 1; i <= itemList.size(); i++) {
 			threeItemList.add(itemList.get(i-1));
 			
 			if (i  % 3 == 0 || i == itemList.size()) {
 				itemListList.add(threeItemList);
 				threeItemList = new ArrayList<>(); 
 			}
-			i++;
 		}
 		return itemListList;
 	}

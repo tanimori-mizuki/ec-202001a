@@ -52,7 +52,7 @@ public class OrderConfirmationController {
 
 		// ログインしていない状態であればログイン画面へ遷移する
 		if (userId == null) {
-			return "forward:login";
+			return "forward:/login";
 		}
 
 		List<Order> orderList = orderConfirmationService.showOrderList(userId);
@@ -75,7 +75,6 @@ public class OrderConfirmationController {
 		return "order_confirm";
 	}
 
-
 	/**
 	 * 注文「確認」画面に表示されている商品を注文する.
 	 * 
@@ -88,33 +87,31 @@ public class OrderConfirmationController {
 			return "order_confirm";
 		}
 		
-		
-		
 		Order updateOrder = new Order();
 		
-		//注文の合計金額（税抜）を算出し注文ドメインに格納
-		Integer userId = (Integer) session.getAttribute("userId");
-		List<Order> orderList=orderConfirmationService.showOrderList(userId);
-		Integer totalPrice = orderList.get(0).getCalcTotalPrice();
-		updateOrder.setTotalPrice(totalPrice);
-
-		//注文日を取得し注文ドメインに格納
+		//注文日に関するオブジェクト生成(注文履歴確認で使用する)
 		LocalDate now = LocalDate.now();
 		Date orderDate = java.sql.Date.valueOf(now);
 		updateOrder.setOrderDate(orderDate);
 		
-		//フォームへの入力内容を注文ドメインに格納
+		//formからのパラメータをドメインに移す
 		updateOrder.setDestinationName(form.getName());
 		updateOrder.setDestinationEmail(form.getEmail());
 		updateOrder.setDestinationZipcode(form.getZipcode());
 		updateOrder.setDestinationAddress(form.getAddress());
 		updateOrder.setDestinationTel(form.getTelephone());
 		updateOrder.setDeliveryTime(form.getDeliveryTime());
-		updateOrder.setPaymentMethod(form.getPaymentMethod());
+		updateOrder.setPaymentMethod(form.getPaymentMethodInteger());
 		
-		//ログイン中ユーザーのユーザーIDを注文ドメインに格納
+		//userId取得する
+		Integer userId = (Integer) session.getAttribute("userId");
 		updateOrder.setUserId(userId);
-
+		
+		//合計金額を取得する 
+		List<Order> orderList = orderConfirmationService.showOrderList(userId);
+		Order order = orderList.get(0);
+		updateOrder.setTotalPrice(order.getCalcTotalPrice());
+		
 		orderConfirmationService.updateOrder(updateOrder);
 
 		return "forward:/order";

@@ -25,13 +25,12 @@ public class ShowCartListController {
 	@RequestMapping("")
 	public String toCartList(Model model) {
 		Integer userId = (Integer) session.getAttribute("userId");
-		// 仮の対応　後で直す
+		// 非ログインユーザーがカートを表示する際の処理
 		if (userId == null) {
-			userId = 10000;
+			userId = session.getId().hashCode();
 		}
 		
 		List <Order> orderList = showCartListService.showCartList(userId);
-		
 		
 		if (orderList == null) {
 			model.addAttribute("noOrderMessage", "カートに商品がありません");
