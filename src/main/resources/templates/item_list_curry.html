@@ -54,7 +54,7 @@
 						<div class="panel-title">商品を検索する</div>
 					</div>
 					<div class="panel-body">
-						<form method="post" th:action="@{/item/searchResult}" class="form-horizontal">
+						<form method="post" th:action="@{/searchResult}" class="form-horizontal">
 							<div class="form-group">
 								<label for="code" class="control-label col-sm-2">商品名</label>
 								<div class="col-sm-9">
@@ -80,7 +80,7 @@
 	
 		
 		<div style="text-align: center" >
-		<form th:action="@{/item/showListOrderBy}" method="post">
+		<form th:action="@{/showListOrderBy}" method="post">
 		<font size="3">商品一覧ソート順&nbsp;&nbsp;：&nbsp;&nbsp;
 			<input type="radio" name="searchConditionNumber" value="0">価格の低い順&nbsp;&nbsp;
 			<input type="radio" name="searchConditionNumber" value="1">価格の高い順&nbsp;&nbsp;
