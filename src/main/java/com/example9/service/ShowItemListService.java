@@ -1,6 +1,5 @@
 package com.example9.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example9.domain.Item;
+import com.example9.form.SortConditionNumberForm;
 import com.example9.repository.ItemRepository;
 
 /**
@@ -45,34 +45,10 @@ public class ShowItemListService {
 	 * 商品一覧を金額の降順で表示します.
 	 * @return　金額降順商品一覧
 	 */
-	public List<Item>getSortedItemList(String searchConditionNumber){
-		List<Item>itemList = null;
-		if("0".equals(searchConditionNumber)) {
-			 itemList = itemRepository.sortFindAll("price_m");
-		} else if("1".equals(searchConditionNumber)) {
-			itemList = itemRepository.sortFindAll("price_m DESC");
-		}
+	public List<Item>getSortedItemList(SortConditionNumberForm form){
+		List<Item>itemList = itemRepository.sortFindAll(form.getSortConditionNumber());
+		
 		return itemList;
 	}
 	
-	/**
-	 * 3個のItemオブジェクトを1セットにしてリストで返す.
-	 * 
-	 * @param itemList 商品リスト
-	 * @return　3個1セットの商品リスト
-	 */
-	public List <List<Item>> getThreeItemList(List <Item> itemList){
-		List<List<Item>>itemListList = new ArrayList<>();
-		List <Item> threeItemList = new ArrayList<>(); 
-		
-		for (int i = 1; i <= itemList.size(); i++) {
-			threeItemList.add(itemList.get(i-1));
-			
-			if (i  % 3 == 0 || i == itemList.size()) {
-				itemListList.add(threeItemList);
-				threeItemList = new ArrayList<>(); 
-			}
-		}
-		return itemListList;
-	}
 }

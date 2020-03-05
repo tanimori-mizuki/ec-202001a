@@ -1,13 +1,16 @@
 package com.example9.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example9.domain.Item;
+import com.example9.form.SortConditionNumberForm;
 import com.example9.service.ShowItemListService;
 
 /**
@@ -21,7 +24,15 @@ public class ShowItemListController {
 	
 	@Autowired
 	private ShowItemListService showItemListService;
-
+	
+	@ModelAttribute
+	public SortConditionNumberForm setUpSortConditionNumberForm() {
+		SortConditionNumberForm form = new SortConditionNumberForm();
+		form.setSortConditionNumber("0");
+		return form;
+	}
+	
+	
 	/**
 	 * 商品一覧表示を行います.
 	 * @param model リクエストスコープ
@@ -31,7 +42,7 @@ public class ShowItemListController {
 	public String showList(Model model) {
 		
 		List<Item>itemList = showItemListService.showList();
-		List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);
+		List<List<Item>>itemListList = getThreeItemList(itemList);
 	
 		model.addAttribute("itemListList", itemListList);
 		return "item_list_curry";
@@ -51,17 +62,38 @@ public class ShowItemListController {
 			model.addAttribute("message", message);
 			return showList(model);
 		} else {
-			List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);
+			List<List<Item>>itemListList = getThreeItemList(itemList);
 			model.addAttribute("itemListList", itemListList);
 		}
 		return "item_list_curry";
 	}
 	
 	@RequestMapping("/sortShowList")
-	public String sortShowList(String searchConditionNumber, Model model) {
-		List<Item>itemList = showItemListService.getSortedItemList(searchConditionNumber);
-		List<List<Item>>itemListList = showItemListService.getThreeItemList(itemList);
+	public String sortShowList(SortConditionNumberForm form, Model model) {
+		List<Item>itemList = showItemListService.getSortedItemList(form);
+		List<List<Item>>itemListList = getThreeItemList(itemList);
 		model.addAttribute("itemListList", itemListList);
 		return "item_list_curry";
+	}
+	
+	/**
+	 * 3個のItemオブジェクトを1セットにしてリストで返す.
+	 * 
+	 * @param itemList 商品リスト
+	 * @return　3個1セットの商品リスト
+	 */
+	private List <List<Item>> getThreeItemList(List <Item> itemList){
+		List<List<Item>>itemListList = new ArrayList<>();
+		List <Item> threeItemList = new ArrayList<>(); 
+		
+		for (int i = 1; i <= itemList.size(); i++) {
+			threeItemList.add(itemList.get(i-1));
+			
+			if (i  % 3 == 0 || i == itemList.size()) {
+				itemListList.add(threeItemList);
+				threeItemList = new ArrayList<>(); 
+			}
+		}
+		return itemListList;
 	}
 }
