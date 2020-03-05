@@ -1,6 +1,7 @@
 package com.example9.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example9.domain.User;
@@ -19,6 +20,9 @@ public class LoginService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
 	/**
 	 * ログインする.
 	 * 
@@ -33,9 +37,11 @@ public class LoginService {
 			return null;
 		}
 
-		if (!loginForm.getPassword().equals(user.getPassword())) {
+		// DB上のハッシュ化パスワードとフォームから来た平文パスワードを照合する
+		if (!passwordEncoder.matches(loginForm.getPassword(), user.getPassword())) {
 			return null;
 		}
+
 		return user;
 	}
 }

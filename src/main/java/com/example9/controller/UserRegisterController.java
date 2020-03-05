@@ -2,6 +2,9 @@ package com.example9.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +34,11 @@ public class UserRegisterController {
 		return new UserRegisterForm();
 	}
 
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 	/**
 	 * ユーザ登録のページを表示.
 	 * 
@@ -56,15 +64,25 @@ public class UserRegisterController {
 			result.rejectValue("email", null, "そのメールアドレスはすでに使われています");
 		}
 
+		if (!form.getConfirmationPassword().equals(form.getPassword())) {
+			result.rejectValue("password", null, "パスワードと確認用パスワードが一致しません");
+		}
+
 		if (result.hasErrors()) {
 			return "register_user";
 		}
 
+		// パスワードを暗号化
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+		String encode = bcrypt.encode(form.getPassword());
 		// フォームからドメインにプロパティ値をコピー
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
+		// ハッシュ化したパスワードをドメインにコピー
+		user.setPassword(encode);
+
 		userRegisterService.insert(user);
-		
+
 		return "redirect:/login";
 	}
 }

@@ -45,9 +45,13 @@
 			<!-- /.container-fluid -->
 		</nav>
 
+		<!-- 注文履歴なしの場合のメッセージ -->
+		<div class="text-center">
+		<h2 th:if="${nonOrderMessage}" th:text="${nonOrderMessage}"></h2>
+		</div>
 
 		<!-- table -->
-		<div class="row">
+		<div class="row" th:unless="${nonOrderMessage}">
 			<div
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 				<h3 class="text-center">注文履歴</h3>
@@ -91,7 +95,7 @@
 										class="img-responsive img-rounded" width="100" height="300"><br>
 								&nbsp;&nbsp;&nbsp;&nbsp;
 								<span th:text="${order.orderItemList[0].item.name}">じゃがバターベーコン</span>
-								<span th:if="${order.orderItemList.size()}>1" th:text="'他'">他</span>
+								<span th:if="${order.orderItemList.size()}>1" th:text="'他'+${order.orderItemList.size()-1}+'点'">他</span>
 								</div>
 							</td>
 							<td>
@@ -131,9 +135,6 @@
 			</div>
 		</div>
 
-		<div class="text-center">
-		<h2 th:if="${nonOrderMessage}" th:text="${nonOrderMessage}"></h2>
-		</div>
 	</div>
 	<!-- end container -->
 	<script

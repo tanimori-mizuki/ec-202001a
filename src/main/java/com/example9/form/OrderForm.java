@@ -36,7 +36,11 @@ public class OrderForm {
 	private Timestamp deliveryTime;
 
 	/** 支払方法 */
-	private Integer paymentMethod;
+	private String paymentMethod;
+	
+	public Integer getPaymentMethodInteger() {
+		return Integer.parseInt(paymentMethod);
+	}
 
 	@Override
 	public String toString() {
@@ -93,11 +97,11 @@ public class OrderForm {
 		this.deliveryTime = deliveryTime;
 	}
 
-	public Integer getPaymentMethod() {
+	public String getPaymentMethod() {
 		return paymentMethod;
 	}
 
-	public void setPaymentMethod(Integer paymentMethod) {
+	public void setPaymentMethod(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
 

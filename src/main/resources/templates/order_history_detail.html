@@ -198,7 +198,7 @@
 							</th>
 							<th>
 								<div class="text-center">
-									小計
+									小計(税抜)
 								</div>
 							</th>
 						</tr>
@@ -235,20 +235,27 @@
 						</tr>
 						<tr>
 						<td></td>
-						<td></td>
+							<th>
+								<div class="text-center">
+							合計金額
+								</div>
+							</th>
 						<th>
 								<div class="text-center">
-									合計金額(税抜)
+									(税抜)<br>
+									(税込)<br>
 								</div>
 						</th>
 						<td>
-						<span  th:text="${#numbers.formatInteger(order.totalPrice,1,'COMMA')}+'円'">10,000円</span>
+						<span  th:text="${#numbers.formatInteger(order.totalPrice,1,'COMMA')}+'円'">10,000円</span><br>
+						<span  th:text="${#numbers.formatInteger(order.tax+order.totalPrice,1,'COMMA')}+'円'">10,000円</span>
 						</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
+		<br>
 		
 <!-- 		<div class="row"> -->
 			<div class="col-xs-offset-5 col-xs-3">
