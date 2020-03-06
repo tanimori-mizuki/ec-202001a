@@ -59,7 +59,18 @@
 
 					<div class="col-xs-5">
 						<div class="bs-component">
-							<h4 th:text="${item.name}">じゃがバターベーコン</h4> <br>
+							<h4 th:text="${item.name}">じゃがバターベーコン</h4> 
+							<a href="review_show.html" th:href="@{'/review?itemId='+${item.id}}">
+								<span th:text="'口コミ&nbsp;'+${item.countEvaluation}+'件：'">口コミ&nbsp;1件：&nbsp;</span>
+								<span th:if="${4<item.aveEvaluation && item.aveEvaluation<=5}" th:text="'★★★★★'">★★★★★</span>
+								<span th:if="${3<item.aveEvaluation && item.aveEvaluation<=4}" th:text="'★★★★☆'"></span>
+								<span th:if="${2<item.aveEvaluation && item.aveEvaluation<=3}" th:text="'★★★☆☆'"></span>
+								<span th:if="${1<item.aveEvaluation && item.aveEvaluation<=2}" th:text="'★★☆☆☆'"></span>
+								<span th:if="${0<item.aveEvaluation && item.aveEvaluation<=1}" th:text="'★☆☆☆☆'"></span>
+								<span th:if="${item.aveEvaluation==0}"  th:text="'☆☆☆☆☆'"></span>
+								<span th:text="'('+${item.aveEvaluation}+'点/5点)'">(5/5点)</span>
+							</a>
+							<br>
 							<br>
 							<p th:text="${item.description}">マイルドな味付けのカレーに大きくカットしたポテトをのせた、バターとチーズの風味が食欲をそそるお子様でも楽しめる商品です。</p>
 						</div>
