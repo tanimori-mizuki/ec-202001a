@@ -3,6 +3,7 @@ package com.example9.form;
 import java.sql.Timestamp;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 /**
  * 注文内容確認の入力フォーム
@@ -29,6 +30,7 @@ public class OrderForm {
 
 	/** 電話番号 */
 	@NotBlank(message = "電話番号を入力して下さい")
+	@Pattern(regexp="^[0-9]+$", message="電話番号は数値を入力して下さい")
 	private String telephone;
 
 	/** 配達時間 */

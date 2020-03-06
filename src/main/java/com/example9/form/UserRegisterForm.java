@@ -2,6 +2,7 @@ package com.example9.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 /**
  * ユーザ登録への入力情報.
@@ -30,6 +31,7 @@ public class UserRegisterForm {
 
 	/** 電話番号 */
 	@NotBlank(message = "電話番号を入力してください")
+	@Pattern(regexp="^[0-9]+$", message="電話番号は数値を入力して下さい")
 	private String telephone;
 
 	/** パスワード */
