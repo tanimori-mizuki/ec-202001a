@@ -33,6 +33,13 @@ public class ReviewController {
 	@RequestMapping("")
 	public String show(Integer itemId, Model model) {
 		List<Review> reviewList = reviewService.getReviews(itemId);
+
+		if (reviewList == null) {
+			model.addAttribute("nonReview", "口コミがありません。投稿お待ちしております！");
+			model.addAttribute("itemId", itemId);
+			return "review_show";
+		}
+
 		model.addAttribute("reviewList", reviewList);
 		// 評価平均値を算出
 		Integer sumEvaluations = 0;
