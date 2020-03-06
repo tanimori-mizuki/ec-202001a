@@ -82,7 +82,8 @@ public class ShowItemListController {
 		session.setAttribute("itemList", itemList);
 		
 		// オートコンプリート用の記述
-		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(itemList);
+		List <Item> fullItemList = showItemListService.showList();
+		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(fullItemList);
 		application.setAttribute("itemListForAutocomplete", itemListForAutocomplete);
 		
 		List<List<Item>>itemListList = getThreeItemList(itemList);
