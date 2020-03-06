@@ -42,6 +42,7 @@ public class OrderForm {
 		return Integer.parseInt(paymentMethod);
 	}
 
+
 	@Override
 	public String toString() {
 		return "OrderForm [name=" + name + ", email=" + email + ", zipcode=" + zipcode + ", address=" + address

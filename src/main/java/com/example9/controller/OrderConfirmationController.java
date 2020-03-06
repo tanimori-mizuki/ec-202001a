@@ -102,6 +102,7 @@ public class OrderConfirmationController {
 		updateOrder.setDestinationTel(form.getTelephone());
 		updateOrder.setDeliveryTime(form.getDeliveryTime());
 		updateOrder.setPaymentMethod(form.getPaymentMethodInteger());
+		updateOrder.setDeliveryTime(form.getDeliveryTime());
 		
 		//userId取得する
 		Integer userId = (Integer) session.getAttribute("userId");
