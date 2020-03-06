@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example9.domain.Order;
+import com.example9.domain.User;
 import com.example9.form.OrderForm;
 import com.example9.service.OrderConfirmationService;
+import com.example9.service.UserRegisterService;
 
 /**
  * 注文確認画面を処理するコントローラ.
@@ -28,10 +30,33 @@ import com.example9.service.OrderConfirmationService;
 @Controller
 @RequestMapping("/confirm")
 public class OrderConfirmationController {
-
+	
+	@Autowired
+	private UserRegisterService userRegisterService;
+	
+	/**
+	 * ログイン時に入力した情報を注文確認画面で表示するためのフォーム.
+	 * 
+	 * @param id ユーザID
+	 * @return ユーザ情報
+	 */
 	@ModelAttribute
-	public OrderForm setupOrderForm() {
-		return new OrderForm();
+	public OrderForm setupOrderForm(Integer id) {
+		//ユーザIDを取得
+		Integer userId = (Integer) session.getAttribute("userId");
+		
+		//ユーザID(主キー）で検索した情報をuserInfoに格納。
+		User userInfo = userRegisterService.showUser(userId);
+		
+		//userInfoをorderFormにセットする
+		OrderForm orderForm = new OrderForm();
+		orderForm.setName(userInfo.getName());
+		orderForm.setEmail(userInfo.getEmail());
+		orderForm.setZipcode(userInfo.getZipcode());
+		orderForm.setAddress(userInfo.getAddress());
+		orderForm.setTelephone(userInfo.getTelephone());
+		
+		return orderForm;		
 	}
 
 	@Autowired
