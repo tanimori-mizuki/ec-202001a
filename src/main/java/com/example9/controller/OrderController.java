@@ -22,11 +22,19 @@ public class OrderController {
 	/**
 	 * 注文する.
 	 * 
-	 * @return 注文完了画面
+	 * @return 注文完了画面へのリダイレクト
 	 */
 	@RequestMapping("")
 	public String order() {
 		orderService.doOrder();
+		return "redirect:/order/order-finished";
+	}
+	
+	/**
+	 * @return　注文完了画面
+	 */
+	@RequestMapping("/order-finished")
+	public String orderFinished() {
 		return "order_finished";
 	}
 

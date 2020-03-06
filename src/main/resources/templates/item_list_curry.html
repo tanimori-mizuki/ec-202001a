@@ -94,8 +94,8 @@ $( function() {
 		<div style="text-align: center" >
 		<form th:action="@{/sortShowList}" method="post" th:object=${sortConditionNumberForm}> 
 		<font size="3">商品一覧ソート順&nbsp;&nbsp;：&nbsp;&nbsp;
-			<input type="radio" name="sortConditionNumber" value="0" th:field="*{sortConditionNumber}">価格の低い順&nbsp;&nbsp;
-			<input type="radio" name="sortConditionNumber" value="1" th:field="*{sortConditionNumber}">価格の高い順&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="0" th:field="*{sortConditionNumber}" id="sortPriceAsc"><label for="sortPriceAsc">価格の低い順</label>&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="1" th:field="*{sortConditionNumber}" id="sortPriceDesc"><label for="sortPriceDesc">価格の高い順</label>&nbsp;&nbsp;
 			<button>並び替える</button>
 		</font>
 		</form>
