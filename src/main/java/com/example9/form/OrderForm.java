@@ -22,6 +22,7 @@ public class OrderForm {
 	private String email;
 
 	/** 郵便番号 */
+	@Pattern(regexp = "^[0-9]{7}$", message="郵便番号はハイフン無の7桁で入力して下さい")
 	private String zipcode;
 
 	/** 住所 */
