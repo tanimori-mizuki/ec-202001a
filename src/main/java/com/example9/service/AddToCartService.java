@@ -107,4 +107,29 @@ public class AddToCartService {
 			}
 		}
 	}
+	
+	// ログイン前にカートに追加した内容をログイン後のカートに反映させる
+	public void addToCartAfterLogin() {
+		
+		
+		// ログイン前のカートに中身がなければ何もせずreturn 
+		List <Order> beforeLoginOrderList = orderRepository.findByUserIdAndStatus(session.getId().hashCode(), 0);
+		if (beforeLoginOrderList == null) {
+			return ;
+		}
+		
+		// useIdを取得
+		Integer userId = (Integer) session.getAttribute("userId");
+		
+		// ログイン後のカートを検索
+		List <Order> afterLoginOrderList = orderRepository.findByUserIdAndStatus(userId, 0);
+		if (afterLoginOrderList == null) {
+			// ログイン後のカートが空の場合OrderドメインのuserIdを更新するだけ
+			orderRepository.updateUserId(userId);
+		} else {
+			// ordersテーブルを削除し、order_itemsテーブルのorder_idをカートに入っているものに更新する
+			Order beforeLoginOrder = beforeLoginOrderList.get(0);
+			orderRepository.deleteOrderAndUpdateOrderItem(beforeLoginOrder.getId(),userId);
+		}
+	}
 }

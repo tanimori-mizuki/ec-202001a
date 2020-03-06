@@ -49,10 +49,10 @@ public class OrderConfirmationController {
 	@RequestMapping("")
 	public String toOrderConfirmation(Model model) {
 		Integer userId = (Integer) session.getAttribute("userId");
-
+		
 		// ログインしていない状態であればログイン画面へ遷移する
 		if (userId == null) {
-			return "forward:/login";
+			return "forward:/login/referer";
 		}
 
 		List<Order> orderList = orderConfirmationService.showOrderList(userId);
