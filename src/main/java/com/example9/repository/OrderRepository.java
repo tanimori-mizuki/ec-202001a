@@ -32,18 +32,16 @@ public class OrderRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
-	
+
 	private SimpleJdbcInsert insert;
-	
+
 	@PostConstruct
 	public void init() {
-		SimpleJdbcInsert simpleJdbcInsert 
-		= new SimpleJdbcInsert((JdbcTemplate) template.getJdbcOperations());
-		SimpleJdbcInsert withTableName
-			= simpleJdbcInsert.withTableName("orders");
+		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert((JdbcTemplate) template.getJdbcOperations());
+		SimpleJdbcInsert withTableName = simpleJdbcInsert.withTableName("orders");
 		insert = withTableName.usingGeneratedKeyColumns("id");
 	}
-	
+
 	private ResultSetExtractor<List<Order>> RESULT_SET_EXTRACTOR = (rs) -> {
 		List<Order> orderList = new ArrayList<>();
 		List<OrderItem> orderItemList;
@@ -93,6 +91,14 @@ public class OrderRepository {
 				orderItem.setItem(item);
 				orderToppingList = new ArrayList<>();
 				orderItem.setOrderToppingList(orderToppingList);
+				try {
+					// findByOrderId()実行時は口コミIDを取得する
+					Integer reviewId = rs.getInt("review_id");
+					orderItem.setReviewId(reviewId);
+				} catch (Exception e) {
+					System.out.println("くちこみなし");
+					// findByOrderId()以外のメソッド実行時は口コミID取得しない
+				}
 				// 注文内の商品リストに商品情報追加
 				List<OrderItem> orderItemListOfThisOrder = orderList.get(orderList.size() - 1).getOrderItemList();
 				orderItemListOfThisOrder.add(orderItem);
@@ -179,18 +185,18 @@ public class OrderRepository {
 	 */
 	public List<Order> findByOrderId(Integer orderId) {
 		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT A.id AS order_id, A.user_id, A.status, A.total_price, A.order_date, A.destination_name, ");
 		sql.append(
-				"SELECT A.id AS order_id, A.user_id, A.status, A.total_price, A.order_date, A.destination_name, A.destination_email, ");
-		sql.append(
-				"A.destination_zipcode, A.destination_address, A.destination_tel, A.delivery_time, A.payment_method, ");
-		sql.append(
-				"F.order_item_id, F.item_id, F.quantity, F.size, F.item_name, F.item_price_m, F.item_price_l, F.image_path, ");
-		sql.append(
-				"G.order_toppings_id, G.topping_id, G.order_item_id, G.toppings_name, G.topping_price_m, G.topping_price_l ");
-		sql.append("FROM orders AS A JOIN ");
+				"A.destination_email, A.destination_zipcode, A.destination_address, A.destination_tel, A.delivery_time, ");
+		sql.append("A.payment_method, F.order_item_id, F.item_id, F.quantity, F.size, F.item_name, F.item_price_m, ");
+		sql.append("F.item_price_l, F.image_path, G.order_toppings_id, G.topping_id, G.order_item_id, ");
+		sql.append("G.toppings_name, G.topping_price_m, G.topping_price_l, F.review_id ");
+		sql.append("FROM orders AS A LEFT OUTER JOIN ");
 		sql.append("(SELECT B.id AS order_item_id, B.item_id, B.order_id, B.quantity, B.size, ");
-		sql.append("C.name AS item_name, C.price_m AS item_price_m, C.price_l AS item_price_l, C.image_path ");
-		sql.append("FROM order_items AS B JOIN items AS C ON B.item_id=C.id) AS F ");
+		sql.append(
+				"C.name AS item_name, C.price_m AS item_price_m, C.price_l AS item_price_l, C.image_path, H.id AS review_id ");
+		sql.append("FROM order_items AS B JOIN items AS C ON B.item_id=C.id ");
+		sql.append("LEFT OUTER JOIN reviews AS H ON B.id=H.order_item_id) AS F ");
 		sql.append("ON A.id=F.order_id LEFT OUTER JOIN ");
 		sql.append("(SELECT D.id AS order_toppings_id, D.topping_id, D.order_item_id, ");
 		sql.append("E.name AS toppings_name, E.price_m AS topping_price_m, E.price_l AS topping_price_l ");
@@ -203,7 +209,7 @@ public class OrderRepository {
 		List<Order> orderList = template.query(sql.toString(), param, RESULT_SET_EXTRACTOR);
 		return orderList;
 	}
-	
+
 	/**
 	 * DBにorderオブジェクトを追加.
 	 * 
@@ -212,7 +218,7 @@ public class OrderRepository {
 	 */
 	public Order insertOrder(Order order) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
-		
+
 		if (order.getId() == null) {
 			Number key = insert.executeAndReturnKey(param);
 			order.setId(key.intValue());
@@ -222,12 +228,11 @@ public class OrderRepository {
 					+ "destination_zipcode, destination_address, destination_tel, delivery_time, payment_method) "
 					+ "VALUES (:userId, :status, :totalPrice, :orderDate, :destinationName, :destinationEmail, "
 					+ ":destinationZipcode, :destinationAddress, :destinationTel, :deliveryTime, :paymentMethod) ";
-		    template.update(sql, param);
+			template.update(sql, param);
 		}
 		return order;
 	}
-	
-	
+
 	/**
 	 * 主キーを元にDBから削除.
 	 * 
@@ -237,7 +242,7 @@ public class OrderRepository {
 		String sql = "DELETE FROM orders WHERE id = :id ";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		template.update(sql, param);
-	}	
+	}
 
 	/**
 	 * 引数の注文情報に該当するデータの、ステータスを更新する.
@@ -257,7 +262,7 @@ public class OrderRepository {
 		}
 		template.update(sql, param);
 	}
-	
+
 	/**
 	 * 注文確認画面で入力されたユーザ情報を更新する.
 	 * 
@@ -267,11 +272,12 @@ public class OrderRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append("UPDATE orders SET destination_name = :destinationName, destination_email = :destinationEmail, ");
 		sql.append("destination_zipcode = :destinationZipcode, destination_address = :destinationAddress, ");
-		sql.append("destination_tel = :destinationTel , delivery_time = :deliveryTime, payment_method = :paymentMethod, ");
+		sql.append(
+				"destination_tel = :destinationTel , delivery_time = :deliveryTime, payment_method = :paymentMethod, ");
 		sql.append("order_date = :orderDate, total_price = :totalPrice WHERE user_id = :userId AND status = 0");
-		
+
 		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
-		
+
 		template.update(sql.toString(), param);
 	}
 	

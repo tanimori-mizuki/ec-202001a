@@ -18,12 +18,34 @@ public class Item {
 	private String imagePath;
 	/** 削除フラグ */
 	private Boolean deleted;
+	/** トッピング */
 	private List<Topping> toppingList;
+	/** 口コミ評価平均値 */
+	private double aveEvaluation;
+	/** 口コミ件数 */
+	private Integer countEvaluation;
+
+	public double getAveEvaluation() {
+		return aveEvaluation;
+	}
+
+	public void setAveEvaluation(double aveEvaluation) {
+		this.aveEvaluation = aveEvaluation;
+	}
+
+	public Integer getCountEvaluation() {
+		return countEvaluation;
+	}
+
+	public void setCountEvaluation(Integer countEvaluation) {
+		this.countEvaluation = countEvaluation;
+	}
 
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", name=" + name + ", description=" + description + ", priceM=" + priceM + ", priceL="
-				+ priceL + ", imagePath=" + imagePath + ", deleted=" + deleted + ", toppingList=" + toppingList + "]";
+				+ priceL + ", imagePath=" + imagePath + ", deleted=" + deleted + ", toppingList=" + toppingList
+				+ ", aveEvaluation=" + aveEvaluation + ", countEvaluation=" + countEvaluation + "]";
 	}
 
 	public Integer getId() {
