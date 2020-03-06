@@ -26,8 +26,8 @@ public class ShowItemListService {
 	 * 商品一覧表示を行います.
 	 * @return　商品一覧
 	 */
-	public List<Item>showList(){
-		return itemRepository.findAll();
+	public List<Item>showList(Integer number){
+		return itemRepository.findAll(number);
 	}
 	
 	/**
@@ -58,5 +58,7 @@ public class ShowItemListService {
 		}
 		return itemListForAutocomplete;
 	}
+	
+	
 
 }

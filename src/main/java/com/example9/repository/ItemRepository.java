@@ -43,11 +43,14 @@ public class ItemRepository {
 	 * 
 	 * @return Itemリスト
 	 */
-	public List<Item> findAll() {
+	public List<Item> findAll(Integer number) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(
-				"SELECT id,name,description,description,price_m,price_l,image_path,deleted FROM items ORDER BY price_m");
-		return template.query(sql.toString(), ITEM_ROW_MAPPER);
+		sql.append("SELECT id,name,description,description,price_m,price_l,image_path,deleted ");
+		sql.append("FROM items ");
+		sql.append("ORDER BY price_m ");
+		sql.append("LIMIT 6 OFFSET " + number);
+		SqlParameterSource param = new MapSqlParameterSource().addValue("number", number);
+		return template.query(sql.toString(), param, ITEM_ROW_MAPPER);
 	}
 
 	/**
