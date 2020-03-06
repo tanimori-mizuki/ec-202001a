@@ -40,6 +40,15 @@ public class ShowItemListService {
 	}
 	
 	/**
+	 * 検索数を6つに制限したSQL文を発行します.
+	 * @param number　開始位置
+	 * @return　商品一覧
+	 */
+	public List<Item>ShowListpaging(Integer number){
+		return itemRepository.findByAllLimit(number);
+	}
+	
+	/**
 	 * オートコンプリート用にJavaScriptの配列の中身を文字列で作る.
 	 * 
 	 * @param itemList 商品一覧
@@ -58,5 +67,7 @@ public class ShowItemListService {
 		}
 		return itemListForAutocomplete;
 	}
+	
+	
 
 }

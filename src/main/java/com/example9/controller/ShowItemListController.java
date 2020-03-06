@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example9.domain.Item;
+import com.example9.form.PagingNumberForm;
 import com.example9.form.SortConditionNumberForm;
 import com.example9.service.ShowItemListService;
 
@@ -43,6 +44,11 @@ public class ShowItemListController {
 		return form;
 	}
 	
+	@ModelAttribute
+	public PagingNumberForm setUpPagingNumberForm() {
+		return new PagingNumberForm();
+	}
+	
 	
 	/**
 	 * 商品一覧表示を行います.
@@ -50,9 +56,27 @@ public class ShowItemListController {
 	 * @return　商品一覧画面
 	 */
 	@RequestMapping("")
-	public String showList(Model model) {
+	public String showList(Model model, PagingNumberForm form) {
 		
 		List<Item>itemList = showItemListService.showList();
+	
+		// 変数pageにページ数を格納する
+		int pageNumber = 0;
+		if(itemList.size() % 6 == 0) {
+			pageNumber = itemList.size() / 6;
+		} else if(itemList.size() % 6 != 0) {
+			pageNumber = (itemList.size() / 6) + 1;
+		}
+		// リストにページ数を入れて、リクエストスコープに格納する
+		List<Integer>pageList = new ArrayList<>();
+		for(int i = 1 ; i <=pageNumber ; i++) {
+			pageList.add(i);
+		}
+		model.addAttribute("pageList", pageList);
+		
+		System.out.println(pageNumber);
+		itemList = showItemListService.ShowListpaging(6*(pageNumber-1));
+		System.out.println(itemList);
 		
 		// 並び替え用にsessionスコープに残しておく
 		session.setAttribute("itemList", itemList);
@@ -74,13 +98,13 @@ public class ShowItemListController {
 	 * @return　商品一覧画面
 	 */
 	@RequestMapping("/searchResult")
-	public String serchByLikeName(String code,Model model) {
+	public String serchByLikeName(String code,Model model,PagingNumberForm form) {
 		List<Item>itemList = showItemListService.searchByLikeName(code);
 		
 		if(itemList.size() == 0) {
 			String message = "該当する商品がありません";
 			model.addAttribute("message", message);
-			return showList(model);
+			return showList(model,form);
 		} else {
 			// 並び替え用にsessionスコープに残しておく
 			session.setAttribute("itemList", itemList);
@@ -135,7 +159,6 @@ public class ShowItemListController {
 	}
 	
 	
-	
 	/**
 	 * 3個のItemオブジェクトを1セットにしてリストで返す.
 	 * 
@@ -156,4 +179,6 @@ public class ShowItemListController {
 		}
 		return itemListList;
 	}
+	
+	
 }
