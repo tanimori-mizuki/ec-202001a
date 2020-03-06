@@ -357,7 +357,8 @@
 				</div>
 			</div>
 			
-					<div class="row" id="cardInfo">
+			<!-- table -->
+			<div class="row" id="cardInfo">
 				<div
 					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 					<h3 class="text-center">カード情報</h3>
@@ -366,11 +367,15 @@
 							<tr>
 								<td>
 									<div class="text-center">
-										<label for="cardNum">カード番号</label>
+										カード番号
 									</div>
 								</td>
 								<td>
-									<input type="text" name="card_number" id="cardNum">
+									<div class="row">
+										<div class="col-sm-12">
+											<input type="text" name="cardNum">
+										</div>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -380,57 +385,61 @@
 									</div>
 								</td>
 								<td>
-								<select name="card_exp_month">
-									<option  selected>--</option>
-									<option  value="1">01</option>
-									<option  value="2">02</option>
-									<option  value="3">03</option>
-									<option  value="4">04</option>
-									<option  value="5">05</option>
-									<option  value="6">06</option>
-									<option  value="7">07</option>
-									<option  value="8">08</option>
-									<option  value="9">09</option>
-									<option  value="10">10</option>
-									<option  value="11">11</option>
-									<option  value="12">12</option>
-								</select>
-								月/
-								<select name="card_exp_year">
-									<option selected>----</option>
-									<option th:each="year:${yearList}" th:value="${year}" th:text="${year}"></option>
-								</select>
-								年
+									<div class="row">
+										<div class="col-sm-12">
+											<select name="month">
+												<option>01</option>
+												<option>02</option>
+												<option>03</option>
+												<option>04</option>
+												<option>05</option>
+												<option>06</option>
+												<option>07</option>
+												<option>08</option>
+												<option>09</option>
+												<option>10</option>
+												<option>11</option>
+												<option>12</option>
+											</select>
+											<select name="year">
+												<option th:each="year:${yearList}" th:text="${year}">2020</option>
+											</select>
+										</div>
+									</div>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									<div class="text-center">
-										<label for="cardName">カード名義人</label>
+										カード名義人
 									</div>
 								</td>
 								<td>
-									<input type="text" name="card_name" id="cardName">
+									<div class="row">
+										<div class="col-sm-12">
+											<input type="text" name="cardUserName">
+										</div>
+									</div>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									<div class="text-center">
-										<label for="cardCvv">セキュリティコード</label>
+										セキュリティコード
 									</div>
 								</td>
 								<td>
-									<input type="text" name="card_cvv" id="card_cvv">
+									<div class="row">
+										<div class="col-sm-12">
+											<input type="text" name="securityCord">
+										</div>
+									</div>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			
-			<!-- table -->
-			
-			
 			<div class="row">
 				<div class="col-xs-offset-4 col-xs-4">
 					<div class="form-group">
@@ -441,12 +450,9 @@
 		</form>
 	</div>
 	<!-- end container -->
-	
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 	<script src="../static/js/input-credit-card.js" th:src="@{/js/input-credit-card.js}"></script>
-	<script th:src="@{/js/get_address.js}" src="../static/js/get_address.js"></script>
 </body>
 </html>
