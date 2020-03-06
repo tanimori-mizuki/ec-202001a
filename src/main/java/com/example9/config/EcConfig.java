@@ -14,12 +14,17 @@ class DAdministratorsConfig extends WebSecurityConfigurerAdapter {
 //		http.authorizeRequests()
 //				// ログイン前にアクセス可とするファイル群
 //				.mvcMatchers("/").permitAll()
-//				.mvcMatchers("/failure").permitAll()
-//				.mvcMatchers("/toInsert").permitAll()
-//				.mvcMatchers("/insert").permitAll()
-//				.mvcMatchers("/pass-check-api").permitAll()
+//				.mvcMatchers("/searchResult").permitAll()
+//				.mvcMatchers("/sortShowList").permitAll()
+//				.mvcMatchers("/add_to_cart**").permitAll()
+//				.mvcMatchers("/delete_from_cart**").permitAll()
+//				.mvcMatchers("/login").permitAll()
+//				.mvcMatchers("/confirm**").permitAll()
+//				.mvcMatchers("/show_cart_list**").permitAll()
+//				.mvcMatchers("/item-detail**").permitAll()
+//				.mvcMatchers("/register**").permitAll()
 //				.mvcMatchers("/css/**").permitAll()
-//				.mvcMatchers("/img/**")
+//				.mvcMatchers("/img_curry/**")
 //				.permitAll().mvcMatchers("/js/**").permitAll()
 //				// 上記以外のファイルは、ログイン以前のアクセス不可とする
 //				.anyRequest().authenticated().and();
@@ -37,6 +42,6 @@ class DAdministratorsConfig extends WebSecurityConfigurerAdapter {
 ////                .deleteCookies("JSESSIONID")
 //				.invalidateHttpSession(true).permitAll();
 //		// end
-//		;
+		
 	}
 }
