@@ -98,6 +98,7 @@
 									<li>オニオン300円</li>
 									<li>あらびきソーセージ300円</li> -->
 								</ul>
+								<div class="text-center" th:unless="${orderItem.orderToppingList.size()>0}" th:text="'なし'"></div>
 							</td>
 							<td>
 								<div class="text-center">
@@ -170,7 +171,7 @@
 		</div>
 
 		<!-- table -->
-		<form action="order_finished.html" th:action="@{/confirm/orderAfterConfirm}" th:object="${orderForm}">
+		<form action="order_finished.html" th:action="@{/confirm/orderAfterConfirm}" th:object="${orderForm}" method="post">
 			<div class="row">
 				<div
 					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
@@ -206,7 +207,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text" name="zipcode" th:field="*{zipcode}">&nbsp;&nbsp;<button>住所検索</button>
+									<input type="text" name="zipcode" th:field="*{zipcode}">&nbsp;&nbsp;<button type="button" id="search_address_again">住所検索</button>
 								</td>
 							</tr>
 							<tr>
@@ -356,88 +357,7 @@
 			</div>
 			
 			<!-- table -->
-			<div class="row" id="cardInfo">
-				<div
-					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
-					<h3 class="text-center">カード情報</h3>
-					<table class="table table-striped">
-						<tbody>
-							<tr>
-								<td>
-									<div class="text-center">
-										カード番号
-									</div>
-								</td>
-								<td>
-									<div class="row">
-										<div class="col-sm-12">
-											<input type="text" name="cardNum">
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="text-center">
-										有効期限
-									</div>
-								</td>
-								<td>
-									<div class="row">
-										<div class="col-sm-12">
-											<select name="month">
-												<option>01</option>
-												<option>02</option>
-												<option>03</option>
-												<option>04</option>
-												<option>05</option>
-												<option>06</option>
-												<option>07</option>
-												<option>08</option>
-												<option>09</option>
-												<option>10</option>
-												<option>11</option>
-												<option>12</option>
-											</select>
-											<select name="year">
-												<option th:each="year:${yearList}" th:text="${year}">2020</option>
-											</select>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="text-center">
-										カード名義人
-									</div>
-								</td>
-								<td>
-									<div class="row">
-										<div class="col-sm-12">
-											<input type="text" name="cardUserName">
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="text-center">
-										セキュリティコード
-									</div>
-								</td>
-								<td>
-									<div class="row">
-										<div class="col-sm-12">
-											<input type="text" name="securityCord">
-										</div>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
+			
 			<div class="row">
 				<div class="col-xs-offset-4 col-xs-4">
 					<div class="form-group">
@@ -448,9 +368,12 @@
 		</form>
 	</div>
 	<!-- end container -->
+	
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 	<script src="../static/js/input-credit-card.js" th:src="@{/js/input-credit-card.js}"></script>
+	<script th:src="@{/js/get_address.js}" src="../static/js/get_address.js"></script>
 </body>
 </html>

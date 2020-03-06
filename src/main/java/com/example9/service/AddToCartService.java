@@ -70,7 +70,7 @@ public class AddToCartService {
 			order.setUserId(userId);
 			// カートに入れるだけなのでステータスは「0」= 注文前で固定
 			order.setStatus(0);
-			// 仮の対応 後で直す
+			// nullだとインサートできないので0をセットしておく
 			order.setTotalPrice(0);
 			// OrderをDBにインサートし、自動採番されたIDを取得
 			order = orderRepository.insertOrder(order);

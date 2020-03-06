@@ -1,5 +1,6 @@
 package com.example9.repository;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -63,6 +64,19 @@ public class UserRepository {
 		String sql = "INSERT INTO users (name, email, password, zipcode, address, telephone)"
 				   + " VALUES (:name, :email, :password, :zipcode, :address, :telephone)";
 		template.update(sql, param);
+	}
+	
+	/**
+	 * 主キーでユーザ検索を行う.
+	 * 
+	 * @param id ユーザID
+	 * @return ユーザ情報
+	 */
+	public User load(Integer id) {
+		String sql = "SELECT id, name, email, password, zipcode, address, telephone FROM users WHERE id = :id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		User user = template.queryForObject(sql, param, USER_ROW_MAPPER);
+		return user;
 	}
 
 }
