@@ -357,7 +357,79 @@
 				</div>
 			</div>
 			
+					<div class="row" id="cardInfo">
+				<div
+					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+					<h3 class="text-center">カード情報</h3>
+					<table class="table table-striped">
+						<tbody>
+							<tr>
+								<td>
+									<div class="text-center">
+										<label for="cardNum">カード番号</label>
+									</div>
+								</td>
+								<td>
+									<input type="text" name="card_number" id="cardNum">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="text-center">
+										有効期限
+									</div>
+								</td>
+								<td>
+								<select name="card_exp_month">
+									<option  selected>--</option>
+									<option  value="1">01</option>
+									<option  value="2">02</option>
+									<option  value="3">03</option>
+									<option  value="4">04</option>
+									<option  value="5">05</option>
+									<option  value="6">06</option>
+									<option  value="7">07</option>
+									<option  value="8">08</option>
+									<option  value="9">09</option>
+									<option  value="10">10</option>
+									<option  value="11">11</option>
+									<option  value="12">12</option>
+								</select>
+								月/
+								<select name="card_exp_year">
+									<option selected>----</option>
+									<option th:each="year:${yearList}" th:value="${year}" th:text="${year}"></option>
+								</select>
+								年
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="text-center">
+										<label for="cardName">カード名義人</label>
+									</div>
+								</td>
+								<td>
+									<input type="text" name="card_name" id="cardName">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="text-center">
+										<label for="cardCvv">セキュリティコード</label>
+									</div>
+								</td>
+								<td>
+									<input type="text" name="card_cvv" id="card_cvv">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
 			<!-- table -->
+			
 			
 			<div class="row">
 				<div class="col-xs-offset-4 col-xs-4">
