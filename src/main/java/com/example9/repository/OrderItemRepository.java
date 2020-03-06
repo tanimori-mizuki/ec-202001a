@@ -57,7 +57,7 @@ public class OrderItemRepository {
 	
 	
 	/**
-	 * 主キーを元にorderItemをDBから削除する.
+	 * 主キーを元にorderItemとそれに紐づいているorder_toppingをDBから削除する.
 	 * 	  
 	 * @param id 主キー
 	 */
@@ -67,4 +67,6 @@ public class OrderItemRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		template.update(sql, param);
 	}
+	
+	
 }

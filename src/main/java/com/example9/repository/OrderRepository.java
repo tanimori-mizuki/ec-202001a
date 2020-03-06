@@ -274,4 +274,33 @@ public class OrderRepository {
 		
 		template.update(sql.toString(), param);
 	}
+	
+	
+	/**
+	 *　Orderテーブルのuser_idをログインユーザのものに更新する
+	 * 
+	 * @param order ログイン前のショッピングカートの中身
+	 */
+	public void updateUserId(Integer userId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("UPDATE orders SET user_id = :userId WHERE status = 0 ");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId);
+		template.update(sql.toString(), param);
+	}
+	
+	
+	/**
+	 * Orderを削除し、OrderItemのorder_idを更新する.
+	 * ログイン前のカートの中身をログイン後カートに反映させるためのメソッド
+	 * 
+	 * @param id 主キー
+	 */
+	public void deleteOrderAndUpdateOrderItem(Integer id, Integer userId) {
+		String sql = "WITH deleted AS (DELETE FROM orders WHERE id = :id RETURNING id) " +
+				 	 "UPDATE order_items SET order_id = (SELECT id FROM orders WHERE user_id = :userId AND status = 0) "+ 
+				 	 "WHERE order_id IN (SELECT id FROM deleted) ;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id).addValue("userId", userId);
+		template.update(sql, param);
+	}
+	
 }

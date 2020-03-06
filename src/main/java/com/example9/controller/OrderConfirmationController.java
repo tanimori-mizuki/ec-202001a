@@ -51,8 +51,12 @@ public class OrderConfirmationController {
 	public OrderForm setupOrderForm(Integer id) {
 		// ユーザIDを取得
 		Integer userId = (Integer) session.getAttribute("userId");
-
-		// ユーザID(主キー）で検索した情報をuserInfoに格納。
+		
+		if(userId == null) {
+			return new OrderForm();
+		}
+		
+		//ユーザID(主キー）で検索した情報をuserInfoに格納。
 		User userInfo = userRegisterService.showUser(userId);
 
 		// userInfoをorderFormにセットする
@@ -86,10 +90,10 @@ public class OrderConfirmationController {
 	@RequestMapping("")
 	public String toOrderConfirmation(Model model) {
 		Integer userId = (Integer) session.getAttribute("userId");
-
+		
 		// ログインしていない状態であればログイン画面へ遷移する
 		if (userId == null) {
-			return "forward:/login";
+			return "forward:/login/referer";
 		}
 
 		List<Order> orderList = orderConfirmationService.showOrderList(userId);
