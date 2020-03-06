@@ -2,6 +2,7 @@ package com.example9.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 /**
  * ユーザ登録への入力情報.
@@ -12,32 +13,33 @@ import javax.validation.constraints.NotBlank;
 public class UserRegisterForm {
 
 	/** 名前 */
-	@NotBlank(message = "お名前を入力してください")
+	@NotBlank(message = "お名前を入力して下さい")
 	private String name;
 
 	/** メールアドレス */
 	@Email(message = "アドレスが不正です")
-	@NotBlank(message = "メールアドレスを入力してください")
+	@NotBlank(message = "メールアドレスを入力して下さい")
 	private String email;
 
 	/** 郵便番号 */
-	@NotBlank(message = "郵便番号を入力してください")
+	@NotBlank(message = "郵便番号を入力して下さい")
 	private String zipcode;
 
 	/** 住所 */
-	@NotBlank(message = "住所を入力してください")
+	@NotBlank(message = "住所を入力して下さい")
 	private String address;
 
 	/** 電話番号 */
-	@NotBlank(message = "電話番号を入力してください")
+	@NotBlank(message = "電話番号を入力して下さい")
+	@Pattern(regexp="^[0-9]+$", message="電話番号は数値を入力して下さい")
 	private String telephone;
 
 	/** パスワード */
-	@NotBlank(message = "パスワードを入力してください")
+	@NotBlank(message = "パスワードを入力して下さい")
 	private String password;
 
 	/** 確認用パスワード */
-	@NotBlank(message = "確認用パスワードを入力してください")
+	@NotBlank(message = "確認用パスワードを入力して下さい")
 	private String confirmationPassword;
 
 	@Override

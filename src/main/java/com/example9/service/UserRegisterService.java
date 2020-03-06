@@ -36,5 +36,15 @@ public class UserRegisterService {
 		User user = userRepository.findByEmail(email);
 		return user;
 	}
+	
+	/**
+	 * 主キーでユーザ情報を検索.
+	 * @param id ユーザID
+	 * @return ユーザ情報
+	 */
+	public User showUser(Integer id) {
+		User user = userRepository.load(id);
+		return user;
+	}
 
 }
