@@ -45,6 +45,10 @@ public class OrderConfirmationController {
 		//ユーザIDを取得
 		Integer userId = (Integer) session.getAttribute("userId");
 		
+		if(userId == null) {
+			return new OrderForm();
+		}
+		
 		//ユーザID(主キー）で検索した情報をuserInfoに格納。
 		User userInfo = userRegisterService.showUser(userId);
 		
