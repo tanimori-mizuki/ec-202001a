@@ -58,15 +58,25 @@ public class ShowItemListController {
 	@RequestMapping("")
 	public String showList(Model model, PagingNumberForm form) {
 		
-		List<Item>itemList = showItemListService.showList(1);
-		
-		if("1".equals(form.getPagingNumber())) {
-			itemList = showItemListService.showList(1);
-		} else if("2".equals(form.getPagingNumber())) {
-			itemList = showItemListService.showList(6);
-		} else if("3".equals(form.getPagingNumber())) {
-			itemList = showItemListService.showList(12);
+		List<Item>itemList = showItemListService.showList();
+	
+		// 変数pageにページ数を格納する
+		int pageNumber = 0;
+		if(itemList.size() % 6 == 0) {
+			pageNumber = itemList.size() / 6;
+		} else if(itemList.size() % 6 != 0) {
+			pageNumber = (itemList.size() / 6) + 1;
 		}
+		// リストにページ数を入れて、リクエストスコープに格納する
+		List<Integer>pageList = new ArrayList<>();
+		for(int i = 1 ; i <=pageNumber ; i++) {
+			pageList.add(i);
+		}
+		model.addAttribute("pageList", pageList);
+		
+		System.out.println(pageNumber);
+		itemList = showItemListService.ShowListpaging(6*(pageNumber-1));
+		System.out.println(itemList);
 		
 		// 並び替え用にsessionスコープに残しておく
 		session.setAttribute("itemList", itemList);

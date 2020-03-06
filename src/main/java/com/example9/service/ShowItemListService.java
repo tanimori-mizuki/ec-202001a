@@ -26,8 +26,8 @@ public class ShowItemListService {
 	 * 商品一覧表示を行います.
 	 * @return　商品一覧
 	 */
-	public List<Item>showList(Integer number){
-		return itemRepository.findAll(number);
+	public List<Item>showList(){
+		return itemRepository.findAll();
 	}
 	
 	/**
@@ -37,6 +37,15 @@ public class ShowItemListService {
 	 */
 	public List<Item>searchByLikeName(String name){
 		return itemRepository.findByLikeName(name);
+	}
+	
+	/**
+	 * 検索数を6つに制限したSQL文を発行します.
+	 * @param number　開始位置
+	 * @return　商品一覧
+	 */
+	public List<Item>ShowListpaging(Integer number){
+		return itemRepository.findByAllLimit(number);
 	}
 	
 	/**

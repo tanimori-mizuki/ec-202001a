@@ -43,14 +43,12 @@ public class ItemRepository {
 	 * 
 	 * @return Itemリスト
 	 */
-	public List<Item> findAll(Integer number) {
+	public List<Item> findAll() {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT id,name,description,description,price_m,price_l,image_path,deleted ");
 		sql.append("FROM items ");
 		sql.append("ORDER BY price_m ");
-		sql.append("LIMIT 6 OFFSET " + number);
-		SqlParameterSource param = new MapSqlParameterSource().addValue("number", number);
-		return template.query(sql.toString(), param, ITEM_ROW_MAPPER);
+		return template.query(sql.toString(), ITEM_ROW_MAPPER);
 	}
 
 	/**
@@ -79,6 +77,21 @@ public class ItemRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		Item item = template.queryForObject(sql, param, ITEM_ROW_MAPPER);
 		return item;
+	}
+	
+	/**
+	 * 検索数を6つに制限したSQL文を発行します.
+	 * @param number　開始位置
+	 * @return　商品一覧
+	 */
+	public List<Item> findByAllLimit(Integer number){
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT id,name,description,description,price_m,price_l,image_path,deleted ");
+		sql.append("FROM items ");
+		sql.append("ORDER BY price_m ");
+		sql.append("LIMIT 6 OFFSET " + number);
+		SqlParameterSource param = new MapSqlParameterSource().addValue("number", number);
+		return template.query(sql.toString(), param, ITEM_ROW_MAPPER);
 	}
 	
 }

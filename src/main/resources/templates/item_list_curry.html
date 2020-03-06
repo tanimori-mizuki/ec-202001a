@@ -127,14 +127,10 @@ $( function() {
 		</div>
 	</div>
 
-<div style="text-align: center">
-	<form th:action="@{/}" method="post" th:object="${pagingNumberForm}">
-		<button>&laquo;&nbsp;前へ</button>&nbsp;
-		<button type="submit" name="pagingNumber" value="1" >1</button>&nbsp;
-		<button type="submit" name="pagingNumber" value="2" >2</button>&nbsp;
-		<button type="submit" name="pagingNumber" value="3" >3</button>&nbsp;
-		<button>次へ&nbsp;&raquo;</button>&nbsp;
-	</form>
+<div style="text-align: center"  th:each="page:${pageList}">
+		<form th:action="@{/}" method="post" th:object="${pagingNumberForm}">
+			<button type="submit" name="pagingNumber" th:text="${page}" >1</button>&nbsp;
+		</form>
 </div><br>
 	<!-- end container -->
 	<!-- オートコンプリート昨日のためにコメントアウト -->
