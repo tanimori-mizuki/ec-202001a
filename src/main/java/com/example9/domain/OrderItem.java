@@ -23,7 +23,17 @@ public class OrderItem {
 	private Item item;
 	/** 注文トッピングリスト */
 	private List<OrderTopping> orderToppingList;
-	
+	/** 口コミID */
+	private Integer reviewId;
+
+	public Integer getReviewId() {
+		return reviewId;
+	}
+
+	public void setReviewId(Integer reviewId) {
+		this.reviewId = reviewId;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -80,14 +90,13 @@ public class OrderItem {
 		this.orderToppingList = orderToppingList;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "OrderItem [id=" + id + ", itemId=" + itemId + ", orderId=" + orderId + ", quantity=" + quantity
-				+ ", size=" + size + ", item=" + item + ", orderToppingList=" + orderToppingList + "]";
+				+ ", size=" + size + ", item=" + item + ", orderToppingList=" + orderToppingList + ", reviewId="
+				+ reviewId + "]";
 	}
 
-	
 	/**
 	 * 注文商品の小計を求める.
 	 * 
@@ -95,20 +104,19 @@ public class OrderItem {
 	 */
 	public int getSubTotal() {
 		int subTotalPrice = 0;
-		
-		if (orderToppingList.size() == 0 && size == 'M'){
+
+		if (orderToppingList.size() == 0 && size == 'M') {
 			subTotalPrice = item.getPriceM();
 		} else if (orderToppingList.size() == 0 && size == 'L') {
 			subTotalPrice = item.getPriceL();
 		} else if (orderToppingList.size() != 0 && size == 'M') {
-			subTotalPrice = (item.getPriceM()+ orderToppingList.get(0).getTopping().getPriceM() * orderToppingList.size()) * quantity;
+			subTotalPrice = (item.getPriceM()
+					+ orderToppingList.get(0).getTopping().getPriceM() * orderToppingList.size()) * quantity;
 		} else if (orderToppingList.size() != 0 && size == 'L') {
-			subTotalPrice = (item.getPriceL()+ orderToppingList.get(0).getTopping().getPriceL() * orderToppingList.size()) * quantity;
+			subTotalPrice = (item.getPriceL()
+					+ orderToppingList.get(0).getTopping().getPriceL() * orderToppingList.size()) * quantity;
 		}
 		return subTotalPrice;
 	}
-	
-	
-	
 
 }

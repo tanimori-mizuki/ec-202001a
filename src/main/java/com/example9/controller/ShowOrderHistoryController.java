@@ -25,7 +25,7 @@ public class ShowOrderHistoryController {
 
 	@Autowired
 	private ShowOrderHistoryService showOrderHistoryService;
-
+	
 	@Autowired
 	private HttpSession session;
 
@@ -58,11 +58,20 @@ public class ShowOrderHistoryController {
 		return "order_history";
 	}
 
+	/**
+	 * 引数の注文IDを有する注文について、詳細情報を表示する.
+	 * 
+	 * @param model リクエストスコープ
+	 * @param orderId 注文ID
+	 * @return 注文履歴詳細画面
+	 */
 	@RequestMapping("/detail")
 	public String showDetail(Model model, Integer orderId) {
+		//注文情報詳細の取得
 		List<Order> orderList = showOrderHistoryService.getOrderHistoryDetail(orderId);
 		Order order = orderList.get(0);
 		model.addAttribute(order);
+		System.out.println(order);
 
 		return "order_history_detail";
 	}

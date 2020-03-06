@@ -30,4 +30,13 @@ public class ReviewService {
 		return reviewRepository.findByItemId(itemId);
 	}
 
+	/**
+	 * 新規口コミを投稿する.
+	 * 
+	 * @param review 口コミ
+	 */
+	public void postReview(Review review) {
+		reviewRepository.insert(review);
+	}
+
 }

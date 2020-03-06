@@ -46,9 +46,9 @@
 		</nav>
 		
 	<!-- 口コミなしの場合のメッセージ -->
-	<div class="text-center">
+	<div class="text-center" th:if="${nonReview}">
 		<br>
-		<h3 th:if="${nonReview}" th:text="${nonReview}"></h3>
+		<h3 th:text="${nonReview}"></h3>
 		<br>
 		<p>ログイン後、<strong>注文履歴</strong>の詳細確認画面から投稿できます。</p>
 		<br><br><br><br>
@@ -142,7 +142,7 @@
 								<td>
 									<div class="text-center">
 										お名前：
-										<span th:text="${review.userName}">カレー太郎</span>
+										<span th:text="${review.authorName}">カレー太郎</span>
 									</div>
 								</td>
 								<td>

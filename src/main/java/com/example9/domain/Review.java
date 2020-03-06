@@ -16,8 +16,8 @@ public class Review {
 	private Integer orderId;
 	/** ユーザーID */
 	private Integer userId;
-	/** ユーザー名 */
-	private String userName;
+	/** 投稿者名 */
+	private String authorName;
 	/** 注文商品ID */
 	private Integer orderItemId;
 	/** 口コミコメント */
@@ -34,22 +34,6 @@ public class Review {
 	private String imagePath;
 	/** 商品特徴 */
 	private String description;
-
-	public String getImagePath() {
-		return imagePath;
-	}
-
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	public Integer getReviewId() {
 		return reviewId;
@@ -73,6 +57,14 @@ public class Review {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
 	}
 
 	public Integer getOrderItemId() {
@@ -107,14 +99,6 @@ public class Review {
 		this.itemId = itemId;
 	}
 
-	public Date getOrderDate() {
-		return orderDate;
-	}
-
-	public void setOrderDate(Date orderDate) {
-		this.orderDate = orderDate;
-	}
-
 	public String getItemName() {
 		return itemName;
 	}
@@ -123,22 +107,36 @@ public class Review {
 		this.itemName = itemName;
 	}
 
-	public String getUserName() {
-		return userName;
+	public Date getOrderDate() {
+		return orderDate;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
 	public String toString() {
-		return "Review [reviewId=" + reviewId + ", orderId=" + orderId + ", userId=" + userId + ", userName=" + userName
-				+ ", orderItemId=" + orderItemId + ", review=" + review + ", evaluation=" + evaluation + ", itemId="
-				+ itemId + ", itemName=" + itemName + ", orderDate=" + orderDate + ", imagePath=" + imagePath
-				+ ", description=" + description + "]";
+		return "Review [reviewId=" + reviewId + ", orderId=" + orderId + ", userId=" + userId + ", authorName="
+				+ authorName + ", orderItemId=" + orderItemId + ", review=" + review + ", evaluation=" + evaluation
+				+ ", itemId=" + itemId + ", itemName=" + itemName + ", orderDate=" + orderDate + ", imagePath="
+				+ imagePath + ", description=" + description + "]";
 	}
-
-
 
 }

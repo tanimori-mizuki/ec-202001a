@@ -58,14 +58,12 @@
 		</div>
 
 		<br><br>
-		<div class="row">
-			<div class="col-xs-offset-5 col-xs-2">
-				<div class="form-group">
-					<form action="order_finished.html" th:action="@{/}">
-						<input class="form-control btn btn-warning btn-block"
-							type="submit" value="トップ画面を表示する">
-					</form>
-				</div>
+				<div class="row">
+			<div class="col-xs-offset-4 col-xs-4">
+				<a href="item_detail.html" th:href="@{'/review?itemId=' + ${itemId}}">
+					<input class="form-control btn btn-warning btn-block"
+						type="button" value="投稿した口コミを見る">
+				</a>
 			</div>
 		</div>
 	</div>

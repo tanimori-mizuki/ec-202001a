@@ -216,10 +216,13 @@
 								</div>
 							</td>
 							<td>
-								<a href="order_history.html" th:href="@{/order-history}">
-								<input class="form-control btn btn-warning btn-block"
-									type="button" value="投稿する">
-								</a>
+								<form th:if="${orderItem.reviewId==0}" th:action="@{/review/form}" method="post">
+									<input type="hidden" name="orderId" th:value="${order.id}">
+									<input type="hidden" name="orderItemId" th:value="${orderItem.id}">
+									<input type="hidden" name="itemId" th:value="${orderItem.item.id}">
+									<input class="form-control btn btn-warning btn-block" type="submit" value="投稿する">
+								</form>
+								<div class="text-center" th:unless="${orderItem.reviewId==0}" >投稿済</div>
 							</td>
 							<td>
 								<div class="text-center">
