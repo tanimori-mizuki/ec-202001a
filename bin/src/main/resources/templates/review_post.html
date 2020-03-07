@@ -45,62 +45,70 @@
 			<!-- /.container-fluid -->
 		</nav>
 		
+			<!-- table -->
+		<div class="row" th:unless="${nonOrderMessage}">
+			<div
+				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<th>
+									&nbsp;&nbsp;&nbsp;&nbsp;商品
+							</th>
+							<th>
+								<div class="text-center">
+									商品特徴
+								</div>
+							</th>
+						</tr>
+						<tr>
+							<td>
+							<div class="center">
+							&nbsp;&nbsp;&nbsp;&nbsp;
+									<img src="../static/img_pizza/1.jpg" th:src="@{'/img_curry/'+${item.imagePath}}"
+										class="img-responsive img-rounded" width="100" height="300"><br>
+								<span th:text="${item.name}">じゃがバターベーコン</span>
+								</div>
+							</td>
+							<td>
+							<div th:text="${item.description}">やわらかくあっさりとしたヒレ肉を上質な衣で包み込みました。4種類の濃厚な味わいが一つで楽しめるカレーです</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+			
 		<!-- login form -->
 		<div class="row">
 			<div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
 				<div class="well">
-					<form method="post" action="item_list.html" th:action="@{/register/insert}" th:object="${userRegisterForm}">
+					<form method="post"  th:action="@{/review/post}" th:object="${reviewForm}">
 						<fieldset>
-							<legend>ユーザ登録</legend>
+							<legend>口コミ投稿</legend>
 							<div class="form-group">
-								<label for="inputName">名前:</label><label
-									class="control-label" style="color: red" for="inputError" th:errors="*{name}">名前を入力してください</label>
-								<input type="text" id="inputName" name="name" th:field="*{name}" class="form-control"
-									placeholder="Name">
+								<label>名前:</label>
+								<input type="text" th:value="${userName}" name="authorName" th:field="*{authorName}">
 							</div>
 							<div class="form-group">
-								<label for="inputEmail">メールアドレス:</label><label
-									class="control-label" style="color: red" for="inputError" th:errors="*{email}">メールアドレスを入力してください</label>
-								<input type="text" id="inputEmail" name="email" th:field="*{email}" class="form-control"
-									placeholder="Email">
-							</div>
-							<div class="form-group">
-								<label for="inputZipcode">郵便番号:</label>
-								<label
-									class="control-label" style="color: red" for="inputError" th:errors="*{zipcode}">郵便番号を入力してください</label>
-									<input type="button" value="住所検索" id="search_address">
-								<input type="text" id="inputZipcode" name="zipcode" th:field="*{zipcode}" class="form-control"
-									placeholder="Zipcode">
+								<label for="evaluation">評価:</label>
+								<select name="evaluation" id="evaluation">
+									<option selected>点数を選択してください</option>
+									<option value="5" th:field="*{evaluation}">★★★★★　(5点/5点)</option>
+									<option value="4" th:field="*{evaluation}">★★★★☆　(4点/5点)</option>
+									<option value="3" th:field="*{evaluation}">★★★☆☆　(3点/5点)</option>
+									<option value="2" th:field="*{evaluation}">★★☆☆☆　(2点/5点)</option>
+									<option value="1" th:field="*{evaluation}">★☆☆☆☆　(1点/5点)</option>
+								</select>
 								
 							</div>
 							<div class="form-group">
-								<label for="inputAddress">住所:</label>
-								<label
-									class="control-label" style="color: red" for="inputError" th:errors="*{address}">住所を入力してください</label>
-								<input type="text" id="inputAddress" name="address" th:field="*{address}" class="form-control"
-									placeholder="Address">
+								<label>コメント:</label><br>
+							<textarea rows="5" cols="50px" name="review" th:field=*{review}></textarea>
 							</div>
-							<div class="form-group">
-								<label for="inputTel">電話番号:</label>
-								<label
-									class="control-label" style="color: red" for="inputError" th:errors="*{telephone}">電話番号を入力してください</label>
-								<input type="text" id="inputTel" name="telephone" th:field="*{telephone}" class="form-control"
-									placeholder="Tel">
-							</div>
-							<div class="form-group">
-								<label for="inputPassword">パスワード:</label>
-								<label
-									class="control-label" style="color: red" for="inputError" th:errors="*{password}">パスワードを入力してください</label>
-								<input type="password" id="inputPassword" name="password" th:field="*{password}" class="form-control"
-									placeholder="Password">
-							</div>
-							<div class="form-group">
-								<label for="inputConfirmationPassword">確認用パスワード:</label>
-								<label
-									class="control-label" style="color: red" for="inputError" th:errors="*{confirmationPassword}">確認用パスワードを入力してください</label>
-								<input type="password" id="inputConfirmationPassword" name="confirmationPassword"  class="form-control"
-									placeholder="Confirmation Password">
-							</div>
+							<input type="hidden" name="orderId" th:value="${orderId}">
+							<input type="hidden" name="orderItemId" th:value="${orderItemId}">
+							<input type="hidden" name="itemId" th:value="${item.id}">
 							<div class="form-group">
 								<button type="submit" class="btn btn-primary">登録</button>
 								<input type="reset" class="btn btn-primary" value="クリア">

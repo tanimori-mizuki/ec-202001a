@@ -1,12 +1,12 @@
 	<!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ピザ屋のネット注文</title>
-<link href="../static/css/bootstrap.css" rel="stylesheet">
-<link href="../static/css/piza.css" rel="stylesheet">
+<title>ネットでカレー注文</title>
+<link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+<link href="../static/css/piza.css" th:href="@{/css/piza.css}" rel="stylesheet">
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -25,8 +25,8 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="item_list.html"> <!-- 企業ロゴ --> <img
-						alt="main log" src="../static/img_pizza/header_logo.png" height="35">
+					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> <!-- 企業ロゴ --> <img
+						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35">
 					</a>
 				</div>
 
@@ -34,10 +34,10 @@
 				<div class="collapse navbar-collapse"
 					id="bs-example-navbar-collapse-1">
 					<p class="navbar-text navbar-right">
-						<a href="cart_list.html" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
-						<a href="order_history.html" class="navbar-link">注文履歴</a>&nbsp;&nbsp;
-						<a href="login.html" class="navbar-link">ログイン</a>&nbsp;&nbsp;
-						<a href="item_list.html" class="navbar-link">ログアウト</a>
+						<a href="cart_list.html" th:href="@{/show_cart_list}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
+						<a href="order_history.html" th:if="${session.user}" th:text="'注文履歴'" th:href="@{/order-history}" class="navbar-link">注文履歴</a>&nbsp;&nbsp;
+						<a href="login.html" class="navbar-link" th:unless="${session.user}" th:href="@{/login}" th:text="ログイン">ログイン</a>&nbsp;&nbsp;
+						<a href="item_list.html" class="navbar-link" th:if="${session.user}" th:href="@{/login/logout}" th:text="ログアウト">ログアウト</a>
 					</p>
 				</div>
 				<!-- /.navbar-collapse -->
@@ -46,10 +46,11 @@
 		</nav>
 
 
+
 		<!-- table -->
 		<div class="row">
 			<div
-				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12" th:if="${order}">
 				<h3 class="text-center">注文内容確認</h3>
 				<table class="table table-striped">
 					<tbody>
@@ -75,7 +76,37 @@
 								</div>
 							</th>
 						</tr>
-						<tr>
+						<tr th:each="orderItem : ${order.orderItemList}">
+							<td>
+								<div class="center">
+									<img src="../static/img_pizza/1.jpg" th:src="@{'/img_curry/' + ${orderItem.item.imagePath}}"
+										class="img-responsive img-rounded" width="100" height="300"><br>
+									<span th:text="${orderItem.item.name}">じゃがバターベーコン</span>
+								</div>
+							</td>
+							<td>
+								<span class="price" th:text="'&nbsp;&nbsp;'+${orderItem.size}+'&nbsp;&nbsp;'">&nbsp;Ｌ</span>&nbsp;&nbsp;
+								<span th:if="${orderItem.size} == 'M'" th:text="${#numbers.formatInteger(orderItem.item.priceM,1,'COMMA') + '円(税抜)'}"></span>
+								<span th:if="${orderItem.size} == 'L'" th:text="${#numbers.formatInteger(orderItem.item.priceL,1,'COMMA') + '円(税抜)'}">2,380円</span>&nbsp;&nbsp;
+								<span th:text="${orderItem.quantity} + '個'">1個</span>
+							</td>
+							<td>
+						 		<ul th:each="orderTopping : ${orderItem.orderToppingList}">
+						 			<li th:if="${orderItem.size} == 'M'" th:text="${orderTopping.topping.name} + ' ' + ${orderTopping.topping.priceM} + '円'"></li>
+									<li th:if="${orderItem.size} == 'L'" th:text="${orderTopping.topping.name} + ' ' + ${orderTopping.topping.priceL} + '円'"></li>
+									<!-- <li>ピーマン300円</li>
+									<li>オニオン300円</li>
+									<li>あらびきソーセージ300円</li> -->
+								</ul>
+								<div class="text-center" th:unless="${orderItem.orderToppingList.size()>0}" th:text="'なし'"></div>
+							</td>
+							<td>
+								<div class="text-center">
+									<span th:text="${#numbers.formatInteger(orderItem.subTotal,1,'COMMA') + '円'}">3,280円</span>
+								</div>
+							</td>
+						</tr>
+						<!-- <tr>
 							<td>
 								<div class="center">
 									<img src="../static/img_pizza/1.jpg"
@@ -124,48 +155,24 @@
 									3,280円
 								</div>
 							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="center">
-									<img src="../static/img_pizza/1.jpg"
-										class="img-responsive img-rounded" width="100" height="300"><br>
-									じゃがバターベーコン
-								</div>
-							</td>
-							<td>
-								<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円
-								&nbsp;&nbsp;1個
-							</td>
-							<td>
-								<ul>
-									<li>ピーマン300円</li>
-									<li>オニオン300円</li>
-									<li>あらびきソーセージ300円</li>
-								</ul>
-							</td>
-							<td>
-								<div class="text-center">
-									3,280円
-								</div>
-							</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row" th:if="${order}">
 			<div class="col-xs-offset-2 col-xs-8">
 				<div class="form-group text-center">
-					<span id="total-price">消費税：8,000円</span><br>
-					<span id="total-price">ご注文金額合計：38,000円 (税込)</span>
+					<span id="total-price" th:text="'消費税：' + ${#numbers.formatInteger(tax,1,'COMMA') + '円'}">消費税：8,000円</span><br>
+					<span id="total-price" th:text="'ご注文金額合計：' + ${#numbers.formatInteger(order.totalPrice,1,'COMMA') + '円'}">ご注文金額合計：38,000円 (税込)</span>
 				</div>
 			</div>
 		</div>
 
+		<h3 class="text-center" style="color: red" th:if="${creditCard}" th:text="${creditCard}"></h3>
 		<!-- table -->
-		<form action="order_finished.html">
+		<form action="order_finished.html" th:action="@{/confirm/orderAfterConfirm}" th:object="${orderForm}" method="post">
 			<div class="row">
 				<div
 					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
@@ -179,7 +186,8 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="name" th:field="*{name}">
+									<span style="color: red" th:errors="*{name}"></span>
 								</td>
 							</tr>
 							<tr>
@@ -189,7 +197,8 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="email" th:field="*{email}">
+									<span style="color: red" th:errors="*{email}"></span>
 								</td>
 							</tr>
 							<tr>
@@ -199,7 +208,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">&nbsp;&nbsp;<button>住所検索</button>
+									<input type="text" name="zipcode" th:field="*{zipcode}">&nbsp;&nbsp;<button type="button" id="search_address_again">住所検索</button>
 								</td>
 							</tr>
 							<tr>
@@ -209,7 +218,8 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="address" th:field="*{address}">
+									<span style="color: red" th:errors="*{address}"></span>
 								</td>
 							</tr>
 							<tr>
@@ -219,7 +229,8 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="telephone" th:field="*{telephone}">
+									<span style="color: red" th:errors="*{telephone}"></span>
 								</td>
 							</tr>
 							<tr>
@@ -236,7 +247,7 @@
 													class="control-label" style="color: red" for="inputPeriod">配達日時を入力してください</label>
 											</div>
 											<div class="col-sm-5">
-												<input type="date" name="name" id="name"
+												<input type="date" name="date" id="date"
 													class="form-control input-sm" />
 											</div>
 
@@ -316,7 +327,7 @@
 										<div class="col-sm-12">
 											<label class="radio-inline">
 												<input type="radio"
-													name="responsibleCompany" checked="checked">
+													name="paymentMethod" checked="checked" value="1">
 												代金引換
 											</label>
 										</div>
@@ -329,14 +340,98 @@
 										クレジットカード決済
 									</div>
 								</td>
-								<td align="center">
+								<td>
 									<div class="row">
 										<div class="col-sm-12">
 											<label class="radio-inline">
 												<input type="radio"
-													name="responsibleCompany" checked="checked">
+													name="paymentMethod"  value="2">
 												クレジットカード
-											</label><br><br>
+											</label>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+			<!-- table -->
+			<div class="row" id="cardInfo">
+				<div
+					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+					<h3 class="text-center">カード情報</h3>
+					<table class="table table-striped">
+						<tbody>
+							<tr>
+								<td>
+									<div class="text-center">
+										カード番号
+									</div>
+								</td>
+								<td>
+									<div class="row">
+										<div class="col-sm-12">
+											<input type="text" name="cardNum">
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="text-center">
+										有効期限
+									</div>
+								</td>
+								<td>
+									<div class="row">
+										<div class="col-sm-12">
+											<select name="month">
+												<option>01</option>
+												<option>02</option>
+												<option>03</option>
+												<option>04</option>
+												<option>05</option>
+												<option>06</option>
+												<option>07</option>
+												<option>08</option>
+												<option>09</option>
+												<option>10</option>
+												<option>11</option>
+												<option>12</option>
+											</select>
+											<select name="year">
+												<option th:each="year:${yearList}" th:text="${year}">2020</option>
+											</select>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="text-center">
+										カード名義人
+									</div>
+								</td>
+								<td>
+									<div class="row">
+										<div class="col-sm-12">
+											<input type="text" name="cardUserName">
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="text-center">
+										セキュリティコード
+									</div>
+								</td>
+								<td>
+									<div class="row">
+										<div class="col-sm-12">
+											<input type="text" name="securityCord">
 										</div>
 									</div>
 								</td>
@@ -357,6 +452,7 @@
 	<!-- end container -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="../static/js/bootstrap.min.js"></script>
+	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="../static/js/input-credit-card.js" th:src="@{/js/input-credit-card.js}"></script>
 </body>
 </html>

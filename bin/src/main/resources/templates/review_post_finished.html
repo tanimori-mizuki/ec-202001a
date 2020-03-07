@@ -50,24 +50,20 @@
 		<div class="row">
 			<div
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
-				<h3 class="text-center">決済が完了しました！</h3>
+				<h3 class="text-center">口コミ投稿が完了しました！</h3>
 				<div class="text-center">
-					<p>この度はご注文ありがとうございます。</p>
-					<p>お支払い先は、お送りしたメールに記載してありますのでご確認ください。</p>
-					<p>メールが届かない場合は「注文履歴」からご確認ください。</p>
+					<p>貴重なご意見、誠ににありがとうございました。</p>
 				</div>
 			</div>
 		</div>
 
 		<br><br>
-		<div class="row">
-			<div class="col-xs-offset-5 col-xs-2">
-				<div class="form-group">
-					<form action="order_finished.html" th:action="@{/}">
-						<input class="form-control btn btn-warning btn-block"
-							type="submit" value="トップ画面を表示する">
-					</form>
-				</div>
+				<div class="row">
+			<div class="col-xs-offset-4 col-xs-4">
+				<a href="item_detail.html" th:href="@{'/review?itemId=' + ${itemId}}">
+					<input class="form-control btn btn-warning btn-block"
+						type="button" value="投稿した口コミを見る">
+				</a>
 			</div>
 		</div>
 	</div>

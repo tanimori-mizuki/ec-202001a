@@ -96,7 +96,6 @@ public class OrderRepository {
 					Integer reviewId = rs.getInt("review_id");
 					orderItem.setReviewId(reviewId);
 				} catch (Exception e) {
-					System.out.println("くちこみなし");
 					// findByOrderId()以外のメソッド実行時は口コミID取得しない
 				}
 				// 注文内の商品リストに商品情報追加
