@@ -91,6 +91,15 @@ public class ReviewController {
 		return "review_post";
 	}
 
+	/**
+	 * 口コミを投稿する.
+	 * 
+	 * @param form 投稿内容
+	 * @param      result 入力値チェック
+	 * @param      flash フラッシュスコープ
+	 * @param      model リクエストスコープ
+	 * @return 投稿完了画面へのリダイレクト
+	 */
 	@RequestMapping("/post")
 	public String post(@Validated ReviewForm form, BindingResult result, RedirectAttributes flash, Model model) {
 
