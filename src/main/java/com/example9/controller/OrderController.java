@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example9.service.OrderService;
+import com.example9.service.SendMailService;
 
 /**
  * 注文処理をするコントローラ.
@@ -18,7 +19,10 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
-
+	
+	@Autowired
+	private SendMailService sendMailService;
+	
 	/**
 	 * 注文する.
 	 * 
@@ -26,6 +30,9 @@ public class OrderController {
 	 */
 	@RequestMapping("")
 	public String order() {
+		// メールを送信
+		sendMailService.sendMail();
+		
 		orderService.doOrder();
 		return "redirect:/order/order-finished";
 	}
