@@ -57,8 +57,6 @@ public class OrderForm {
 	/** セキュリティコード */
 	private Integer card_cvv;
 	
-	
-	
 	@Override
 	public String toString() {
 		return "OrderForm [name=" + name + ", email=" + email + ", zipcode=" + zipcode + ", address=" + address
