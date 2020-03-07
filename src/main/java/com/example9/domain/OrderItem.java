@@ -106,9 +106,9 @@ public class OrderItem {
 		int subTotalPrice = 0;
 
 		if (orderToppingList.size() == 0 && size == 'M') {
-			subTotalPrice = item.getPriceM();
+			subTotalPrice = item.getPriceM()* quantity;
 		} else if (orderToppingList.size() == 0 && size == 'L') {
-			subTotalPrice = item.getPriceL();
+			subTotalPrice = item.getPriceL()* quantity;
 		} else if (orderToppingList.size() != 0 && size == 'M') {
 			subTotalPrice = (item.getPriceM()
 					+ orderToppingList.get(0).getTopping().getPriceM() * orderToppingList.size()) * quantity;
