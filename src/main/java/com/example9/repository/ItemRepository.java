@@ -38,7 +38,7 @@ public class ItemRepository {
 		return item;
 	};
 
-	/** レビュー情報含むItemオブジェクトを生成するローマッパー */
+	/** 口コミ情報含むItemオブジェクトを生成するローマッパー */
 	public static final RowMapper<Item> ITEM_REVIEW_ROW_MAPPER = (rs, i) -> {
 		Item item = new Item();
 		item.setId(rs.getInt("id"));

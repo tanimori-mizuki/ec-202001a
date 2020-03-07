@@ -7,6 +7,7 @@ package com.example9.form;
  *
  */
 public class SortConditionNumberForm {
+	/** 並び替え方法の番号 */
 	String sortConditionNumber;
 
 	public String getSortConditionNumber() {
@@ -21,5 +22,5 @@ public class SortConditionNumberForm {
 	public String toString() {
 		return "SortConditionNumberForm [sortConditionNumber=" + sortConditionNumber + "]";
 	}
-	
+
 }

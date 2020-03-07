@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * 注文内容確認の入力フォーム
+ * 注文内容確認の入力フォーム.
  * 
  * @author suzukikunpei
  *
@@ -30,7 +30,7 @@ public class OrderForm {
 
 	/** 電話番号 */
 	@NotBlank(message = "電話番号を入力して下さい")
-	@Pattern(regexp="^[0-9]+$", message="電話番号は数値を入力して下さい")
+	@Pattern(regexp = "^[0-9]+$", message = "電話番号は数値を入力して下さい")
 	private String telephone;
 
 	/** 配達時間 */
@@ -42,12 +42,16 @@ public class OrderForm {
 
 	/** カード番号 */
 	private Integer card_number;
+
 	/** 有効期限（年） */
 	private Integer card_exp_year;
+
 	/** 有効期限（月） */
 	private Integer card_exp_month;
+
 	/** カード名義人 */
 	private Integer card_name;
+
 	/** セキュリティコード */
 	private Integer card_cvv;
 
@@ -94,7 +98,6 @@ public class OrderForm {
 	public Integer getPaymentMethodInteger() {
 		return Integer.parseInt(paymentMethod);
 	}
-
 
 	@Override
 	public String toString() {

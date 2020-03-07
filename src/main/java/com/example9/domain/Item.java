@@ -2,6 +2,12 @@ package com.example9.domain;
 
 import java.util.List;
 
+/**
+ * 商品を表すドメイン.
+ * 
+ * @author yuuki
+ *
+ */
 public class Item {
 
 	/** ID */

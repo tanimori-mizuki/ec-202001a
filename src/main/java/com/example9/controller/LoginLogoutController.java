@@ -34,37 +34,33 @@ public class LoginLogoutController {
 
 	@Autowired
 	private LoginService loginService;
-	
-	@Autowired
-	private AddToCartService addToCartService; 
 
+	@Autowired
+	private AddToCartService addToCartService;
 
 	@Autowired
 	private ShowCartListService showCartListService;
-	
+
 	@Autowired
 	private HttpSession session;
-	
+
 	@ModelAttribute
 	public LoginForm setUpLoginForm() {
 		return new LoginForm();
 	}
-	
-	
-	
+
 	/**
 	 * ログインページを表示する
 	 * 
 	 * @return ログインページ
-	 * @throws IOException 
-	 * @throws ServletException 
+	 * @throws IOException
+	 * @throws ServletException
 	 */
 	@RequestMapping("")
 	public String toLoginPage() {
 		return "login";
 	}
-	
-	
+
 	/**
 	 * ログイン画面から商品一覧画面以外の任意のページに遷移するためのメソッド
 	 * 
@@ -77,24 +73,15 @@ public class LoginLogoutController {
 		session.setAttribute("referer", request.getHeader("REFERER"));
 		return "login";
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * ログインする.
 	 * 
 	 * @param loginForm ログインフォーム入力情報
-	 * @param result    エラー確認
 	 * @return 商品一覧ページ(メールアドレス/パスワード不正の場合、ログイン画面)
 	 */
 	@RequestMapping("/input")
-	public String login(@Validated LoginForm loginForm, BindingResult result, Model model, HttpServletRequest request) {
-		
-		if (result.hasErrors()) {
-			return "/login";
-		}
+	public String login(LoginForm loginForm, Model model, HttpServletRequest request) {
 
 		User user = loginService.login(loginForm);
 
@@ -102,24 +89,24 @@ public class LoginLogoutController {
 			model.addAttribute("inputError", "メールアドレスまたはパスワードが不正です");
 			return "/login";
 		}
-		
+
 		// セッションにログインユーザの情報を保存する
 		session.setAttribute("user", user);
 		session.setAttribute("userId", user.getId());
-		
+
 		// ログイン前のカートの中身をログイン後のカートに反映する
 		addToCartService.addToCartAfterLogin();
-		
+
 		// ログイン成功後、リファラ情報を取り出す
-		String url = (String)session.getAttribute("referer");
-		
+		String url = (String) session.getAttribute("referer");
+
 		// もしショッピングカートから遷移してきた場合、注文確認画面にフォワードする
-		List <Order> orderList = showCartListService.showCartList(user.getId());
-		
+		List<Order> orderList = showCartListService.showCartList(user.getId());
+
 		if ("http://localhost:8080/show_cart_list".equals(url) && orderList != null) {
 			return "forward:/confirm";
 		}
-		
+
 		return "forward:/";
 	}
 
@@ -133,5 +120,5 @@ public class LoginLogoutController {
 		session.invalidate();
 		return "forward:/";
 	}
-	
+
 }

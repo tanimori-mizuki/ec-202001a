@@ -29,9 +29,11 @@ public class OrderController {
 		orderService.doOrder();
 		return "redirect:/order/order-finished";
 	}
-	
+
 	/**
-	 * @return　注文完了画面
+	 * 注文完了画面を表示する.
+	 * 
+	 * @return 注文完了画面
 	 */
 	@RequestMapping("/order-finished")
 	public String orderFinished() {

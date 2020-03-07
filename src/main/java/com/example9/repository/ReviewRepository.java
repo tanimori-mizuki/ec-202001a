@@ -13,17 +13,9 @@ import org.springframework.stereotype.Repository;
 import com.example9.domain.Review;
 
 /**
- * 口コミ情報を扱うリポジトリ.
+ * 口コミを扱うリポジトリ.
  * 
  * @author mayumiono
- *
- */
-/**
- * @author user
- *
- */
-/**
- * @author user
  *
  */
 @Repository

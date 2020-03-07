@@ -1,5 +1,11 @@
 package com.example9.domain;
 
+/**
+ * トッピングを表すドメイン.
+ * 
+ * @author yuuki
+ *
+ */
 public class Topping {
 
 	/** ID */

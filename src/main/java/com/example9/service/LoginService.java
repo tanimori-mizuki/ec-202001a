@@ -9,7 +9,7 @@ import com.example9.form.LoginForm;
 import com.example9.repository.UserRepository;
 
 /**
- * ログインするサービス
+ * ログイン処理をするサービス.
  * 
  * @author mayumiono
  *

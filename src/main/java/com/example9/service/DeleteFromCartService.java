@@ -12,22 +12,27 @@ import com.example9.domain.Order;
 import com.example9.repository.OrderItemRepository;
 import com.example9.repository.OrderRepository;
 
+/**
+ * カート内商品の削除処理を行うサービス.
+ * 
+ * @author yuuki
+ *
+ */
 @Service
 @Transactional
 public class DeleteFromCartService {
-	
+
 	@Autowired
 	private HttpSession session;
-	
+
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
 	@Autowired
 	private OrderItemRepository orderItemRepository;
-	
-	
+
 	/**
-	 *　主キーを元にorderItemIdを削除する.
+	 * 主キーを元にorderItemIdを削除する.
 	 * 
 	 * @param orderItemId 主キー
 	 */
@@ -38,18 +43,18 @@ public class DeleteFromCartService {
 		if (userId == null) {
 			userId = session.getId().hashCode();
 		}
-		
-		List <Order> orderList = orderRepository.findByUserIdAndStatus(userId, 0);
-		
+
+		List<Order> orderList = orderRepository.findByUserIdAndStatus(userId, 0);
+
 		Order order = orderList.get(0);
-		
+
 		// 削除処理
 		orderItemRepository.deleteById(orderItemId);
-		
+
 		// もし最後の1つならOrderも削除
 		if (order.getOrderItemList().size() == 1) {
 			orderRepository.deleteById(order.getId());
 		}
-	
+
 	}
 }

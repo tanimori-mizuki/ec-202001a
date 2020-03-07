@@ -1,7 +1,6 @@
 package com.example9.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,9 +23,10 @@ public class CheckCreditCardService {
 	private static final String URL = "http://192.168.17.35:8080/sample-credit-card-web-api/credit-card/payment";
 
 	/**
-	 * クレジットカード情報
-	 * @param form
-	 * @return
+	 * クレジットカード情報の確認.
+	 * 
+	 * @param form クレジットカード情報
+	 * @return 確認情報
 	 */
 	public CheckedCreditCard checkCardInfo(OrderForm form) {
 		return restTemplate.postForObject(URL, form, CheckedCreditCard.class);

@@ -3,7 +3,7 @@ package com.example9.form;
 import javax.validation.constraints.NotBlank;
 
 /**
- * ログインフォームへの入力情報
+ * ログインフォームへの入力情報を表すフォーム.
  * 
  * @author mayumiono
  *
@@ -11,10 +11,8 @@ import javax.validation.constraints.NotBlank;
 public class LoginForm {
 
 	/** メールアドレス */
-	@NotBlank(message = "メールアドレスを入力してください")
 	private String email;
 	/** パスワード */
-	@NotBlank(message = "パスワードを入力してください")
 	private String password;
 
 	public String getEmail() {

@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example9.domain.Order;
 import com.example9.service.ShowCartListService;
 
+/**
+ * カート内の商品表示を担うコントローラ.
+ * @author fujiiyuuki
+ *
+ */
 @Controller
 @RequestMapping("/show_cart_list")
 public class ShowCartListController {
@@ -22,6 +27,11 @@ public class ShowCartListController {
 	@Autowired
 	private HttpSession session;
 	
+	/**
+	 * カート内の商品一覧を表示する.
+	 * @param model リクエストスコープ
+	 * @return　カート内画面
+	 */
 	@RequestMapping("")
 	public String toCartList(Model model) {
 		Integer userId = (Integer) session.getAttribute("userId");

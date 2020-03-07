@@ -1,11 +1,18 @@
 package com.example9.domain;
 
+/**
+ * クレジットカード確認情報を表すドメイン.
+ * 
+ * @author mayumiono
+ *
+ */
 public class CheckedCreditCard {
 
 	/** ステータス(successまたはerror) */
 	private String status;
 	/** メッセージ */
 	private String message;
+	/** エラーコード */
 	private String error_code;
 
 	public String getError_code() {
