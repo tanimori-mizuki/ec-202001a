@@ -1,5 +1,7 @@
 package com.example9.form;
 
+import javax.validation.constraints.Size;
+
 /**
  * 口コミ投稿を表すフォーム.
  * 
@@ -9,23 +11,26 @@ package com.example9.form;
 public class ReviewForm {
 
 	/** 注文ID */
-	private Integer orderId;
+	private String orderId;
 	/** 投稿者名 */
+	@Size(min = 1, max = 20, message = "1-20文字で名前を入力してください")
 	private String authorName;
 	/** 注文商品ID */
-	private Integer orderItemId;
+	private String orderItemId;
 	/** 口コミコメント */
+	@Size(min = 1, max = 500, message = "1-500文字でコメントを入力してください")
 	private String review;
 	/** 評価（0-5点） */
-	private Integer evaluation;
+	@Size(min = 1, max = 1, message = "点数を選択してください")
+	private String evaluation;
 	/** 商品ID */
-	private Integer itemId;
+	private String itemId;
 
-	public Integer getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Integer orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 
@@ -37,11 +42,11 @@ public class ReviewForm {
 		this.authorName = authorName;
 	}
 
-	public Integer getOrderItemId() {
+	public String getOrderItemId() {
 		return orderItemId;
 	}
 
-	public void setOrderItemId(Integer orderItemId) {
+	public void setOrderItemId(String orderItemId) {
 		this.orderItemId = orderItemId;
 	}
 
@@ -53,19 +58,19 @@ public class ReviewForm {
 		this.review = review;
 	}
 
-	public Integer getEvaluation() {
+	public String getEvaluation() {
 		return evaluation;
 	}
 
-	public void setEvaluation(Integer evaluation) {
+	public void setEvaluation(String evaluation) {
 		this.evaluation = evaluation;
 	}
 
-	public Integer getItemId() {
+	public String getItemId() {
 		return itemId;
 	}
 
-	public void setItemId(Integer itemId) {
+	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
 

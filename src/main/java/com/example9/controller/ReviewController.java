@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -90,16 +92,27 @@ public class ReviewController {
 	}
 
 	@RequestMapping("/post")
-	public String post(ReviewForm form, RedirectAttributes flash) {
+	public String post(@Validated ReviewForm form, BindingResult result, RedirectAttributes flash, Model model) {
+
+		if (result.hasErrors()) {
+			Item item = showItemDetailService.getAnItem(Integer.parseInt(form.getItemId()));
+			model.addAttribute("item", item);
+			User user = (User) session.getAttribute("user");
+			model.addAttribute("userName", user.getName());
+			model.addAttribute("orderId", form.getOrderId());
+			model.addAttribute("orderItemId", form.getOrderItemId());
+			return "review_post";
+		}
+
 		Review review = new Review();
-		review.setOrderId(form.getOrderId());
+		review.setOrderId(Integer.parseInt(form.getOrderId()));
 		User user = (User) session.getAttribute("user");
 		review.setUserId(user.getId());
 		review.setAuthorName(form.getAuthorName());
-		review.setOrderItemId(form.getOrderItemId());
-		review.setEvaluation(form.getEvaluation());
+		review.setOrderItemId(Integer.parseInt(form.getOrderItemId()));
+		review.setEvaluation(Integer.parseInt(form.getEvaluation()));
 		review.setReview(form.getReview());
-		review.setItemId(form.getItemId());
+		review.setItemId(Integer.parseInt(form.getItemId()));
 		reviewService.postReview(review);
 		flash.addFlashAttribute("itemId", form.getItemId());
 		return "redirect:/review/posted";

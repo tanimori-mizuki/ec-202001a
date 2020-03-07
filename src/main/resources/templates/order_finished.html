@@ -50,26 +50,23 @@
 		<div class="row">
 			<div
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+			<div
+				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 				<h3 class="text-center">決済が完了しました！</h3>
 				<div class="text-center">
 					<p>この度はご注文ありがとうございます。</p>
 					<p>お支払い先は、お送りしたメールに記載してありますのでご確認ください。</p>
-					<p>メールが届かない場合は「注文履歴」からご確認ください。</p>
+					<p>メールが届かない場合は「注文履歴」からご確認ください。</p><br><br>
+				<div class="form-group">
+					<form action="item_list_curry.html" th:action="@{/}" method="post">
+						<input class="form-control btn btn-warning btn-block"
+							type="submit" value="トップページへ戻る">
+					</form>
+				</div>
 				</div>
 			</div>
 		</div>
 
-		<br><br>
-		<div class="row">
-			<div class="col-xs-offset-5 col-xs-2">
-				<div class="form-group">
-					<form action="order_finished.html" th:action="@{/}">
-						<input class="form-control btn btn-warning btn-block"
-							type="submit" value="トップ画面を表示する">
-					</form>
-				</div>
-			</div>
-		</div>
 	</div>
 	<!-- end container -->
 	<script
