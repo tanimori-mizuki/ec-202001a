@@ -23,6 +23,7 @@ public class UserRegisterForm {
 
 	/** 郵便番号 */
 	@NotBlank(message = "郵便番号を入力して下さい")
+	@Pattern(regexp = "^[0-9]{7}$", message="郵便番号はハイフン無の7桁で入力して下さい")
 	private String zipcode;
 
 	/** 住所 */

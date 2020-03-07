@@ -1,6 +1,9 @@
 package com.example9.controller;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +45,7 @@ public class OrderConfirmationController {
 	private CheckCreditCardService checkCreditCardService;
 
 	/**
-	 * ログイン時に入力した情報を注文確認画面で表示するためのフォーム.
+	 * ユーザー情報を受け取るフォーム.
 	 * 
 	 * @param id ユーザID
 	 * @return ユーザ情報
@@ -51,12 +54,13 @@ public class OrderConfirmationController {
 	public OrderForm setupOrderForm(Integer id) {
 		// ユーザIDを取得
 		Integer userId = (Integer) session.getAttribute("userId");
-		
-		if(userId == null) {
+
+		// ログインされていない場合、空のインスタンスを返す。
+		if (userId == null) {
 			return new OrderForm();
 		}
-		
-		//ユーザID(主キー）で検索した情報をuserInfoに格納。
+
+		// ログインしている場合、ログイン時に入力した内容を取得し、userInfoに格納する。
 		User userInfo = userRegisterService.showUser(userId);
 
 		// userInfoをorderFormにセットする
@@ -90,7 +94,7 @@ public class OrderConfirmationController {
 	@RequestMapping("")
 	public String toOrderConfirmation(Model model) {
 		Integer userId = (Integer) session.getAttribute("userId");
-		
+
 		// ログインしていない状態であればログイン画面へ遷移する
 		if (userId == null) {
 			return "forward:/login/referer";
@@ -125,14 +129,13 @@ public class OrderConfirmationController {
 	public String toOrderConfirm(@Validated OrderForm form, BindingResult result, Model model) {
 
 		// クレジットカード情報を確認する
-//		CheckedCreditCard checkedCard = checkCreditCardService.checkCardInfo(form);
-//
-//		if ("error".equals(checkedCard.getStatus())) {
-//			model.addAttribute("creditCard", "クレジットカード情報が不正です");
-//		}
+		CheckedCreditCard checkedCard = checkCreditCardService.checkCardInfo(form);
 
-//		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
-			if (result.hasErrors()) {
+		if ("error".equals(checkedCard.getStatus())) {
+			model.addAttribute("creditCard", "クレジットカード情報が不正です");
+		}
+
+		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
 			return "order_confirm";
 		}
 
@@ -149,9 +152,24 @@ public class OrderConfirmationController {
 		updateOrder.setDestinationZipcode(form.getZipcode());
 		updateOrder.setDestinationAddress(form.getAddress());
 		updateOrder.setDestinationTel(form.getTelephone());
-		updateOrder.setDeliveryTime(form.getDeliveryTime());
 		updateOrder.setPaymentMethod(form.getPaymentMethodInteger());
-		updateOrder.setDeliveryTime(form.getDeliveryTime());
+
+		// Formクラスで受け取った配達時間に関する2つのパラメータを合成
+		String StringDeliveryTime = form.getDeliveryDate() + " " + form.getDeliveryHour();
+
+		// format変換する為の記述
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh");
+		java.util.Date parsedDate = null;
+
+		try {
+			parsedDate = dateFormat.parse(StringDeliveryTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		// String型からTimeStamp型へ変換
+		Timestamp deliveryTime = new java.sql.Timestamp(parsedDate.getTime());
+		// TimeStamp型に変換したパラメータをドメインに移す
+		updateOrder.setDeliveryTime(deliveryTime);
 
 		// userId取得する
 		Integer userId = (Integer) session.getAttribute("userId");
