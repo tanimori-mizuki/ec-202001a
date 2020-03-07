@@ -1,7 +1,5 @@
 package com.example9.form;
 
-import java.sql.Timestamp;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -22,7 +20,7 @@ public class OrderForm {
 	private String email;
 
 	/** 郵便番号 */
-	@Pattern(regexp = "^[0-9]{7}$", message="郵便番号はハイフン無の7桁で入力して下さい")
+	@Pattern(regexp = "^[0-9]{7}$", message = "郵便番号はハイフン無の7桁で入力して下さい")
 	private String zipcode;
 
 	/** 住所 */
@@ -31,26 +29,28 @@ public class OrderForm {
 
 	/** 電話番号 */
 	@NotBlank(message = "電話番号を入力して下さい")
-	@Pattern(regexp="^[0-9]+$", message="電話番号は数値を入力して下さい")
+	@Pattern(regexp = "^[0-9]+$", message = "電話番号は数値を入力して下さい")
 	private String telephone;
 
+	/** 配達日 */
+	@NotBlank(message = "配達日時を入力して下さい")
+	private String deliveryDate;
+
 	/** 配達時間 */
-	// @NotBlank(message = "配達日時を入力して下さい")
-	private Timestamp deliveryTime;
+	private String deliveryHour;
 
 	/** 支払方法 */
 	private String paymentMethod;
-	
+
 	public Integer getPaymentMethodInteger() {
 		return Integer.parseInt(paymentMethod);
 	}
 
-
 	@Override
 	public String toString() {
 		return "OrderForm [name=" + name + ", email=" + email + ", zipcode=" + zipcode + ", address=" + address
-				+ ", telephone=" + telephone + ", deliveryTime=" + deliveryTime + ", paymentMethod=" + paymentMethod
-				+ "]";
+				+ ", telephone=" + telephone + ", deliveryDate=" + deliveryDate + ", deliveryHour=" + deliveryHour
+				+ ", paymentMethod=" + paymentMethod + "]";
 	}
 
 	public String getName() {
@@ -93,12 +93,20 @@ public class OrderForm {
 		this.telephone = telephone;
 	}
 
-	public Timestamp getDeliveryTime() {
-		return deliveryTime;
+	public String getDeliveryDate() {
+		return deliveryDate;
 	}
 
-	public void setDeliveryTime(Timestamp deliveryTime) {
-		this.deliveryTime = deliveryTime;
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public String getDeliveryHour() {
+		return deliveryHour;
+	}
+
+	public void setDeliveryHour(String deliveryHour) {
+		this.deliveryHour = deliveryHour;
 	}
 
 	public String getPaymentMethod() {
@@ -108,5 +116,4 @@ public class OrderForm {
 	public void setPaymentMethod(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
-
 }
