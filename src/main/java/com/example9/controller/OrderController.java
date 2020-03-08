@@ -37,7 +37,7 @@ public class OrderController {
 		String url = request.getHeader("REFERER");
 		if (!"http://localhost:8080/confirm".equals(url)
 				&& !"http://localhost:8080/confirm/orderAfterConfirm".equals(url)) {
-			return "404";
+			return "/error/404";
 		}
 
 		// メールを送信
