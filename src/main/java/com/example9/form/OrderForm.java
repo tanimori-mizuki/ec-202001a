@@ -43,72 +43,19 @@ public class OrderForm {
 	private String paymentMethod;
 
 	/** カード番号 */
-	private Integer card_number;
+	private String card_number;
 
 	/** 有効期限（年） */
-	private Integer card_exp_year;
+	private String card_exp_year;
 
 	/** 有効期限（月） */
-	private Integer card_exp_month;
+	private String card_exp_month;
 
 	/** カード名義人 */
-	private Integer card_name;
+	private String card_name;
 
 	/** セキュリティコード */
-	private Integer card_cvv;
-	
-	@Override
-	public String toString() {
-		return "OrderForm [name=" + name + ", email=" + email + ", zipcode=" + zipcode + ", address=" + address
-				+ ", telephone=" + telephone + ", deliveryDate=" + deliveryDate + ", deliveryHour=" + deliveryHour
-				+ ", paymentMethod=" + paymentMethod + ", card_number=" + card_number + ", card_exp_year="
-				+ card_exp_year + ", card_exp_month=" + card_exp_month + ", card_name=" + card_name + ", card_cvv="
-				+ card_cvv + "]";
-	}
-
-	public Integer getPaymentMethodInteger() {
-		return Integer.parseInt(paymentMethod);
-	}
-
-	public Integer getCard_number() {
-		return card_number;
-	}
-
-	public void setCard_number(Integer card_number) {
-		this.card_number = card_number;
-	}
-
-	public Integer getCard_exp_year() {
-		return card_exp_year;
-	}
-
-	public void setCard_exp_year(Integer card_exp_year) {
-		this.card_exp_year = card_exp_year;
-	}
-
-	public Integer getCard_exp_month() {
-		return card_exp_month;
-	}
-
-	public void setCard_exp_month(Integer card_exp_month) {
-		this.card_exp_month = card_exp_month;
-	}
-
-	public Integer getCard_name() {
-		return card_name;
-	}
-
-	public void setCard_name(Integer card_name) {
-		this.card_name = card_name;
-	}
-
-	public Integer getCard_cvv() {
-		return card_cvv;
-	}
-
-	public void setCard_cvv(Integer card_cvv) {
-		this.card_cvv = card_cvv;
-	}
+	private String card_cvv;
 
 	public String getName() {
 		return name;
@@ -173,4 +120,54 @@ public class OrderForm {
 	public void setPaymentMethod(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
+
+	public String getCard_number() {
+		return card_number;
+	}
+
+	public void setCard_number(String card_number) {
+		this.card_number = card_number;
+	}
+
+	public String getCard_exp_year() {
+		return card_exp_year;
+	}
+
+	public void setCard_exp_year(String card_exp_year) {
+		this.card_exp_year = card_exp_year;
+	}
+
+	public String getCard_exp_month() {
+		return card_exp_month;
+	}
+
+	public void setCard_exp_month(String card_exp_month) {
+		this.card_exp_month = card_exp_month;
+	}
+
+	public String getCard_name() {
+		return card_name;
+	}
+
+	public void setCard_name(String card_name) {
+		this.card_name = card_name;
+	}
+
+	public String getCard_cvv() {
+		return card_cvv;
+	}
+
+	public void setCard_cvv(String card_cvv) {
+		this.card_cvv = card_cvv;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderForm [name=" + name + ", email=" + email + ", zipcode=" + zipcode + ", address=" + address
+				+ ", telephone=" + telephone + ", deliveryDate=" + deliveryDate + ", deliveryHour=" + deliveryHour
+				+ ", paymentMethod=" + paymentMethod + ", card_number=" + card_number + ", card_exp_year="
+				+ card_exp_year + ", card_exp_month=" + card_exp_month + ", card_name=" + card_name + ", card_cvv="
+				+ card_cvv + "]";
+	}
+
 }

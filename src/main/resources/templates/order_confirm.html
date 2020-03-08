@@ -373,7 +373,7 @@
 								<td>
 									<div class="row">
 										<div class="col-sm-12">
-											<input type="text" name="cardNum">
+											<input type="text" name="card_number">
 										</div>
 									</div>
 								</td>
@@ -387,7 +387,7 @@
 								<td>
 									<div class="row">
 										<div class="col-sm-12">
-											<select name="month">
+											<select name="card_exp_month">
 												<option>01</option>
 												<option>02</option>
 												<option>03</option>
@@ -401,7 +401,7 @@
 												<option>11</option>
 												<option>12</option>
 											</select>
-											<select name="year">
+											<select name="card_exp_year">
 												<option th:each="year:${yearList}" th:text="${year}">2020</option>
 											</select>
 										</div>
@@ -417,7 +417,7 @@
 								<td>
 									<div class="row">
 										<div class="col-sm-12">
-											<input type="text" name="cardUserName">
+											<input type="text" name="card_name">
 										</div>
 									</div>
 								</td>
@@ -431,7 +431,7 @@
 								<td>
 									<div class="row">
 										<div class="col-sm-12">
-											<input type="text" name="securityCord">
+											<input type="text" name="card_cvv">
 										</div>
 									</div>
 								</td>

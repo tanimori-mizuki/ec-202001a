@@ -128,17 +128,17 @@ public class OrderConfirmationController {
 	public String toOrderConfirm(@Validated OrderForm form, BindingResult result, Model model) {
 
 		// クレジットカード情報を確認する
-		int paymentMethod = Integer.parseInt(form.getPaymentMethod());
-		CheckedCreditCard checkedCard = new CheckedCreditCard();
-		if (paymentMethod == 2) {
-			checkedCard = checkCreditCardService.checkCardInfo(form);
-		}
-		if ("error".equals(checkedCard.getStatus())) {
-			model.addAttribute("creditCard", "クレジットカード情報が不正です");
-		}
-		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
-			return "order_confirm";
-		}
+//		int paymentMethod = Integer.parseInt(form.getPaymentMethod());
+//		CheckedCreditCard checkedCard = new CheckedCreditCard();
+//		if (paymentMethod == 2) {
+//			checkedCard = checkCreditCardService.checkCardInfo(form);
+//		}
+//		if ("error".equals(checkedCard.getStatus())) {
+//			model.addAttribute("creditCard", "クレジットカード情報が不正です");
+//		}
+//		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
+//			return "order_confirm";
+//		}
 
 		Order updateOrder = new Order();
 
@@ -153,7 +153,7 @@ public class OrderConfirmationController {
 		updateOrder.setDestinationZipcode(form.getZipcode());
 		updateOrder.setDestinationAddress(form.getAddress());
 		updateOrder.setDestinationTel(form.getTelephone());
-		updateOrder.setPaymentMethod(form.getPaymentMethodInteger());
+		updateOrder.setPaymentMethod(Integer.parseInt(form.getPaymentMethod()));
 
 		// Formクラスで受け取った配達時間に関する2つのパラメータを合成
 		String StringDeliveryTime = form.getDeliveryDate() + " " + form.getDeliveryHour();
