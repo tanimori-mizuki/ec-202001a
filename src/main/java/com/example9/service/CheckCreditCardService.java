@@ -20,7 +20,7 @@ public class CheckCreditCardService {
 	RestTemplate restTemplate;
 
 	/** WebApiのwarファイルデプロイ先URL */
-	private static final String URL = "http://192.168.17.35:8080/sample-credit-card-web-api/credit-card/payment";
+	private static final String URL = "http://192.168.2.103:8080/sample-credit-card-web-api/credit-card/payment";
 
 	/**
 	 * クレジットカード情報の確認.

@@ -129,15 +129,17 @@ public class OrderConfirmationController {
 	public String toOrderConfirm(@Validated OrderForm form, BindingResult result, Model model) {
 
 		// クレジットカード情報を確認する
-		CheckedCreditCard checkedCard = checkCreditCardService.checkCardInfo(form);
-
-		if ("error".equals(checkedCard.getStatus())) {
-			model.addAttribute("creditCard", "クレジットカード情報が不正です");
-		}
-
-		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
-			return "order_confirm";
-		}
+//		int paymentMethod = Integer.parseInt(form.getPaymentMethod());
+//		CheckedCreditCard checkedCard = new CheckedCreditCard();
+//		if (paymentMethod == 2) {
+//			checkedCard = checkCreditCardService.checkCardInfo(form);
+//		}
+//		if ("error".equals(checkedCard.getStatus())) {
+//			model.addAttribute("creditCard", "クレジットカード情報が不正です");
+//		}
+//		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
+//			return "order_confirm";
+//		}
 
 		Order updateOrder = new Order();
 
