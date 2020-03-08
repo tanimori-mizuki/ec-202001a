@@ -71,7 +71,6 @@ public class ShowOrderHistoryController {
 		List<Order> orderList = showOrderHistoryService.getOrderHistoryDetail(orderId);
 		Order order = orderList.get(0);
 		model.addAttribute(order);
-		System.out.println(order);
 
 		return "order_history_detail";
 	}
