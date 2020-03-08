@@ -76,7 +76,6 @@ public class ShowItemListController {
 		
 		System.out.println(pageNumber);
 		itemList = showItemListService.ShowListpaging(6*(pageNumber-1));
-		System.out.println(itemList);
 		
 		// 並び替え用にsessionスコープに残しておく
 		session.setAttribute("itemList", itemList);
