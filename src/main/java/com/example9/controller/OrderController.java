@@ -1,6 +1,7 @@
 package com.example9.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,9 @@ public class OrderController {
 	@Autowired
 	private SendMailService sendMailService;
 
+	@Autowired
+	private HttpSession session;
+
 	/**
 	 * 注文する.
 	 * 
@@ -34,11 +38,11 @@ public class OrderController {
 	public String order(HttpServletRequest request) {
 
 		// 不正な画面遷移で当パスに辿り着いた場合、エラーとする
-//		String urlBefore = request.getHeader("REFERER");
-//		System.out.println(urlBefore);
-//		if (!"http://localhost:8080/confirm/orderAfterConfirm".equals(urlBefore)) {
-//			return "404";
-//		}
+		String url = request.getHeader("REFERER");
+		if (!"http://localhost:8080/confirm".equals(url)
+				&& !"http://localhost:8080/confirm/orderAfterConfirm".equals(url)) {
+			return "404";
+		}
 
 		// メールを送信
 		sendMailService.sendMail();
