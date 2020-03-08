@@ -34,8 +34,8 @@ public class OrderController {
 	public String order(HttpServletRequest request) {
 
 		// 不正な画面遷移で当パスに辿り着いた場合、エラーとする
-		String urlBefore = request.getHeader("REFERER");
-		System.out.println(urlBefore);
+//		String urlBefore = request.getHeader("REFERER");
+//		System.out.println(urlBefore);
 //		if (!"http://localhost:8080/confirm/orderAfterConfirm".equals(urlBefore)) {
 //			return "404";
 //		}

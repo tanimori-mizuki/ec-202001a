@@ -51,7 +51,7 @@ public class OrderConfirmationController {
 	 * @return ユーザ情報
 	 */
 	@ModelAttribute
-	public OrderForm setupOrderForm(Integer id) {
+	public OrderForm setupOrderForm(Integer id, Model model) {
 		// ユーザIDを取得
 		Integer userId = (Integer) session.getAttribute("userId");
 
@@ -71,6 +71,15 @@ public class OrderConfirmationController {
 		orderForm.setAddress(userInfo.getAddress());
 		orderForm.setTelephone(userInfo.getTelephone());
 
+		// クレジットカード情報入力欄の有効期限年リストを作成する
+		List<Integer> yearList = new ArrayList<>();
+		LocalDate date = LocalDate.now();
+		int topOfYear = date.getYear();
+		int endOfYear = topOfYear + 20;
+		for (int i = topOfYear; i <= endOfYear; i++) {
+			yearList.add(i);
+		}
+		model.addAttribute("yearList", yearList);
 		return orderForm;
 	}
 
@@ -107,15 +116,6 @@ public class OrderConfirmationController {
 		model.addAttribute("tax", order.getTax());
 		model.addAttribute("order", order);
 
-		// クレジットカード情報入力欄の有効期限年リストを作成する
-		List<Integer> yearList = new ArrayList<>();
-		LocalDate date = LocalDate.now();
-		int topOfYear = date.getYear();
-		int endOfYear = topOfYear + 20;
-		for (int i = topOfYear; i <= endOfYear; i++) {
-			yearList.add(i);
-		}
-		model.addAttribute("yearList", yearList);
 
 		return "order_confirm";
 	}
@@ -129,17 +129,17 @@ public class OrderConfirmationController {
 	public String toOrderConfirm(@Validated OrderForm form, BindingResult result, Model model) {
 
 		// クレジットカード情報を確認する
-//		int paymentMethod = Integer.parseInt(form.getPaymentMethod());
-//		CheckedCreditCard checkedCard = new CheckedCreditCard();
-//		if (paymentMethod == 2) {
-//			checkedCard = checkCreditCardService.checkCardInfo(form);
-//		}
-//		if ("error".equals(checkedCard.getStatus())) {
-//			model.addAttribute("creditCard", "クレジットカード情報が不正です");
-//		}
-//		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
-//			return "order_confirm";
-//		}
+		int paymentMethod = Integer.parseInt(form.getPaymentMethod());
+		CheckedCreditCard checkedCard = new CheckedCreditCard();
+		if (paymentMethod == 2) {
+			checkedCard = checkCreditCardService.checkCardInfo(form);
+		}
+		if ("error".equals(checkedCard.getStatus())) {
+			model.addAttribute("creditCard", "クレジットカード情報が不正です");
+		}
+		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
+			return "order_confirm";
+		}
 
 		Order updateOrder = new Order();
 
