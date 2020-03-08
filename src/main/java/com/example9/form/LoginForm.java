@@ -1,6 +1,5 @@
 package com.example9.form;
 
-import javax.validation.constraints.NotBlank;
 
 /**
  * ログインフォームへの入力情報を表すフォーム.

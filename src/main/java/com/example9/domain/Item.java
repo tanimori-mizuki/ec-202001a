@@ -118,4 +118,26 @@ public class Item {
 		this.toppingList = toppingList;
 	}
 
+	/**
+	 * 評価平均値を星へ変換
+	 * 
+	 * @return 星
+	 */
+	public String getStars() {
+		if (0 <= aveEvaluation && aveEvaluation < 1) {
+			return "☆☆☆☆☆";
+		} else if (1 <= aveEvaluation && aveEvaluation < 2) {
+			return "★☆☆☆☆";
+		} else if (2 <= aveEvaluation && aveEvaluation < 3) {
+			return "★★☆☆☆";
+		} else if (3 <= aveEvaluation && aveEvaluation < 4) {
+			return "★★★☆☆";
+		} else if (4 <= aveEvaluation && aveEvaluation < 5) {
+			return "★★★★☆";
+		} else if (5 == aveEvaluation) {
+			return "★★★★★";
+		} else {
+			return "☆☆☆☆☆";
+		}
+	}
 }

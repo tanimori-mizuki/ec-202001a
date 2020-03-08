@@ -69,6 +69,24 @@ public class ReviewController {
 		}
 		double aveEvaluation = sumEvaluations / reviewList.size();
 		model.addAttribute("aveEvaluation", aveEvaluation);
+		// 評価平均値を星へ変換
+		String stars;
+		if (0 <= aveEvaluation && aveEvaluation < 1) {
+			stars = "☆☆☆☆☆";
+		} else if (1 <= aveEvaluation && aveEvaluation < 2) {
+			stars = "★☆☆☆☆";
+		} else if (2 <= aveEvaluation && aveEvaluation < 3) {
+			stars = "★★☆☆☆";
+		} else if (3 <= aveEvaluation && aveEvaluation < 4) {
+			stars = "★★★☆☆";
+		} else if (4 <= aveEvaluation && aveEvaluation < 5) {
+			stars = "★★★★☆";
+		} else if (5 == aveEvaluation) {
+			stars = "★★★★★";
+		} else {
+			stars = "☆☆☆☆☆";
+		}
+		model.addAttribute("stars", stars);
 		return "review_show";
 	}
 
@@ -94,10 +112,10 @@ public class ReviewController {
 	/**
 	 * 口コミを投稿する.
 	 * 
-	 * @param form 投稿内容
-	 * @param      result 入力値チェック
-	 * @param      flash フラッシュスコープ
-	 * @param      model リクエストスコープ
+	 * @param form   投稿内容
+	 * @param result 入力値チェック
+	 * @param flash  フラッシュスコープ
+	 * @param model  リクエストスコープ
 	 * @return 投稿完了画面へのリダイレクト
 	 */
 	@RequestMapping("/post")

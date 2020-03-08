@@ -73,7 +73,7 @@
 							<th>
 									&nbsp;&nbsp;&nbsp;&nbsp;商品
 							</th>
-							<th>
+							<th colspan="2">
 								<div class="text-center">
 									口コミ数
 								</div>
@@ -98,19 +98,14 @@
 								<span th:text="${reviewList[0].itemName}">じゃがバターベーコン</span>
 								</div>
 							</td>
-							<td>
+							<td colspan="2">
 								<div class="text-center">
 								<span th:text="${reviewList.size()}+'件'">1件</span><br>
 							</div>
 							</td>
 							<td>
 								<div class="text-center">
-								<span th:if="${4<aveEvaluation && aveEvaluation<=5}" th:text="'★★★★★'">★★★★★</span>
-								<span th:if="${3<aveEvaluation && aveEvaluation<=4}" th:text="'★★★★☆'"></span>
-								<span th:if="${2<aveEvaluation && aveEvaluation<=3}" th:text="'★★★☆☆'"></span>
-								<span th:if="${1<aveEvaluation && aveEvaluation<=2}" th:text="'★★☆☆☆'"></span>
-								<span th:if="${0<aveEvaluation && aveEvaluation<=1}" th:text="'★☆☆☆☆'"></span>
-								<span th:if="${aveEvaluation==0}"  th:text="'☆☆☆☆☆'"></span><br>
+								<span  th:text="${stars}"></span><br>
 								<span th:text="'('+${aveEvaluation}+'点/5点)'">(5/5点)</span>
 							</div>
 							</td>
