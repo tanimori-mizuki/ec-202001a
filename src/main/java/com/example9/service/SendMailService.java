@@ -107,9 +107,7 @@ public class SendMailService {
 		} else if ("2".equals(order.getPaymentMethod().toString())) {
 			text.append("クレジットカード\n");
 		}
-		
-		text.append("※前払いを選ばれた場合は、ご入金確認後の発送となります。\n"); 
-		text.append("※お支払い期限までにご入金がなかった場合は、ご注文をキャンセルさせていただきます。何卒ご了承ください。\n"); 
+		 
 		text.append("ご不明な点などがございましたら、お気軽にご連絡ください。\n\n");
 		
 		// フッター部分
