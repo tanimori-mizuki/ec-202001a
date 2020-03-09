@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example9.domain.Item;
-import com.example9.form.PagingNumberForm;
 import com.example9.form.SortConditionNumberForm;
 import com.example9.service.ShowItemListService;
 
@@ -44,11 +43,6 @@ public class ShowItemListController {
 		return form;
 	}
 	
-	@ModelAttribute
-	public PagingNumberForm setUpPagingNumberForm() {
-		return new PagingNumberForm();
-	}
-	
 	
 	/**
 	 * 商品一覧表示を行います.
@@ -56,7 +50,7 @@ public class ShowItemListController {
 	 * @return　商品一覧画面
 	 */
 	@RequestMapping("")
-	public String showList(Model model, PagingNumberForm form) {
+	public String showList(Model model,Integer pagingNumber) {
 		
 		List<Item>itemList = showItemListService.showList();
 	
@@ -74,8 +68,13 @@ public class ShowItemListController {
 		}
 		model.addAttribute("pageList", pageList);
 		
-		System.out.println(pageNumber);
-		itemList = showItemListService.ShowListpaging(6*(pageNumber-1));
+		System.out.println(pagingNumber);
+		if(pagingNumber == null) {
+			itemList = showItemListService.ShowListpaging(1);
+		} else {
+			itemList = showItemListService.ShowListpaging(6* (pagingNumber -1));
+			System.out.println(itemList);
+		}
 		
 		// 並び替え用にsessionスコープに残しておく
 		session.setAttribute("itemList", itemList);
@@ -98,13 +97,13 @@ public class ShowItemListController {
 	 * @return　商品一覧画面
 	 */
 	@RequestMapping("/searchResult")
-	public String serchByLikeName(String code,Model model,PagingNumberForm form) {
+	public String serchByLikeName(String code,Model model,Integer pagingNumber) {
 		List<Item>itemList = showItemListService.searchByLikeName(code);
 		
 		if(itemList.size() == 0) {
 			String message = "該当する商品がありません";
 			model.addAttribute("message", message);
-			return showList(model,form);
+			return showList(model,pagingNumber);
 		} else {
 			// 並び替え用にsessionスコープに残しておく
 			session.setAttribute("itemList", itemList);

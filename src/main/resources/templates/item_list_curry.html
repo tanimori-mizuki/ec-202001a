@@ -123,15 +123,17 @@ $( function() {
 						</tr>
 					</tbody>
 				</table>
+				<div class="text-center">
+					<form th:action="@{/}" method="post">
+						<span style="text-align: center" th:each="page:${pageList}">
+							<button th:text="${page}" type="submit" name="pagingNumber" th:value="${page}"></button>
+						</span><br>
+					</form>
+				</div><br>
 			</div>
 		</div>
 	</div>
 
-<div style="text-align: center"  th:each="page:${pageList}">
-		<form th:action="@{/}" method="post" th:object="${pagingNumberForm}">
-			<button type="submit" name="pagingNumber" th:text="${page}" >1</button>&nbsp;
-		</form>
-</div><br>
 	<!-- end container -->
 	<!-- オートコンプリート昨日のためにコメントアウト -->
 	<!-- <script
