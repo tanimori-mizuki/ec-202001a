@@ -61,6 +61,15 @@ public class ShowOrderHistoryController {
 		// セッションスコープからユーザーID取得
 		User user = (User) session.getAttribute("user");
 		Integer userId = user.getId();
+		
+		if(form.getMinYear()!=null && ("".equals(form.getMinMonth()) ||"".equals(form.getMinMonth()))) {
+			model.addAttribute("dayError", "月・日を入力してください");
+			return "order_history";
+		} 
+		if(form.getMaxYear()!=null && ("".equals(form.getMaxMonth()) ||"".equals(form.getMaxMonth()))) {
+			model.addAttribute("dayError", "月・日を入力してください");
+			return "order_history";
+		} 
 
 		// 絞り込み日付の最小/最大値いずれかがnullの場合、最大値も最小値も同値を設定する
 		Date minDate = form.getMinDate();
