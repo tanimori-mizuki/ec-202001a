@@ -157,6 +157,7 @@
 						<tr>
 						<td colspan="6">
 							<div class="text-center">
+							<div th:text="'現在：'+${session.pageNum}+'ページ目'"></div>
 							<form th:action="@{/order-history}" method="post" th:each="pageNumber:${pageNumbers}" style="display: inline">
 								<input type="hidden" name="page" th:value="${pageNumber}">
 								<input type="hidden" name="minYear" th:value="${session.minYear}">
