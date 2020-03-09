@@ -62,14 +62,14 @@
 						<div class="text-center">
 						<div th:if="${dayError}" th:text="${dayError}" style="color:red"></div><br>
 							<form th:action="@{/order-history}" method="post" th:object="${serchHistoryForm}">
-									<input type="text" th:name="minYear" size="2px" id="minYear"><label for="minYear">年</label>&nbsp;
-									<input type="text" th:name="minMonth" size="1px" id="minMonth"><label for="minMonth">月</label>&nbsp;
-									<input type="text" th:name="minDay" size="1px" id="minDay"><label for="minDay">日</label>&nbsp;&nbsp;～&nbsp;&nbsp;
-									<input type="text" th:name="maxYear" size="2px" id="maxYear"><label for="maxYear">年</label>&nbsp;
-									<input type="text" th:name="maxMonth" size="1px" id="maxMonth"><label for="maxMonth">月</label>&nbsp;
-									<input type="text" th:name="maxDay"  size="1px" id="maxDay"><label for="maxDay">日</label><br><br>
+									<input type="text" th:name="minYear" size="2px" id="minYear" th:field="*{minYear}"><label for="minYear">年</label>&nbsp;
+									<input type="text" th:name="minMonth" size="1px" id="minMonth" th:field="*{minMonth}"><label for="minMonth">月</label>&nbsp;
+									<input type="text" th:name="minDay" size="1px" id="minDay" th:field="*{minDay}"><label for="minDay">日</label>&nbsp;&nbsp;～&nbsp;&nbsp;
+									<input type="text" th:name="maxYear" size="2px" id="maxYear" th:field="*{maxYear}"><label for="maxYear">年</label>&nbsp;
+									<input type="text" th:name="maxMonth" size="1px" id="maxMonth" th:field="*{maxMonth}"><label for="maxMonth">月</label>&nbsp;
+									<input type="text" th:name="maxDay"  size="1px" id="maxDay" th:field="*{maxDay}"><label for="maxDay">日</label><br><br>
 									<button type="submit" value="検索" class="btn btn-primary">検索</button>
-									<button type="reset" value="クリア" class="btn btn-default">クリア</button>
+<!-- 									<button type="reset" value="クリア" class="btn btn-default">クリア</button> -->
 							</form>
 							</div>
 					</div>

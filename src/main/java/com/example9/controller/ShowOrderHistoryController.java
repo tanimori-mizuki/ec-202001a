@@ -1,6 +1,7 @@
 package com.example9.controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,30 +63,41 @@ public class ShowOrderHistoryController {
 		User user = (User) session.getAttribute("user");
 		Integer userId = user.getId();
 
-		if ((form.getMinYear() != null && !"".equals(form.getMinYear()))
-				&& ("".equals(form.getMinMonth()) || "".equals(form.getMinMonth()))) {
-			model.addAttribute("dayError", "月・日を入力してください");
-			return "order_history";
-		}
-		if (form.getMaxYear() != null
-				&& !"".equals(form.getMaxYear()) && ("".equals(form.getMaxMonth()) || "".equals(form.getMaxMonth()))) {
-			model.addAttribute("dayError", "月・日を入力してください");
-			return "order_history";
-		}
-
-		// 絞り込み日付の最小/最大値いずれかがnullの場合、最大値も最小値も同値を設定する
+		// 絞り込み日付の最小値・最大値を変数格納
 		Date minDate = form.getMinDate();
 		Date maxDate = form.getMaxDate();
-		if (minDate == null && maxDate != null) {
-			form.setMinYear(form.getMaxYear());
-			form.setMinMonth(form.getMaxMonth());
-			form.setMinDay(form.getMaxDay());
+
+		// 絞り込み日付欄の未入力確認（未入力：true, 入力あり：false）
+		Boolean minDateIsEmpty = "".equals(form.getMinYear()) && "".equals(form.getMinMonth())
+				&& "".equals(form.getMinDay());
+		Boolean maxDateIsEmpty = "".equals(form.getMaxYear()) && "".equals(form.getMaxMonth())
+				&& "".equals(form.getMaxDay());
+
+		// 最大値のみ入力した場合は、最小値＝西暦始まりとする
+		if (minDateIsEmpty && !maxDateIsEmpty) {
+			form.setMinYear("0000");
+			form.setMinMonth("1");
+			form.setMinDay("1");
 			minDate = form.getMinDate();
-		} else if (minDate != null && maxDate == null) {
-			form.setMaxYear(form.getMinYear());
-			form.setMaxMonth(form.getMinMonth());
-			form.setMaxDay(form.getMinDay());
+		}
+
+		// 最小値のみ入力した場合は最大値＝本日とする
+		if (!minDateIsEmpty && maxDateIsEmpty) {
+			LocalDate today = LocalDate.now();
+			form.setMaxYear(String.valueOf(today.getYear()));
+			form.setMaxMonth(String.valueOf(today.getMonthValue()));
+			form.setMaxDay(String.valueOf(today.getDayOfMonth()));
 			maxDate = form.getMaxDate();
+		}
+
+		// 入力値をDateに変換できなかった場合は不整値とみなす
+		if (form.getMinYear() != null && !"".equals(form.getMinYear()) && minDate == null) {
+			model.addAttribute("dayError", "正しい日付を入力してください");
+			return "order_history";
+		}
+		if (form.getMaxYear() != null && !"".equals(form.getMaxYear()) && maxDate == null) {
+			model.addAttribute("dayError", "正しい日付を入力してください");
+			return "order_history";
 		}
 
 		// 最小日付よりも最大日付が小さな値の場合、エラー

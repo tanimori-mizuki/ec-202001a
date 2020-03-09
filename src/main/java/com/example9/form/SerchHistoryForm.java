@@ -29,6 +29,14 @@ public class SerchHistoryForm {
 	 * @return 最小年月日(不整値入力時はnull)
 	 */
 	public Date getMinDate() {
+		// 年数入力ありにもかかわらず月数未入力の場合、デフォルトで1月を設定
+		if (!"".equals(minYear) && "".equals(minMonth) && "".equals(minDay)) {
+			minMonth = "1";
+		}
+		// 年数・月数入力ありにもかかわらず日数未入力の場合、デフォルトで1日を設定
+		if ((!"".equals(minYear) && !"".equals(minMonth)) && "".equals(minDay)) {
+			minDay = "1";
+		}
 		try {
 			String date = minYear + "-" + minMonth + "-" + minDay;
 			Date minDate = Date.valueOf(date);
@@ -44,6 +52,14 @@ public class SerchHistoryForm {
 	 * @return 最大年月日
 	 */
 	public Date getMaxDate() {
+		// 年数入力ありにもかかわらず月数未入力の場合、デフォルトで12月を設定
+		if (!"".equals(maxYear) && "".equals(maxMonth) && "".equals(maxDay)) {
+			maxMonth = "12";
+		}
+		// 年数・月数入力ありにもかかわらず日数未入力の場合、デフォルトで31日を設定
+		if ((!"".equals(maxYear) && !"".equals(maxMonth)) && "".equals(maxDay)) {
+			maxDay = "31";
+		}
 		String date = maxYear + "-" + maxMonth + "-" + maxDay;
 		try {
 			Date maxDate = Date.valueOf(date);
