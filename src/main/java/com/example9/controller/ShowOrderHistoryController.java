@@ -61,15 +61,17 @@ public class ShowOrderHistoryController {
 		// セッションスコープからユーザーID取得
 		User user = (User) session.getAttribute("user");
 		Integer userId = user.getId();
-		
-		if(form.getMinYear()!=null && ("".equals(form.getMinMonth()) ||"".equals(form.getMinMonth()))) {
+
+		if ((form.getMinYear() != null && !"".equals(form.getMinYear()))
+				&& ("".equals(form.getMinMonth()) || "".equals(form.getMinMonth()))) {
 			model.addAttribute("dayError", "月・日を入力してください");
 			return "order_history";
-		} 
-		if(form.getMaxYear()!=null && ("".equals(form.getMaxMonth()) ||"".equals(form.getMaxMonth()))) {
+		}
+		if (form.getMaxYear() != null
+				&& !"".equals(form.getMaxYear()) && ("".equals(form.getMaxMonth()) || "".equals(form.getMaxMonth()))) {
 			model.addAttribute("dayError", "月・日を入力してください");
 			return "order_history";
-		} 
+		}
 
 		// 絞り込み日付の最小/最大値いずれかがnullの場合、最大値も最小値も同値を設定する
 		Date minDate = form.getMinDate();
@@ -87,7 +89,7 @@ public class ShowOrderHistoryController {
 		}
 
 		// 最小日付よりも最大日付が小さな値の場合、エラー
-		if ( maxDate != null && minDate != null && maxDate.compareTo(minDate) < 0) {
+		if (maxDate != null && minDate != null && maxDate.compareTo(minDate) < 0) {
 			model.addAttribute("dayError", "右欄は、左欄以降の日付を入力するか、空欄にしてください");
 			return "order_history";
 		}

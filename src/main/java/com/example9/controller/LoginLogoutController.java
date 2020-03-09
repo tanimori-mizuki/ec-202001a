@@ -102,7 +102,7 @@ public class LoginLogoutController {
 		List<Order> orderList = showCartListService.showCartList(user.getId());
 
 		if ("http://localhost:8080/show_cart_list".equals(url) && orderList != null) {
-			return "forward:/confirm";
+			return "redirect:/confirm";
 		}
 
 		return "forward:/";
