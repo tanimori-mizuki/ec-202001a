@@ -23,20 +23,20 @@ public class ItemRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
-	/**
-	 * Itemオブジェクトを生成するローマッパー
-	 */
-	public static final RowMapper<Item> ITEM_ROW_MAPPER = (rs, i) -> {
-		Item item = new Item();
-		item.setId(rs.getInt("id"));
-		item.setName(rs.getString("name"));
-		item.setDescription(rs.getString("description"));
-		item.setPriceM(rs.getInt("price_m"));
-		item.setPriceL(rs.getInt("price_l"));
-		item.setImagePath(rs.getString("image_path"));
-		item.setDeleted(rs.getBoolean("deleted"));
-		return item;
-	};
+//	/**
+//	 * Itemオブジェクトを生成するローマッパー
+//	 */
+//	public static final RowMapper<Item> ITEM_ROW_MAPPER = (rs, i) -> {
+//		Item item = new Item();
+//		item.setId(rs.getInt("id"));
+//		item.setName(rs.getString("name"));
+//		item.setDescription(rs.getString("description"));
+//		item.setPriceM(rs.getInt("price_m"));
+//		item.setPriceL(rs.getInt("price_l"));
+//		item.setImagePath(rs.getString("image_path"));
+//		item.setDeleted(rs.getBoolean("deleted"));
+//		return item;
+//	};
 
 	/** 口コミ情報含むItemオブジェクトを生成するローマッパー */
 	public static final RowMapper<Item> ITEM_REVIEW_ROW_MAPPER = (rs, i) -> {
