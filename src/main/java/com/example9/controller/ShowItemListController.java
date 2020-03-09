@@ -39,10 +39,10 @@ public class ShowItemListController {
 
 	@Autowired
 	private ServletContext application;
-	
+
 	// 1ページに表示する商品は6品
 	private static final int VIEW_SIZE = 6;
-	
+
 	@ModelAttribute
 	public SortConditionNumberForm setUpSortConditionNumberForm() {
 		SortConditionNumberForm form = new SortConditionNumberForm();
@@ -59,13 +59,12 @@ public class ShowItemListController {
 	@RequestMapping("")
 	public String showList(String code, Model model, Integer pagingNumber) {
 		// オートコンプリート用の記述
-		List <Item> fullItemList = showItemListService.showList();
+		List<Item> fullItemList = showItemListService.showList();
 		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(fullItemList);
 		application.setAttribute("itemListForAutocomplete", itemListForAutocomplete);
-		
-		
+
 		// itemListを宣言しておく
-		List<Item> itemList = null ;
+		List<Item> itemList = null;
 		// もし検索されない場合は全件表示する（商品一覧表示機能）
 		if (code == null) {
 			// 商品一覧を取得
@@ -75,26 +74,30 @@ public class ShowItemListController {
 			model.addAttribute("code", code);
 			itemList = showItemListService.searchByLikeName(code);
 		}
-		
+
 		// １件もヒットしない場合
 		if (itemList.size() == 0) {
 			String message = "該当する商品がありません";
 			model.addAttribute("message", message);
 			itemList = showItemListService.showList();
 		}
-			// ソート用にsessionスコープに残しておく
-			session.setAttribute("itemList", itemList);		
-		
+		// ソート用にsessionスコープに残しておく
+		session.setAttribute("itemList", itemList);
+
 //		 -- ページング処理 -- 
 		if (pagingNumber == null) {
 			pagingNumber = 1;
 		}
-		
+
 		// １ページに表示する商品が詰まったpageItemListを受け取る
-		List <Item> pageItemList = makeListPaging(pagingNumber, itemList, model);
-		
+		List<Item> pageItemList = makeListPaging(pagingNumber, itemList, model);
+
 		List<List<Item>> itemListList = getThreeItemList(pageItemList);
 		model.addAttribute("itemListList", itemListList);
+
+		// 商品詳細画面から一覧画面に戻る際、元のページに戻れるよう、ページ番号・検索条件を保存しておく
+		session.setAttribute("pageNumForDetailPage", pagingNumber);
+		session.setAttribute("code", code);
 		return "item_list_curry";
 	}
 
@@ -102,26 +105,28 @@ public class ShowItemListController {
 	public String showPage(Integer pagingNumber, Model model) {
 		@SuppressWarnings("unchecked")
 		List<Item> itemList = (List<Item>) session.getAttribute("itemList");
-		
+
 //		 -- ページング処理 -- 
 		if (pagingNumber == null) {
 			pagingNumber = 1;
 		}
 		// １ページに表示する商品が詰まったpageItemListを受け取る
-		List <Item> pageItemList = makeListPaging(pagingNumber, itemList, model);
-		
+		List<Item> pageItemList = makeListPaging(pagingNumber, itemList, model);
+
 		List<List<Item>> itemListList = getThreeItemList(pageItemList);
 		model.addAttribute("itemListList", itemListList);
+
+		// 商品詳細画面から一覧画面に戻る際、元のページに戻れるよう、ページ番号を保存しておく
+		session.setAttribute("pageNumForDetailPage", pagingNumber);
 		return "item_list_curry";
 	}
-	
-	
+
 	/**
 	 * ユーザーの好きな条件で商品一覧/検索結果を並べ換える.
 	 * 
-	 * @param form ソート条件フォーム
-	 * @param model リクエストスコープ
-	 * @param pagingNumber　ページ数
+	 * @param form         ソート条件フォーム
+	 * @param model        リクエストスコープ
+	 * @param pagingNumber ページ数
 	 * @return
 	 */
 	@RequestMapping("/sortShowList")
@@ -129,28 +134,33 @@ public class ShowItemListController {
 		@SuppressWarnings("unchecked")
 		List<Item> itemList = (List<Item>) session.getAttribute("itemList");
 		itemList = sortItemList(itemList, form);
-		
+
 //		 -- ページング処理 -- 
 		if (pagingNumber == null) {
 			pagingNumber = 1;
 		}
-		
+
 		// １ページに表示する商品が詰まったpageItemListを受け取る
-		List <Item> pageItemList = makeListPaging(pagingNumber, itemList, model);
-		
+		List<Item> pageItemList = makeListPaging(pagingNumber, itemList, model);
+
 		List<List<Item>> itemListList = getThreeItemList(pageItemList);
 		model.addAttribute("itemListList", itemListList);
+
+		// 商品詳細画面から一覧画面に戻る際、元のページに戻れるよう、sessionスコープ内のページ番号・ソート条件を更新
+		session.removeAttribute("pageNumForDetailPage");
+		session.removeAttribute("sortConditionNumber");
+		session.setAttribute("pageNumForDetailPage", pagingNumber);
+		session.setAttribute("sortConditionNumber", form.getSortConditionNumber());
 		return "item_list_curry";
 	}
-	
-	
+
 	/**
 	 * ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
 	 * 
 	 * @param model        モデル
 	 * @param employeePage ページング情報
 	 */
-	private	List <Integer> calcPageNumbers(Model model, Page<Item> ItemPage) {
+	private List<Integer> calcPageNumbers(Model model, Page<Item> ItemPage) {
 		int totalPages = ItemPage.getTotalPages();
 		List<Integer> pageNumbers = null;
 		if (totalPages > 0) {
@@ -161,46 +171,40 @@ public class ShowItemListController {
 		}
 		return pageNumbers;
 	}
-	
-	
-	
+
 	/**
 	 * ページング用メソッド.
 	 * 
 	 * @param pagingNumber 表示させたいページ数
-	 * @param itemList 絞り込み対象リスト
-	 * @param model リクエストスコープ
+	 * @param itemList     絞り込み対象リスト
+	 * @param model        リクエストスコープ
 	 * @return 1ページに表示されるサイズ分の商品情報
 	 */
-	private List <Item> makeListPaging(int pagingNumber, List <Item> itemList, Model model){
+	private List<Item> makeListPaging(int pagingNumber, List<Item> itemList, Model model) {
 		// 表示させたいページ数を-1しなければうまく動かない
 		pagingNumber--;
 		// どの従業員から表示させるかと言うカウント値
 		int startItemCount = pagingNumber * VIEW_SIZE;
 		// 絞り込んだ後の商品リストが入る変数
-	    List<Item> list;
-	    // 該当ページに表示させる従業員一覧を作成
-	    int toIndex = Math.min(startItemCount + VIEW_SIZE, itemList.size());
-	    list = itemList.subList(startItemCount, toIndex);
-	    // 上記で作成した該当ページに表示させる従業員一覧をページングできる形に変換して返す
-	    Page <Item> itemPage 
-	    	= new PageImpl<Item>(list, PageRequest.of(pagingNumber, VIEW_SIZE), itemList.size());
-	    // リストにページ数を入れて、リクエストスコープに格納する
-	    List <Integer> pageNumbersOfFullItemList = calcPageNumbers(model, itemPage);
-	    model.addAttribute("pageNumbersOfFullItemList", pageNumbersOfFullItemList );
+		List<Item> list;
+		// 該当ページに表示させる従業員一覧を作成
+		int toIndex = Math.min(startItemCount + VIEW_SIZE, itemList.size());
+		list = itemList.subList(startItemCount, toIndex);
+		// 上記で作成した該当ページに表示させる従業員一覧をページングできる形に変換して返す
+		Page<Item> itemPage = new PageImpl<Item>(list, PageRequest.of(pagingNumber, VIEW_SIZE), itemList.size());
+		// リストにページ数を入れて、リクエストスコープに格納する
+		List<Integer> pageNumbersOfFullItemList = calcPageNumbers(model, itemPage);
+		model.addAttribute("pageNumbersOfFullItemList", pageNumbersOfFullItemList);
 
-	    // threeItemListに投げるためにListに詰め替える
-	    List <Item> pageItemList = new ArrayList<>();
-	    for (Item item : itemPage) {
-	    	pageItemList.add(item);
-	    }
-	    
-	    return pageItemList;
+		// threeItemListに投げるためにListに詰め替える
+		List<Item> pageItemList = new ArrayList<>();
+		for (Item item : itemPage) {
+			pageItemList.add(item);
+		}
+
+		return pageItemList;
 	}
-	
-	
-	
-	
+
 	/**
 	 * ItemListをソートする.
 	 * 
@@ -269,7 +273,5 @@ public class ShowItemListController {
 		}
 		return itemListList;
 	}
-	
-
 
 }

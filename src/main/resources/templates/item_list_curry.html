@@ -90,6 +90,12 @@ $( function() {
 		</font>
 	</div><br>
 	
+		<div style="text-align: center">
+		<font size="4">
+			<b  th:if="${session.code}" th:text="'「'+${session.code}+'」を含む検索結果'"></b>
+		</font>
+	</div><br>
+	
 		
 		<div style="text-align: center" >
 		<form th:action="@{/sortShowList}" method="post" th:object=${sortConditionNumberForm}> 
