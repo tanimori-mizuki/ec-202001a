@@ -151,7 +151,7 @@ public class ShowOrderHistoryController {
 		model.addAttribute("pageNumbers", pageNumbers);
 
 		// 注文履歴詳細画面から注文履歴一覧画面に戻る際、元のページに戻れるよう、ページ番号を保存しておく
-		session.setAttribute("pageNumForDetailPage", page);
+		session.setAttribute("pageNum", page);
 
 		return "order_history";
 	}

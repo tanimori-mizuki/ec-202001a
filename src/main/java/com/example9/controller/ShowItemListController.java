@@ -96,7 +96,7 @@ public class ShowItemListController {
 		model.addAttribute("itemListList", itemListList);
 
 		// 商品詳細画面から一覧画面に戻る際、元のページに戻れるよう、ページ番号・検索条件を保存しておく
-		session.setAttribute("pageNumForDetailPage", pagingNumber);
+		session.setAttribute("pageNum", pagingNumber);
 		session.setAttribute("code", code);
 		return "item_list_curry";
 	}
@@ -117,7 +117,7 @@ public class ShowItemListController {
 		model.addAttribute("itemListList", itemListList);
 
 		// 商品詳細画面から一覧画面に戻る際、元のページに戻れるよう、ページ番号を保存しておく
-		session.setAttribute("pageNumForDetailPage", pagingNumber);
+		session.setAttribute("pageNum", pagingNumber);
 		return "item_list_curry";
 	}
 
@@ -149,7 +149,7 @@ public class ShowItemListController {
 		// 商品詳細画面から一覧画面に戻る際、元のページに戻れるよう、sessionスコープ内のページ番号・ソート条件を更新
 		session.removeAttribute("pageNumForDetailPage");
 		session.removeAttribute("sortConditionNumber");
-		session.setAttribute("pageNumForDetailPage", pagingNumber);
+		session.setAttribute("pageNum", pagingNumber);
 		session.setAttribute("sortConditionNumber", form.getSortConditionNumber());
 		return "item_list_curry";
 	}

@@ -48,12 +48,12 @@
 		<div class="col-xs-offset-5 col-xs-3">
 				<div class="form-group">
 						<form th:if="${session.sortConditionNumber==null || session.sortConditionNumber==0}" th:action="@{/}" method="post">
-								<input type="hidden" name="pagingNumber" th:value="${session.pageNumForDetailPage}">
+								<input type="hidden" name="pagingNumber" th:value="${session.pageNum}">
 								<input type="hidden" name="code" th:value="${session.code}">
 								<button class="form-control btn btn-warning btn-block">商品一覧へ戻る</button>
 							</form>
 						<form th:if="${session.sortConditionNumber!=null || session.sortConditionNumber>0}" th:action="@{/sortShowList}" method="post">
-								<input type="hidden" name="pagingNumber" th:value="${session.pageNumForDetailPage}">
+								<input type="hidden" name="pagingNumber" th:value="${session.pageNum}">
 								<input type="hidden" name="code" th:value="${session.code}">
 								<input type="hidden" name="sortConditionNumber" th:value="${session.sortConditionNumber}">
 								<button class="form-control btn btn-warning btn-block">商品一覧へ戻る</button>

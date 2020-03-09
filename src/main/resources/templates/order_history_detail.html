@@ -276,7 +276,7 @@
 			<div class="col-xs-offset-5 col-xs-3">
 				<div class="form-group">
 						<form th:action="@{/order-history}" method="post">
-								<input type="hidden" name="page" th:value="${session.pageNumForDetailPage}">
+								<input type="hidden" name="page" th:value="${session.pageNum}">
 								<input type="hidden" name="minYear" th:value="${session.minYear}">
 								<input type="hidden" name="minMonth" th:value="${session.minMonth}">
 								<input type="hidden" name="minDay" th:value="${session.minDay}">

@@ -92,9 +92,9 @@ $( function() {
 	
 		<div style="text-align: center">
 		<font size="4">
-			<b  th:if="${session.code}" th:text="'「'+${session.code}+'」を含む検索結果'"></b>
+			<span  th:if="${session.code}" th:text="'「'+${session.code}+'」を含む検索結果'"></span>
 		</font>
-	</div><br>
+	</div>
 	
 		
 		<div style="text-align: center" >
@@ -136,6 +136,7 @@ $( function() {
 				</table>
 				<!-- 商品一覧ページのページング切り替えボタン -->
 				<div class="text-center">
+				<span th:text="'現在：'+${session.pageNum}+'ページ目'" style="display: inline"></span>
 					<form th:action="@{/showPage}" method="post">
 						<span style="text-align: center" th:each="page:${pageNumbersOfFullItemList}">
 							<button th:text="${page}" type="submit" name="pagingNumber" th:value="${page}"></button>
