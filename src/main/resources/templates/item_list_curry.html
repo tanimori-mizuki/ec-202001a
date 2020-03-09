@@ -96,6 +96,8 @@ $( function() {
 		<font size="3">商品一覧ソート順&nbsp;&nbsp;：&nbsp;&nbsp;
 			<input type="radio" name="sortConditionNumber" value="0" th:field="*{sortConditionNumber}" id="sortPriceAsc"><label for="sortPriceAsc">価格の低い順</label>&nbsp;&nbsp;
 			<input type="radio" name="sortConditionNumber" value="1" th:field="*{sortConditionNumber}" id="sortPriceDesc"><label for="sortPriceDesc">価格の高い順</label>&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="2" th:field="*{sortConditionNumber}" id="sortEvaluation"><label for="sortEvaluation">評価の高い順</label>&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="3" th:field="*{sortConditionNumber}" id="sortCountEvaluation"><label for="sortCountEvaluation">口コミ件数の多い順</label>&nbsp;&nbsp;
 			<button>並び替える</button>
 		</font>
 		</form>
@@ -119,6 +121,9 @@ $( function() {
 								<span th:text="${#numbers.formatInteger(item.priceM,2,'COMMA')+'円(税抜)'}">1,380円(税抜)</span><br>
 								<span class="price" >&nbsp;Ｌ&nbsp;</span>&nbsp;&nbsp;
 								<span th:text="${#numbers.formatInteger(item.priceL,2,'COMMA')+'円(税抜)'}">2,380円(税抜)</span><br>
+								<span   th:text="${item.stars}">★★★★★</span>
+								<span th:text="'('+${item.aveEvaluation}+'点/5点)'">(5/5点)</span>
+								<span th:text="'&nbsp;'+${item.countEvaluation}+'件'">&nbsp;1件：&nbsp;</span>
 							</th>
 						</tr>
 					</tbody>

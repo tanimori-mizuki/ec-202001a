@@ -31,6 +31,18 @@ public class Item {
 	/** 口コミ件数 */
 	private Integer countEvaluation;
 
+	/**
+	 * 口コミ評価平均×１０の数値を算出.
+	 * 
+	 * ※商品一覧で評価順にソートする際のComparatorにおいて、Integer型で扱う必要があるため
+	 * 
+	 * @return 口コミ評価平均×１０
+	 */
+	public Integer getAveEvaluationTenfold() {
+		Integer aveEvaluationTefold = (int) (this.aveEvaluation * 10);
+		return aveEvaluationTefold;
+	}
+
 	public double getAveEvaluation() {
 		return aveEvaluation;
 	}
