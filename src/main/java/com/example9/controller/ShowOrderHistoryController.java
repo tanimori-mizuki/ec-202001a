@@ -2,6 +2,8 @@ package com.example9.controller;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,8 +84,8 @@ public class ShowOrderHistoryController {
 		}
 
 		// 最小値のみ入力した場合は最大値＝本日とする
+		LocalDate today = LocalDate.now();
 		if (!minDateIsEmpty && maxDateIsEmpty) {
-			LocalDate today = LocalDate.now();
 			form.setMaxYear(String.valueOf(today.getYear()));
 			form.setMaxMonth(String.valueOf(today.getMonthValue()));
 			form.setMaxDay(String.valueOf(today.getDayOfMonth()));
@@ -98,6 +100,16 @@ public class ShowOrderHistoryController {
 		if (form.getMaxYear() != null && !"".equals(form.getMaxYear()) && maxDate == null) {
 			model.addAttribute("dayError", "正しい日付を入力してください");
 			return "order_history";
+		}
+
+		// 最小日付が本日よりも大きな値の場合、エラー
+		try {
+			LocalDate minLocalDate = LocalDate.parse(String.valueOf(minDate), DateTimeFormatter.ISO_DATE);
+			if (minLocalDate.compareTo(today) > 0) {
+				model.addAttribute("dayError", "左欄には、本日以前の日付を入力してください");
+				return "order_history";
+			}
+		} catch (DateTimeParseException e) {
 		}
 
 		// 最小日付よりも最大日付が小さな値の場合、エラー
