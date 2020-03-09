@@ -91,6 +91,7 @@
 								<label for="inputPassword">パスワード:</label>
 								<label
 									class="control-label" style="color: red" for="inputError" th:errors="*{password}">パスワードを入力してください</label>
+								<div style="color: red" id="passwordMessage" ></div>
 								<input type="password" id="inputPassword" name="password" th:field="*{password}" class="form-control"
 									placeholder="Password">
 							</div>
@@ -120,5 +121,6 @@
 	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script th:src="@{/js/get_address.js}" src="../static/js/get_address.js"></script>
+   	<script th:src="@{/js/password_check.js}" src="../static/js/password_check.js"></script>
 </body>
 </html>

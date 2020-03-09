@@ -1,5 +1,10 @@
 package com.example9.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example9.domain.User;
 import com.example9.form.UserRegisterForm;
@@ -85,4 +91,30 @@ public class UserRegisterController {
 
 		return "redirect:/login";
 	}
+
+	/**
+	 * パスワード形式の確認をする.
+	 * 
+	 * @param password パスワード
+	 * @return メッセージ
+	 */
+	@ResponseBody
+	@RequestMapping("/pass-check-api")
+	public Map<String, String> passCheck(String password) {
+		Map<String, String> map = new HashMap<>();
+
+		Pattern pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[!-~]{8,20}$");
+		Matcher matcher = pattern.matcher(password);
+		Boolean result = matcher.matches();
+
+		// 確認パスワードチェック
+		if (result == false) {
+			map.put("passwordMessage", "半角小英字(a-z)、半角大英字(A-Z)、半角数字(0-9)を全て使用して、8-20文字で設定してください");
+		} else {
+			map.put("passwordMessage", "パスワードOK!");
+		}
+
+		return map;
+	}
+
 }
