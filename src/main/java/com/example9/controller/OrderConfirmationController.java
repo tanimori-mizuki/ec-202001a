@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,6 +141,29 @@ public class OrderConfirmationController {
 //			return "order_confirm";
 //		}
 
+		CheckedCreditCard checkedCard = checkCreditCardService.checkCardInfo(form);
+
+		if ("error".equals(checkedCard.getStatus())) {
+			model.addAttribute("creditCard", "クレジットカード情報が不正です");
+		}
+
+		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
+			return "order_confirm";
+		}
+		
+		//現在日時を取得
+		LocalDate localDate = LocalDate.now();
+		
+		//ユーザが選んだ日付(String)をLocalDateに変換する
+		 LocalDate selectedDate = LocalDate.parse(form.getDeliveryDate(), DateTimeFormatter.ISO_DATE);
+		
+		//注文確認画面で選択した日程が過去があれば、エラーを表示する
+		 if(selectedDate.isBefore(localDate)) {
+			 result.rejectValue("deliveryDate", null, "配達日が無効です");
+			 return  "order_confirm";
+		 }
+
+		 //ここから正常処理
 		Order updateOrder = new Order();
 
 		// 注文日に関するオブジェクト生成(注文履歴確認で使用する)
