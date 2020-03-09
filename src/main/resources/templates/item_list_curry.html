@@ -92,7 +92,7 @@ $( function() {
 	
 		<div style="text-align: center">
 		<font size="4">
-			<span  th:if="${session.code}" th:text="'「'+${session.code}+'」を含む検索結果'"></span>
+			<span  th:if="${session.code!=null && session.code!=''}" th:text="'「'+${session.code}+'」を含む検索結果'"></span>
 		</font>
 	</div>
 	

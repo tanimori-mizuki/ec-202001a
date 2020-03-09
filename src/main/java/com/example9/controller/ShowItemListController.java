@@ -46,7 +46,12 @@ public class ShowItemListController {
 	@ModelAttribute
 	public SortConditionNumberForm setUpSortConditionNumberForm() {
 		SortConditionNumberForm form = new SortConditionNumberForm();
-		form.setSortConditionNumber("0");
+		String sortConditionNumber = (String) session.getAttribute("sortConditionNumber");
+		if (sortConditionNumber == null || "".equals(sortConditionNumber)) {
+			form.setSortConditionNumber("0");
+		} else {
+			form.setSortConditionNumber(sortConditionNumber);
+		}
 		return form;
 	}
 
@@ -147,8 +152,6 @@ public class ShowItemListController {
 		model.addAttribute("itemListList", itemListList);
 
 		// 商品詳細画面から一覧画面に戻る際、元のページに戻れるよう、sessionスコープ内のページ番号・ソート条件を更新
-		session.removeAttribute("pageNumForDetailPage");
-		session.removeAttribute("sortConditionNumber");
 		session.setAttribute("pageNum", pagingNumber);
 		session.setAttribute("sortConditionNumber", form.getSortConditionNumber());
 		return "item_list_curry";

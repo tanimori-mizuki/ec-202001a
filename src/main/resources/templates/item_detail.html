@@ -52,7 +52,7 @@
 								<input type="hidden" name="code" th:value="${session.code}">
 								<button class="form-control btn btn-warning btn-block">商品一覧へ戻る</button>
 							</form>
-						<form th:if="${session.sortConditionNumber!=null || session.sortConditionNumber>0}" th:action="@{/sortShowList}" method="post">
+						<form th:if="${session.sortConditionNumber!=null && session.sortConditionNumber!=0}" th:action="@{/sortShowList}" method="post">
 								<input type="hidden" name="pagingNumber" th:value="${session.pageNum}">
 								<input type="hidden" name="code" th:value="${session.code}">
 								<input type="hidden" name="sortConditionNumber" th:value="${session.sortConditionNumber}">
