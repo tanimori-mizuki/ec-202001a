@@ -47,6 +47,7 @@ public class ShowItemListService {
 	public List<Item>ShowListpaging(Integer number){
 		return itemRepository.findByAllLimit(number);
 	}
+		
 	
 	/**
 	 * オートコンプリート用にJavaScriptの配列の中身を文字列で作る.

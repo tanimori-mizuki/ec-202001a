@@ -66,7 +66,7 @@ $( function() {
 						<div class="panel-title">商品を検索する</div>
 					</div>
 					<div class="panel-body">
-						<form method="post" th:action="@{/searchResult}" class="form-horizontal">
+						<form method="post" th:action="@{/}" class="form-horizontal">
 							<div class="form-group">
 								<label for="code" class="control-label col-sm-2">商品名</label>
 								<div class="col-sm-9">
@@ -128,9 +128,10 @@ $( function() {
 						</tr>
 					</tbody>
 				</table>
+				<!-- 商品一覧ページのページング切り替えボタン -->
 				<div class="text-center">
-					<form th:action="@{/}" method="post">
-						<span style="text-align: center" th:each="page:${pageList}">
+					<form th:action="@{/showPage}" method="post">
+						<span style="text-align: center" th:each="page:${pageNumbersOfFullItemList}">
 							<button th:text="${page}" type="submit" name="pagingNumber" th:value="${page}"></button>
 						</span><br>
 					</form>
