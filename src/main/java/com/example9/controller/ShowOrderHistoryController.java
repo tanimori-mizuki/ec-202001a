@@ -77,6 +77,12 @@ public class ShowOrderHistoryController {
 			maxDate = form.getMaxDate();
 		}
 
+		// 最小日付よりも最大日付が小さな値の場合、エラー
+		if ( maxDate != null && minDate != null && maxDate.compareTo(minDate) < 0) {
+			model.addAttribute("dayError", "右欄は、左欄以降の日付を入力するか、空欄にしてください");
+			return "order_history";
+		}
+
 		// ページング番号からも検索できるよう、最大・最小日付を保存しておく
 		session.setAttribute("minYear", form.getMinYear());
 		session.setAttribute("minMonth", form.getMinMonth());
