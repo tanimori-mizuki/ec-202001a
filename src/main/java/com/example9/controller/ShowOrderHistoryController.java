@@ -1,7 +1,6 @@
 package com.example9.controller;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,13 +74,13 @@ public class ShowOrderHistoryController {
 			form.setMaxDay(form.getMinDay());
 			maxDate = form.getMaxDate();
 		}
-		// ページング番号からも検索できるよう、最大・最小日付をリクエストスコープに格納
-		model.addAttribute("minYear", form.getMinYear());
-		model.addAttribute("minMonth", form.getMinMonth());
-		model.addAttribute("minDay", form.getMinDay());
-		model.addAttribute("maxYear", form.getMaxYear());
-		model.addAttribute("maxMonth", form.getMaxMonth());
-		model.addAttribute("maxDay", form.getMaxDay());
+		// ページング番号からも検索できるよう、最大・最小日付を保存しておく
+		session.setAttribute("minYear", form.getMinYear());
+		session.setAttribute("minMonth", form.getMinMonth());
+		session.setAttribute("minDay", form.getMinDay());
+		session.setAttribute("maxYear", form.getMaxYear());
+		session.setAttribute("maxMonth", form.getMaxMonth());
+		session.setAttribute("maxDay", form.getMaxDay());
 
 		// ページング機能追加
 		if (page == null) {
@@ -107,6 +106,9 @@ public class ShowOrderHistoryController {
 		// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
 		List<Integer> pageNumbers = calcPageNumbers(model, orderPage);
 		model.addAttribute("pageNumbers", pageNumbers);
+
+		// 注文履歴詳細画面から注文履歴一覧画面に戻る際、元のページに戻れるよう、ページ番号を保存しておく
+		session.setAttribute("pageNumForDetailPage", page);
 
 		return "order_history";
 	}

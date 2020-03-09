@@ -164,12 +164,12 @@
 							<div class="text-center">
 							<form th:action="@{/order-history}" method="post" th:each="pageNumber:${pageNumbers}" style="display: inline">
 								<input type="hidden" name="page" th:value="${pageNumber}">
-								<input type="hidden" name="minYear" th:value="${minYear}">
-								<input type="hidden" name="minMonth" th:value="${minMonth}">
-								<input type="hidden" name="minDay" th:value="${minDay}">
-								<input type="hidden" name="maxYear" th:value="${maxYear}">
-								<input type="hidden" name="maxMonth" th:value="${maxMonth}">
-								<input type="hidden" name="maxDay" th:value="${maxDay}">
+								<input type="hidden" name="minYear" th:value="${session.minYear}">
+								<input type="hidden" name="minMonth" th:value="${session.minMonth}">
+								<input type="hidden" name="minDay" th:value="${session.minDay}">
+								<input type="hidden" name="maxYear" th:value="${session.maxYear}">
+								<input type="hidden" name="maxMonth" th:value="${session.maxMonth}">
+								<input type="hidden" name="maxDay" th:value="${session.maxDay}">
 								<button th:text="'&nbsp;'+${pageNumber}+'&nbsp;'">1</button>
 							</form>
 							</div>

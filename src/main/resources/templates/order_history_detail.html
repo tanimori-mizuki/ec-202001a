@@ -275,10 +275,16 @@
 <!-- 		<div class="row"> -->
 			<div class="col-xs-offset-5 col-xs-3">
 				<div class="form-group">
-				<a href="order_history.html" th:href="@{/order-history}">
-						<input class="form-control btn btn-warning btn-block"
-							type="button" value="注文履歴一覧へ戻る">
-				</a>
+						<form th:action="@{/order-history}" method="post">
+								<input type="hidden" name="page" th:value="${session.pageNumForDetailPage}">
+								<input type="hidden" name="minYear" th:value="${session.minYear}">
+								<input type="hidden" name="minMonth" th:value="${session.minMonth}">
+								<input type="hidden" name="minDay" th:value="${session.minDay}">
+								<input type="hidden" name="maxYear" th:value="${session.maxYear}">
+								<input type="hidden" name="maxMonth" th:value="${session.maxMonth}">
+								<input type="hidden" name="maxDay" th:value="${session.maxDay}">
+								<button class="form-control btn btn-warning btn-block">注文履歴一覧へ戻る</button>
+							</form>
 				</div>
 			</div>
 		</div>
