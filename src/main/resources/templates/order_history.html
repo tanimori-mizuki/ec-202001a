@@ -162,7 +162,7 @@
 						<tr>
 						<td colspan="6">
 							<div class="text-center">
-							<form th:action="@{/order-history}" method="post" th:each="pageNumber:${pageNumbers}">
+							<form th:action="@{/order-history}" method="post" th:each="pageNumber:${pageNumbers}" style="display: inline">
 								<input type="hidden" name="page" th:value="${pageNumber}">
 								<input type="hidden" name="minYear" th:value="${minYear}">
 								<input type="hidden" name="minMonth" th:value="${minMonth}">
