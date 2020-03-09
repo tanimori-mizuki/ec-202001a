@@ -45,6 +45,8 @@ public class ShowOrderHistoryController {
 	/**
 	 * 注文履歴一覧の表示.
 	 * 
+	 * @param form  日付絞り込み情報
+	 * @param page  ページ番号
 	 * @param model リクエストスコープ
 	 * @return 注文履歴一覧画面
 	 */
@@ -74,6 +76,7 @@ public class ShowOrderHistoryController {
 			form.setMaxDay(form.getMinDay());
 			maxDate = form.getMaxDate();
 		}
+
 		// ページング番号からも検索できるよう、最大・最小日付を保存しておく
 		session.setAttribute("minYear", form.getMinYear());
 		session.setAttribute("minMonth", form.getMinMonth());
@@ -91,7 +94,6 @@ public class ShowOrderHistoryController {
 		List<Order> orderList = null;
 		try {
 			orderList = showOrderHistoryService.getOrderHistoryList(userId, minDate, maxDate);
-//			model.addAttribute(orderList);
 		} catch (Exception e) {
 			// 注文履歴がnullの場合は、その旨のメッセージをリクエストスコープに格納する
 			String nonOrderMessage = "注文履歴がありません";

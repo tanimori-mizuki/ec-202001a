@@ -32,13 +32,15 @@ public class ShowOrderHistoryService {
 	 * @return 注文情報一覧
 	 */
 	public List<Order> getOrderHistoryList(Integer userId, Date minDate, Date maxDate) {
-//		//OrderRepositoryにて、status=0(注文確定前)か0以外かで条件分岐することから、
-//		//ここで指定する数値は0以外ならば何でも問題ない
-//		Integer status = 1;
-//		return orderRepository.findByUserIdAndStatus(userId, status);
 		return orderRepository.findOrderedDateByOrderDateAndUserId(userId, minDate, maxDate);
 	}
 
+	/**
+	 * 引数の注文IDに該当する注文履歴詳細を取得する .
+	 * 
+	 * @param orderId 注文ID
+	 * @return 注文履歴詳細
+	 */
 	public List<Order> getOrderHistoryDetail(Integer orderId) {
 		return orderRepository.findByOrderId(orderId);
 	}
@@ -47,9 +49,9 @@ public class ShowOrderHistoryService {
 	 * ページング用メソッド.
 	 * 
 	 * @param page      表示させたいページ数
-	 * @param size      １ページに表示させる従業員数
+	 * @param size      １ページに表示させる注文数
 	 * @param orderList 絞り込み対象リスト
-	 * @return １ページに表示されるサイズ分の従業員一覧情報
+	 * @return １ページに表示されるサイズ分の注文一覧情報
 	 */
 	public Page<Order> showListPaging(int page, int size, List<Order> orderList) {
 		// 表示させたいページ数を-1しなければうまく動かない

@@ -24,13 +24,13 @@ public class SerchHistoryForm {
 	private String maxDay;
 
 	/**
-	 * 最小年・月・日数を組み合わせ、最小年月日の文字列を作成.
+	 * 最小年・月・日数を組み合わせ、最小年月日を作成.
 	 * 
 	 * @return 最小年月日(不整値入力時はnull)
 	 */
 	public Date getMinDate() {
 		try {
-			String date =minYear + "-" + minMonth + "-" + minDay;
+			String date = minYear + "-" + minMonth + "-" + minDay;
 			Date minDate = Date.valueOf(date);
 			return minDate;
 		} catch (Exception e) {
@@ -39,12 +39,12 @@ public class SerchHistoryForm {
 	}
 
 	/**
-	 * 最大年・月・日数を組み合わせ、最大年月日の文字列を作成.
+	 * 最大年・月・日数を組み合わせ、最大年月日を作成.
 	 * 
 	 * @return 最大年月日
 	 */
 	public Date getMaxDate() {
-		String date =maxYear + "-" + maxMonth + "-" + maxDay;
+		String date = maxYear + "-" + maxMonth + "-" + maxDay;
 		try {
 			Date maxDate = Date.valueOf(date);
 			return maxDate;

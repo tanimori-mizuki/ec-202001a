@@ -160,15 +160,8 @@ public class OrderRepository {
 		sql.append("ON D.topping_id=E.id) AS G ON F.order_item_id=G.order_item_id ");
 		sql.append("WHERE A.user_id=:id ");
 
-		SqlParameterSource param;
-//		int statusInt = status;
-//		if (statusInt == 0) {
-			sql.append("AND A.status=:status ORDER BY A.id DESC; ");
-			param = new MapSqlParameterSource().addValue("id", userId).addValue("status", status);
-//		} else {
-//			sql.append("AND NOT A.status=0 ORDER BY A.id DESC; ");
-//			param = new MapSqlParameterSource().addValue("id", userId);
-//		}
+		sql.append("AND A.status=:status ORDER BY A.id DESC; ");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", userId).addValue("status", status);
 
 		List<Order> orderList = template.query(sql.toString(), param, RESULT_SET_EXTRACTOR);
 		if (orderList.size() == 0) {
@@ -179,10 +172,11 @@ public class OrderRepository {
 
 	/**
 	 * 引数のユーザーIDに該当する注文履歴のうち、minDate～maxDateの注文日付範囲に該当するデータを検索・取得する.
+	 * 
 	 * @param userId ユーザーID
-	 * @param minDate　最小日付
-	 * @param maxDate　最大日付
-	 * @return　注文履歴情報
+	 * @param        minDate 最小日付
+	 * @param        maxDate 最大日付
+	 * @return 注文履歴情報（注文ID降順）
 	 */
 	public List<Order> findOrderedDateByOrderDateAndUserId(Integer userId, Date minDate, Date maxDate) {
 		StringBuilder sql = new StringBuilder();
