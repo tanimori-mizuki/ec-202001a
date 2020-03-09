@@ -87,7 +87,7 @@
 								</div>
 							</th>
 						</tr>
-						<tr th:each="order:${orderList}">
+						<tr th:each="order:${orderPage}">
 							<td>
 							<div class="center">
 							&nbsp;&nbsp;&nbsp;&nbsp;
@@ -127,7 +127,15 @@
 				</a>
 							</td>
 						</tr>
-
+						<tr>
+						<td colspan="6">
+							<div class="text-center">
+							<form th:action="@{/order-history}" method="post">
+								<button th:each="pageNumber:${pageNumbers}" name="page" th:value="${pageNumber}" th:text="'&nbsp;'+${pageNumber}+'&nbsp;'">1</button>
+							</form>
+							</div>
+						</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

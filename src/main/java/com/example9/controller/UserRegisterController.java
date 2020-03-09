@@ -103,11 +103,11 @@ public class UserRegisterController {
 	public Map<String, String> passCheck(String password) {
 		Map<String, String> map = new HashMap<>();
 
+		//8-20文字、半角小英字(a-z)、半角大英字(A-Z)、半角数字(0-9)を全て使用することを条件とする
 		Pattern pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[!-~]{8,20}$");
 		Matcher matcher = pattern.matcher(password);
 		Boolean result = matcher.matches();
 
-		// 確認パスワードチェック
 		if (result == false) {
 			map.put("passwordMessage", "半角小英字(a-z)、半角大英字(A-Z)、半角数字(0-9)を全て使用して、8-20文字で設定してください");
 		} else {
