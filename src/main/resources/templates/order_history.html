@@ -49,6 +49,38 @@
 		<div class="text-center">
 		<h2 th:if="${nonOrderMessage}" th:text="${nonOrderMessage}"></h2>
 		</div>
+		
+				<!-- search form -->
+		<div class="row" th:unless="${nonOrderMessage}">
+			<div
+				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="panel-title">注文履歴を絞り込む</div>
+					</div>
+					<div class="panel-body">
+						<div class="text-center">
+							<form th:action="@{/order-history}" method="post" th:object="${serchHistoryForm}">
+									<input type="text" th:name="minYear" size="2px">年&nbsp;
+									<input type="text" th:name="minMonth" size="1px">月&nbsp;
+									<input type="text" th:name="minDay" size="1px">日&nbsp;&nbsp;～&nbsp;&nbsp;
+									<input type="text" th:name="maxYear" size="2px">年&nbsp;
+									<input type="text" th:name="maxMonth" size="1px">月&nbsp;
+									<input type="text" th:name="maxDay"  size="1px">日<br><br>
+<!-- 									<input type="text" th:name="minYear" th:field="*{minYear}" size="2px">年&nbsp; -->
+<!-- 									<input type="text" th:name="minMonth" th:field="*{minMonth}" size="1px">月&nbsp; -->
+<!-- 									<input type="text" th:name="minDay" th:field="*{minDay}" size="1px">日&nbsp;&nbsp;～&nbsp;&nbsp; -->
+<!-- 									<input type="text" th:name="maxYear" th:field="*{maxYear}" size="2px">年&nbsp; -->
+<!-- 									<input type="text" th:name="maxMonth" th:field="*{maxYear}" size="1px">月&nbsp; -->
+<!-- 									<input type="text" th:name="maxDay" th:field="*{minDay}" size="1px">日<br><br> -->
+									<button type="submit" value="検索" class="btn btn-primary">検索</button>
+									<button type="reset" value="クリア" class="btn btn-default">クリア</button>
+							</form>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!-- table -->
 		<div class="row" th:unless="${nonOrderMessage}">
@@ -130,8 +162,15 @@
 						<tr>
 						<td colspan="6">
 							<div class="text-center">
-							<form th:action="@{/order-history}" method="post">
-								<button th:each="pageNumber:${pageNumbers}" name="page" th:value="${pageNumber}" th:text="'&nbsp;'+${pageNumber}+'&nbsp;'">1</button>
+							<form th:action="@{/order-history}" method="post" th:each="pageNumber:${pageNumbers}">
+								<input type="hidden" name="page" th:value="${pageNumber}">
+								<input type="hidden" name="minYear" th:value="${minYear}">
+								<input type="hidden" name="minMonth" th:value="${minMonth}">
+								<input type="hidden" name="minDay" th:value="${minDay}">
+								<input type="hidden" name="maxYear" th:value="${maxYear}">
+								<input type="hidden" name="maxMonth" th:value="${maxMonth}">
+								<input type="hidden" name="maxDay" th:value="${maxDay}">
+								<button th:text="'&nbsp;'+${pageNumber}+'&nbsp;'">1</button>
 							</form>
 							</div>
 						</td>

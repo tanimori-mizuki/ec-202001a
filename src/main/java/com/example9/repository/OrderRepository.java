@@ -1,5 +1,6 @@
 package com.example9.repository;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,19 +161,62 @@ public class OrderRepository {
 		sql.append("WHERE A.user_id=:id ");
 
 		SqlParameterSource param;
-		int statusInt = status;
-		if (statusInt == 0) {
+//		int statusInt = status;
+//		if (statusInt == 0) {
 			sql.append("AND A.status=:status ORDER BY A.id DESC; ");
 			param = new MapSqlParameterSource().addValue("id", userId).addValue("status", status);
-		} else {
-			sql.append("AND NOT A.status=0 ORDER BY A.id DESC; ");
-			param = new MapSqlParameterSource().addValue("id", userId);
-		}
+//		} else {
+//			sql.append("AND NOT A.status=0 ORDER BY A.id DESC; ");
+//			param = new MapSqlParameterSource().addValue("id", userId);
+//		}
 
 		List<Order> orderList = template.query(sql.toString(), param, RESULT_SET_EXTRACTOR);
 		if (orderList.size() == 0) {
 			return null;
 		}
+		return orderList;
+	}
+
+	/**
+	 * 引数のユーザーIDに該当する注文履歴のうち、minDate～maxDateの注文日付範囲に該当するデータを検索・取得する.
+	 * @param userId ユーザーID
+	 * @param minDate　最小日付
+	 * @param maxDate　最大日付
+	 * @return　注文履歴情報
+	 */
+	public List<Order> findOrderedDateByOrderDateAndUserId(Integer userId, Date minDate, Date maxDate) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(
+				"SELECT A.id AS order_id, A.user_id, A.status, A.total_price, A.order_date, A.destination_name, A.destination_email, ");
+		sql.append(
+				"A.destination_zipcode, A.destination_address, A.destination_tel, A.delivery_time, A.payment_method, ");
+		sql.append(
+				"F.order_item_id, F.item_id, F.quantity, F.size, F.item_name, F.item_price_m, F.item_price_l, F.image_path, ");
+		sql.append(
+				"G.order_toppings_id, G.topping_id, G.order_item_id, G.toppings_name, G.topping_price_m, G.topping_price_l ");
+		sql.append("FROM orders AS A JOIN ");
+		sql.append("(SELECT B.id AS order_item_id, B.item_id, B.order_id, B.quantity, B.size, ");
+		sql.append("C.name AS item_name, C.price_m AS item_price_m, C.price_l AS item_price_l, C.image_path ");
+		sql.append("FROM order_items AS B JOIN items AS C ON B.item_id=C.id) AS F ");
+		sql.append("ON A.id=F.order_id LEFT OUTER JOIN ");
+		sql.append("(SELECT D.id AS order_toppings_id, D.topping_id, D.order_item_id, ");
+		sql.append("E.name AS toppings_name, E.price_m AS topping_price_m, E.price_l AS topping_price_l ");
+		sql.append("FROM order_toppings AS D JOIN toppings AS E ");
+		sql.append("ON D.topping_id=E.id) AS G ON F.order_item_id=G.order_item_id ");
+		sql.append("WHERE A.status NOT IN(0) AND A.user_id=:id ");
+
+		SqlParameterSource param = null;
+		if (minDate == null || maxDate == null) {
+			sql.append(";");
+			param = new MapSqlParameterSource().addValue("id", userId);
+		} else {
+			sql.append("AND A.order_date>=:minDate AND A.order_date<=:maxDate;");
+			param = new MapSqlParameterSource().addValue("id", userId).addValue("minDate", minDate).addValue("maxDate",
+					maxDate);
+		}
+
+		List<Order> orderList = template.query(sql.toString(), param, RESULT_SET_EXTRACTOR);
+
 		return orderList;
 	}
 
@@ -279,10 +323,9 @@ public class OrderRepository {
 
 		template.update(sql.toString(), param);
 	}
-	
-	
+
 	/**
-	 *　Orderテーブルのuser_idをログインユーザのものに更新する
+	 * Orderテーブルのuser_idをログインユーザのものに更新する
 	 * 
 	 * @param order ログイン前のショッピングカートの中身
 	 */
@@ -292,20 +335,18 @@ public class OrderRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId);
 		template.update(sql.toString(), param);
 	}
-	
-	
+
 	/**
-	 * Orderを削除し、OrderItemのorder_idを更新する.
-	 * ログイン前のカートの中身をログイン後カートに反映させるためのメソッド
+	 * Orderを削除し、OrderItemのorder_idを更新する. ログイン前のカートの中身をログイン後カートに反映させるためのメソッド
 	 * 
 	 * @param id 主キー
 	 */
 	public void deleteOrderAndUpdateOrderItem(Integer id, Integer userId) {
-		String sql = "WITH deleted AS (DELETE FROM orders WHERE id = :id RETURNING id) " +
-				 	 "UPDATE order_items SET order_id = (SELECT id FROM orders WHERE user_id = :userId AND status = 0) "+ 
-				 	 "WHERE order_id IN (SELECT id FROM deleted) ;";
+		String sql = "WITH deleted AS (DELETE FROM orders WHERE id = :id RETURNING id) "
+				+ "UPDATE order_items SET order_id = (SELECT id FROM orders WHERE user_id = :userId AND status = 0) "
+				+ "WHERE order_id IN (SELECT id FROM deleted) ;";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id).addValue("userId", userId);
 		template.update(sql, param);
 	}
-	
+
 }

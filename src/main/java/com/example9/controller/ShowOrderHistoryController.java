@@ -1,5 +1,7 @@
 package com.example9.controller;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example9.domain.Order;
 import com.example9.domain.User;
+import com.example9.form.SerchHistoryForm;
 import com.example9.service.ShowOrderHistoryService;
-
 
 /**
  * 注文履歴表示を行うコントローラ.
@@ -32,6 +35,11 @@ public class ShowOrderHistoryController {
 	@Autowired
 	private HttpSession session;
 
+	@ModelAttribute
+	public SerchHistoryForm setUpForm() {
+		return new SerchHistoryForm();
+	}
+
 	// 1ページに表示する注文情報は5件
 	private static final int VIEW_SIZE = 5;
 
@@ -42,7 +50,7 @@ public class ShowOrderHistoryController {
 	 * @return 注文履歴一覧画面
 	 */
 	@RequestMapping("")
-	public String showList(Model model, Integer page) {
+	public String showList(SerchHistoryForm form, Integer page, Model model) {
 
 		if (session.getAttribute("user") == null) {
 			// ログイン前の場合は、ログインページへ遷移
@@ -53,6 +61,28 @@ public class ShowOrderHistoryController {
 		User user = (User) session.getAttribute("user");
 		Integer userId = user.getId();
 
+		// 絞り込み日付の最小/最大値いずれかがnullの場合、最大値も最小値も同値を設定する
+		Date minDate = form.getMinDate();
+		Date maxDate = form.getMaxDate();
+		if (minDate == null && maxDate != null) {
+			form.setMinYear(form.getMaxYear());
+			form.setMinMonth(form.getMaxMonth());
+			form.setMinDay(form.getMaxDay());
+			minDate = form.getMinDate();
+		} else if (minDate != null && maxDate == null) {
+			form.setMaxYear(form.getMinYear());
+			form.setMaxMonth(form.getMinMonth());
+			form.setMaxDay(form.getMinDay());
+			maxDate = form.getMaxDate();
+		}
+		// ページング番号からも検索できるよう、最大・最小日付をリクエストスコープに格納
+		model.addAttribute("minYear", form.getMinYear());
+		model.addAttribute("minMonth", form.getMinMonth());
+		model.addAttribute("minDay", form.getMinDay());
+		model.addAttribute("maxYear", form.getMaxYear());
+		model.addAttribute("maxMonth", form.getMaxMonth());
+		model.addAttribute("maxDay", form.getMaxDay());
+
 		// ページング機能追加
 		if (page == null) {
 			// ページ数の指定が無い場合は1ページ目を表示させる
@@ -61,7 +91,7 @@ public class ShowOrderHistoryController {
 
 		List<Order> orderList = null;
 		try {
-			orderList = showOrderHistoryService.getOrderHistoryList(userId);
+			orderList = showOrderHistoryService.getOrderHistoryList(userId, minDate, maxDate);
 //			model.addAttribute(orderList);
 		} catch (Exception e) {
 			// 注文履歴がnullの場合は、その旨のメッセージをリクエストスコープに格納する
@@ -70,7 +100,7 @@ public class ShowOrderHistoryController {
 			return "order_history";
 		}
 
-		// 表示させたいページ数、ページサイズ、従業員リストを渡し１ページに表示させる従業員リストを絞り込み
+		// 表示させたいページ数、ページサイズ、注文リストを渡し１ページに表示させる注文リストを絞り込み
 		Page<Order> orderPage = showOrderHistoryService.showListPaging(page, VIEW_SIZE, orderList);
 		model.addAttribute("orderPage", orderPage);
 
@@ -101,7 +131,7 @@ public class ShowOrderHistoryController {
 	/**
 	 * ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
 	 * 
-	 * @param model        モデル
+	 * @param model     モデル
 	 * @param orderPage ページング情報
 	 */
 	private List<Integer> calcPageNumbers(Model model, Page<Order> orderPage) {
