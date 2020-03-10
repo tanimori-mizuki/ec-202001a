@@ -106,15 +106,23 @@ public class OrderConfirmationController {
 	@RequestMapping("")
 	public String toOrderConfirmation(Model model) {
 		Integer userId = (Integer) session.getAttribute("userId");
-
+		
 		// ログインしていない状態であればログイン画面へ遷移する
 		if (userId == null) {
-			return "forward:/login/referer";
+			return "forward:/login";
 		}
 
 		List<Order> orderList = orderConfirmationService.showOrderList(userId);
+		
+		// ログイン後URLを直打ちされて、カートの中身がない場合、NullPointerExceptionになってしまうので対策
+		if (orderList == null) {
+			return "forward:/";
+		}
+		
 		Order order = orderList.get(0);
-
+		
+		
+		
 		order.setTotalPrice(order.getCalcTotalPrice() + order.getTax());
 		model.addAttribute("tax", order.getTax());
 		model.addAttribute("order", order);
