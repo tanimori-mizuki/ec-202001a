@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -150,25 +151,44 @@ public class OrderConfirmationController {
 			return "order_confirm";
 		}
 		
-		//現在日時を取得
-		LocalDate localDate = LocalDate.now();
-		
-		//ユーザが選んだ日付(String)をLocalDateに変換する
-		 LocalDate selectedDate = LocalDate.parse(form.getDeliveryDate(), DateTimeFormatter.ISO_DATE);
-		
-		//注文確認画面で選択した日程が過去があれば、エラーを表示する
-		 if(selectedDate.isBefore(localDate)) {
-			 result.rejectValue("deliveryDate", null, "配達日が無効です");
-			 return  "order_confirm";
-		 }
-
-		 //ここから正常処理
 		Order updateOrder = new Order();
 
-		// 注文日に関するオブジェクト生成(注文履歴確認で使用する)
-		LocalDate now = LocalDate.now();
-		Date orderDate = java.sql.Date.valueOf(now);
-		updateOrder.setOrderDate(orderDate);
+		// 現在時刻を取得
+		LocalDateTime nowTime = LocalDateTime.now();
+		// 現在時刻より1時間進んだ時間を取得
+		LocalDateTime oneHourLater = nowTime.plusHours(1);
+		// 「yyyy-MM-dd HH:mm:ss」にフォーマット
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String formattedOneHourLater = oneHourLater.format(dtf);
+
+		// LocalTimeDateの表示のうち、ミリ秒を削除
+		String deliver = formattedOneHourLater.substring(0, 19);
+		LocalDateTime allowedDeliveryDate = LocalDateTime.parse(deliver, dtf);
+
+		// ユーザが選んだ日付(String)をLocalDateTime型に変換する
+		String deliveryTime = form.getDeliveryDate() + " " + form.getDeliveryHour();
+		LocalDateTime selectedDate = LocalDateTime.parse(deliveryTime, dtf);
+
+		// 注文確認画面で選択した配達時間が「現在時刻 + 1時間」より前であれば、エラーを表示する
+		if (selectedDate.isBefore(allowedDeliveryDate)) {
+			result.rejectValue("deliveryDate", null, "配達日時は現在時刻より1時間以上先を選択して下さい");
+			return "order_confirm";
+		}
+
+		// ユーザが選んだ日付(String)をTimeStamp型に変換する
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh");
+		java.util.Date parsedDate = null;
+
+		try {
+			parsedDate = dateFormat.parse(deliveryTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		// String型からTimeStamp型へ変換
+		Timestamp timeStampDeliveryTime = new java.sql.Timestamp(parsedDate.getTime());
+		// TimeStamp型に変換したパラメータをドメインに移す
+		updateOrder.setDeliveryTime(timeStampDeliveryTime);
 
 		// formからのパラメータをドメインに移す
 		updateOrder.setDestinationName(form.getName());
@@ -178,22 +198,10 @@ public class OrderConfirmationController {
 		updateOrder.setDestinationTel(form.getTelephone());
 		updateOrder.setPaymentMethod(Integer.parseInt(form.getPaymentMethod()));
 
-		// Formクラスで受け取った配達時間に関する2つのパラメータを合成
-		String StringDeliveryTime = form.getDeliveryDate() + " " + form.getDeliveryHour();
-
-		// format変換する為の記述
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh");
-		java.util.Date parsedDate = null;
-
-		try {
-			parsedDate = dateFormat.parse(StringDeliveryTime);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		// String型からTimeStamp型へ変換
-		Timestamp deliveryTime = new java.sql.Timestamp(parsedDate.getTime());
-		// TimeStamp型に変換したパラメータをドメインに移す
-		updateOrder.setDeliveryTime(deliveryTime);
+		// 注文日に関するオブジェクト生成(注文履歴確認で使用する)
+		LocalDate now = LocalDate.now();
+		Date orderDate = java.sql.Date.valueOf(now);
+		updateOrder.setOrderDate(orderDate);
 
 		// userId取得する
 		Integer userId = (Integer) session.getAttribute("userId");
