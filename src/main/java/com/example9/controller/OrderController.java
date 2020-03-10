@@ -28,6 +28,7 @@ public class OrderController {
 	/**
 	 * 注文する.
 	 * 
+	 * @param request クライアントからのリクエスト情報
 	 * @return 注文完了画面へのリダイレクト（不正アクセスの場合は404エラー画面）
 	 */
 	@RequestMapping("")

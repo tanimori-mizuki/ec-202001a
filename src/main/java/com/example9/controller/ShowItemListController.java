@@ -45,14 +45,18 @@ public class ShowItemListController {
 
 	@ModelAttribute
 	public SortConditionNumberForm setUpSortConditionNumberForm() {
-		SortConditionNumberForm form = new SortConditionNumberForm();
-		String sortConditionNumber = (String) session.getAttribute("sortConditionNumber");
-		if (sortConditionNumber == null || "".equals(sortConditionNumber)) {
-			form.setSortConditionNumber("0");
-		} else {
-			form.setSortConditionNumber(sortConditionNumber);
-		}
-		return form;
+		// 【コメントアウト理由】
+		// th:fieldでラジオボタンに現在値を残そうとすると一部画面遷移で動作不良となったことから
+		// 現在のソート条件は商品一覧画面にテキスト表示し、ラジオボタン上には残さないことにしたため
+//		SortConditionNumberForm form = new SortConditionNumberForm();
+//		String sortConditionNumber = (String) session.getAttribute("sortConditionNumber");
+//		if (sortConditionNumber == null || "".equals(sortConditionNumber)) {
+//			form.setSortConditionNumber("0");
+//		} else {
+//			form.setSortConditionNumber(sortConditionNumber);
+//		}
+//		return form;
+		return new SortConditionNumberForm();
 	}
 
 	/**
@@ -64,6 +68,8 @@ public class ShowItemListController {
 	@RequestMapping("")
 	public String showList(String code, Model model, Integer pagingNumber) {
 
+		// 企業ロゴをクリックして当パスに遷移してきた場合
+		// セッション内のページ番号、検索・ソート条件をクリアする
 		if (code == null && pagingNumber == null) {
 			session.removeAttribute("code");
 			session.removeAttribute("pageNum");
@@ -113,6 +119,13 @@ public class ShowItemListController {
 		return "item_list_curry";
 	}
 
+	/**
+	 * ページングボタンをクリックした際の商品一覧表示処理.
+	 * 
+	 * @param pagingNumber ページ番号
+	 * @param model        リクエストスコープ
+	 * @return 商品一覧
+	 */
 	@RequestMapping("/showPage")
 	public String showPage(Integer pagingNumber, Model model) {
 		@SuppressWarnings("unchecked")

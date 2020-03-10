@@ -59,6 +59,7 @@ public class UserRegisterController {
 	 * ユーザ情報を登録する.
 	 * 
 	 * @param form ユーザ情報フォーム
+	 * @param      result 入力チェック
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
@@ -96,14 +97,14 @@ public class UserRegisterController {
 	 * パスワード形式の確認をする.
 	 * 
 	 * @param password パスワード
-	 * @return メッセージ
+	 * @return 確認メッセージ
 	 */
 	@ResponseBody
 	@RequestMapping("/pass-check-api")
 	public Map<String, String> passCheck(String password) {
 		Map<String, String> map = new HashMap<>();
 
-		//8-20文字、半角小英字(a-z)、半角大英字(A-Z)、半角数字(0-9)を全て使用することを条件とする
+		// 8-20文字、半角小英字(a-z)、半角大英字(A-Z)、半角数字(0-9)を全て使用することを条件とする
 		Pattern pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[!-~]{8,20}$");
 		Matcher matcher = pattern.matcher(password);
 		Boolean result = matcher.matches();
@@ -111,7 +112,7 @@ public class UserRegisterController {
 		if (result == false) {
 			map.put("passwordMessage", "半角小英字(a-z)、半角大英字(A-Z)、半角数字(0-9)を全て使用して、8-20文字で設定してください");
 		} else {
-			map.put("passwordMessage", "パスワードOK!");
+			map.put("passwordMessage", "このパスワードは使用可能です");
 		}
 
 		return map;

@@ -65,6 +65,8 @@ public class ShowOrderHistoryController {
 		User user = (User) session.getAttribute("user");
 		Integer userId = user.getId();
 
+	// -----日付絞り込み機能関連------------------------------------
+		
 		// 絞り込み日付の最小値・最大値を変数格納
 		Date minDate = form.getMinDate();
 		Date maxDate = form.getMaxDate();
@@ -92,17 +94,21 @@ public class ShowOrderHistoryController {
 			maxDate = form.getMaxDate();
 		}
 
-		// 入力値をDateに変換できなかった場合は不整値とみなす
+		// 最小年数・日数：入力済、最小月数：未入力の場合、不整値とみなす
+		// 例）2020-01-01：正常値、2020-null-01：不整値
 		if (form.getMinYear() != null && !"".equals(form.getMinYear()) && minDate == null) {
 			model.addAttribute("dayError", "正しい日付を入力してください");
 			return "order_history";
 		}
+		
+		// 最大年数・日数：入力済、最小月数：未入力の場合、不整値とみなす
+		// 例）2020-01-01：正常値、2020-null-01：不整値
 		if (form.getMaxYear() != null && !"".equals(form.getMaxYear()) && maxDate == null) {
 			model.addAttribute("dayError", "正しい日付を入力してください");
 			return "order_history";
 		}
 
-		// 最小日付が本日よりも大きな値の場合、エラー
+		// 最小日付欄への入力値が、本日以降の日付の場合、エラー
 		try {
 			LocalDate minLocalDate = LocalDate.parse(String.valueOf(minDate), DateTimeFormatter.ISO_DATE);
 			if (minLocalDate.compareTo(today) > 0) {
@@ -126,7 +132,7 @@ public class ShowOrderHistoryController {
 		session.setAttribute("maxMonth", form.getMaxMonth());
 		session.setAttribute("maxDay", form.getMaxDay());
 
-		// ページング機能追加
+	// -----ページング機能関連------------------------------------
 		if (page == null) {
 			// ページ数の指定が無い場合は1ページ目を表示させる
 			page = 1;
@@ -176,8 +182,9 @@ public class ShowOrderHistoryController {
 	/**
 	 * ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
 	 * 
-	 * @param model     モデル
+	 * @param model     リクエストスコープ
 	 * @param orderPage ページング情報
+	 * @return　ページ番号リスト
 	 */
 	private List<Integer> calcPageNumbers(Model model, Page<Order> orderPage) {
 		int totalPages = orderPage.getTotalPages();

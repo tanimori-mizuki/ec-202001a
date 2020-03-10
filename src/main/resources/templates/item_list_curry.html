@@ -94,23 +94,30 @@ $( function() {
 	</div><br>
 	
 		<div style="text-align: center">
-		<font size="4">
-			<span  th:if="${session.code!=null && session.code!=''}" th:text="'「'+${session.code}+'」を含む検索結果'"></span>
-		</font>
+			<div  th:if="${session.code!=null && session.code!=''}" th:text="'「'+${session.code}+'」を含む検索結果'" style="font-size:large"></div>
+			<span th:if="${session.sortConditionNumber!=null && session.sortConditionNumber=='0'}" th:text="ソート順：価格の低い順" style="font-size:large"></span>
+			<span th:if="${session.sortConditionNumber!=null && session.sortConditionNumber=='1'}" th:text="ソート順：価格の高い順" style="font-size:large"></span>
+			<span th:if="${session.sortConditionNumber!=null && session.sortConditionNumber=='2'}" th:text="ソート順：評価の高い順" style="font-size:large"></span>
+			<span th:if="${session.sortConditionNumber!=null && session.sortConditionNumber=='3'}" th:text="ソート順：口コミ件数の多い順" style="font-size:large"></span>
 	</div>
 	
 		
 		<div style="text-align: center" >
 		<form th:action="@{/sortShowList}" method="post" th:object=${sortConditionNumberForm}> 
 		<font size="3">商品一覧ソート順&nbsp;&nbsp;：&nbsp;&nbsp;
-			<input type="radio" name="sortConditionNumber" value="0" th:field="*{sortConditionNumber}" id="sortPriceAsc"><label for="sortPriceAsc">価格の低い順</label>&nbsp;&nbsp;
-			<input type="radio" name="sortConditionNumber" value="1" th:field="*{sortConditionNumber}" id="sortPriceDesc"><label for="sortPriceDesc">価格の高い順</label>&nbsp;&nbsp;
-			<input type="radio" name="sortConditionNumber" value="2" th:field="*{sortConditionNumber}" id="sortEvaluation"><label for="sortEvaluation">評価の高い順</label>&nbsp;&nbsp;
-			<input type="radio" name="sortConditionNumber" value="3" th:field="*{sortConditionNumber}" id="sortCountEvaluation"><label for="sortCountEvaluation">口コミ件数の多い順</label>&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="0" id="sortPriceAsc"><label for="sortPriceAsc">価格の低い順</label>&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="1" id="sortPriceDesc"><label for="sortPriceDesc">価格の高い順</label>&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="2"  id="sortEvaluation"><label for="sortEvaluation">評価の高い順</label>&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="3"  id="sortCountEvaluation"><label for="sortCountEvaluation">口コミ件数の多い順</label>&nbsp;&nbsp;
+<!-- 			<input type="radio" name="sortConditionNumber" value="0" th:field="*{sortConditionNumber}" id="sortPriceAsc"><label for="sortPriceAsc">価格の低い順</label>&nbsp;&nbsp; -->
+<!-- 			<input type="radio" name="sortConditionNumber" value="1" th:field="*{sortConditionNumber}" id="sortPriceDesc"><label for="sortPriceDesc">価格の高い順</label>&nbsp;&nbsp; -->
+<!-- 			<input type="radio" name="sortConditionNumber" value="2" th:field="*{sortConditionNumber}" id="sortEvaluation"><label for="sortEvaluation">評価の高い順</label>&nbsp;&nbsp; -->
+<!-- 			<input type="radio" name="sortConditionNumber" value="3" th:field="*{sortConditionNumber}" id="sortCountEvaluation"><label for="sortCountEvaluation">口コミ件数の多い順</label>&nbsp;&nbsp; -->
 			<button>並び替える</button>
 		</font>
 		</form>
-	</div><br>
+	</div>
+	<br>
 	
 		<!-- table -->
 		<div class="row">

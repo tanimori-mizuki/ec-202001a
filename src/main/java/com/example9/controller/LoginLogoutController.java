@@ -87,7 +87,7 @@ public class LoginLogoutController {
 		try {
 			// principalに格納されているログイン情報を、sessionにも格納する
 			// （本来はこのようなことはしないが、今回はSpringSecurity導入前に作成した他メソッドにおいて
-			// sessionからユーザー情報を取り出す記述を多くしており、修正が困難であるため）
+			// sessionからユーザー情報を取り出す記述が多く存在し、すべて修正するのが困難であるため）
 			User userForSession = loginService.login(loginUser.getUser().getEmail());
 			session.setAttribute("user", userForSession);
 			session.setAttribute("userId", userForSession.getId());

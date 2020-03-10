@@ -49,7 +49,8 @@ public class OrderConfirmationController {
 	/**
 	 * ユーザー情報を受け取るフォーム.
 	 * 
-	 * @param id ユーザID
+	 * @param id    ユーザID
+	 * @param model リクエストスコープ
 	 * @return ユーザ情報
 	 */
 	@ModelAttribute
@@ -106,23 +107,16 @@ public class OrderConfirmationController {
 	@RequestMapping("")
 	public String toOrderConfirmation(Model model) {
 		Integer userId = (Integer) session.getAttribute("userId");
-		
-		// ログインしていない状態であればログイン画面へ遷移する
-		if (userId == null) {
-			return "forward:/login/referer";
-		}
 
 		List<Order> orderList = orderConfirmationService.showOrderList(userId);
-		
+
 		// ログイン後URLを直打ちされて、カートの中身がない場合、NullPointerExceptionになってしまうので対策
 		if (orderList == null) {
 			return "forward:/";
 		}
-		
+
 		Order order = orderList.get(0);
-		
-		
-		
+
 		order.setTotalPrice(order.getCalcTotalPrice() + order.getTax());
 		model.addAttribute("tax", order.getTax());
 		model.addAttribute("order", order);
@@ -147,18 +141,12 @@ public class OrderConfirmationController {
 		if ("error".equals(checkedCard.getStatus())) {
 			model.addAttribute("creditCard", "クレジットカード情報が不正です");
 		}
+
+		// 不正な入力が１つでもあれば、注文確認画面へ戻る
 		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
 			return "order_confirm";
 		}
 
-		if ("error".equals(checkedCard.getStatus())) {
-			model.addAttribute("creditCard", "クレジットカード情報が不正です");
-		}
-
-		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
-			return "order_confirm";
-		}
-		
 		Order updateOrder = new Order();
 
 		// 現在時刻を取得
