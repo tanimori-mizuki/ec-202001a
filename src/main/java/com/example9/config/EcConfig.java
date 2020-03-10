@@ -7,7 +7,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 class ExConfig extends WebSecurityConfigurerAdapter {
-
+	
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -19,6 +20,8 @@ class ExConfig extends WebSecurityConfigurerAdapter {
 				.mvcMatchers("/add_to_cart**").permitAll()
 				.mvcMatchers("/delete_from_cart**").permitAll()
 				.mvcMatchers("/login").permitAll()
+				.mvcMatchers("/login/referer").permitAll()
+				.mvcMatchers("/showPage").permitAll()
 				.mvcMatchers("/confirm**").permitAll()
 				.mvcMatchers("/show_cart_list**").permitAll()
 				.mvcMatchers("/item-detail**").permitAll()
@@ -33,7 +36,7 @@ class ExConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/login") // ログイン画面の表示パス
 				.loginProcessingUrl("/login/input") // ログイン可否判定するパス
 				.failureUrl("/login") // ログイン失敗したときに表示する画面のパス
-				.defaultSuccessUrl("/", true) //トップページ
+				.defaultSuccessUrl("/login/after_login", true) //トップページ
 				.usernameParameter("email") //ログインユーザー名（ログイン画面のHTML上の<input name="**">とそろえる）
 				.passwordParameter("password").and()
 				.logout() 
@@ -41,7 +44,9 @@ class ExConfig extends WebSecurityConfigurerAdapter {
 					.logoutSuccessUrl("/")
 //                .deleteCookies("JSESSIONID")
 					.invalidateHttpSession(true).permitAll();
-		// end
+		//　デフォルトの設定ではログイン前後でセッションIDが変わってしまうので、それを無効にする
+		http.sessionManagement().sessionFixation().none();
 		
+		// end
 	}
 }

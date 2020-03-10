@@ -56,6 +56,8 @@ public class AddToCartService {
 		if (userId == null) {
 			userId = session.getId().hashCode();
 		}
+		
+		
 		// userIdで注文前のorderを検索
 		List<Order> orderList = orderRepository.findByUserIdAndStatus(userId, 0);
 
@@ -108,12 +110,14 @@ public class AddToCartService {
 		}
 	}
 	
-	// ログイン前にカートに追加した内容をログイン後のカートに反映させる
+	/**
+	 * ログイン前にカートに追加した内容をログイン後のカートに反映させる.
+	 */
 	public void addToCartAfterLogin() {
-		
 		
 		// ログイン前のカートに中身がなければ何もせずreturn 
 		List <Order> beforeLoginOrderList = orderRepository.findByUserIdAndStatus(session.getId().hashCode(), 0);
+		
 		if (beforeLoginOrderList == null) {
 			return ;
 		}
