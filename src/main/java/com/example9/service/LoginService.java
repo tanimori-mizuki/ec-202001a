@@ -37,10 +37,10 @@ public class LoginService {
 			return null;
 		}
 
-		// DB上のハッシュ化パスワードとフォームから来た平文パスワードを照合する
-		if (!passwordEncoder.matches(loginForm.getPassword(), user.getPassword())) {
-			return null;
-		}
+//		// DB上のハッシュ化パスワードとフォームから来た平文パスワードを照合する
+//		if (!passwordEncoder.matches(loginForm.getPassword(), user.getPassword())) {
+//			return null;
+//		}
 
 		return user;
 	}

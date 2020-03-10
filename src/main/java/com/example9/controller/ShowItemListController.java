@@ -12,13 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example9.domain.Item;
+import com.example9.domain.LoginUser;
+import com.example9.domain.User;
+import com.example9.form.LoginForm;
 import com.example9.form.SortConditionNumberForm;
+import com.example9.service.LoginService;
 import com.example9.service.ShowItemListService;
 
 /**
@@ -33,6 +38,9 @@ public class ShowItemListController {
 
 	@Autowired
 	private ShowItemListService showItemListService;
+
+	@Autowired
+	private LoginService loginService;
 
 	@Autowired
 	private HttpSession session;
@@ -62,7 +70,22 @@ public class ShowItemListController {
 	 * @return 商品一覧画面
 	 */
 	@RequestMapping("")
-	public String showList(String code, Model model, Integer pagingNumber) {
+	public String showList(String code, Model model, Integer pagingNumber,
+			@AuthenticationPrincipal LoginUser loginUser) {
+
+		try {
+			if (loginUser.getUser() != null) {
+				LoginForm loginForm = new LoginForm();
+				loginForm.setEmail(loginUser.getUsername());
+				loginForm.setPassword(loginUser.getPassword());
+				System.out.println(loginForm);
+				User userForSession = loginService.login(loginForm);
+				session.setAttribute("user", userForSession);
+				session.setAttribute("userId", userForSession.getId());
+			}
+		} catch (Exception e) {
+
+		}
 
 		if (code == null && pagingNumber == null) {
 			session.removeAttribute("code");
