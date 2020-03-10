@@ -26,12 +26,12 @@ public class LoginService {
 	/**
 	 * ログインする.
 	 * 
-	 * @param loginForm ログインフォームへの入力情報
+	 * @param email メールアドレス
 	 * @return ユーザー情報（パスワード/メールアドレス不正の場合null）
 	 */
-	public User login(LoginForm loginForm) {
+	public User login(String email) {
 
-		User user = userRepository.findByEmail(loginForm.getEmail());
+		User user = userRepository.findByEmail(email);
 
 		if (user == null) {
 			return null;

@@ -22,7 +22,7 @@ class ExConfig extends WebSecurityConfigurerAdapter {
 				.mvcMatchers("/login").permitAll()
 				.mvcMatchers("/login/referer").permitAll()
 				.mvcMatchers("/showPage").permitAll()
-				.mvcMatchers("/confirm**").permitAll()
+//				.mvcMatchers("/confirm**").permitAll()
 				.mvcMatchers("/show_cart_list**").permitAll()
 				.mvcMatchers("/item-detail**").permitAll()
 				.mvcMatchers("/register**").permitAll()
@@ -33,9 +33,9 @@ class ExConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated().and();
 		// LOGIN
 		http.formLogin()
-				.loginPage("/login") // ログイン画面の表示パス
-				.loginProcessingUrl("/login/input") // ログイン可否判定するパス
-				.failureUrl("/login") // ログイン失敗したときに表示する画面のパス
+				.loginPage("/login") // ログイン画面を表示するパス
+				.loginProcessingUrl("/login_input") // ログイン可否判定するパス（HTMLの入力フォームでth:action()内に指定）
+				.failureUrl("/login?error=true") // ログイン失敗したときに遷移させるパス
 				.defaultSuccessUrl("/login/after_login", true) //トップページ
 				.usernameParameter("email") //ログインユーザー名（ログイン画面のHTML上の<input name="**">とそろえる）
 				.passwordParameter("password").and()
