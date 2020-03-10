@@ -23,23 +23,9 @@ public class ItemRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
-//	/**
-//	 * Itemオブジェクトを生成するローマッパー
-//	 */
-//	public static final RowMapper<Item> ITEM_ROW_MAPPER = (rs, i) -> {
-//		Item item = new Item();
-//		item.setId(rs.getInt("id"));
-//		item.setName(rs.getString("name"));
-//		item.setDescription(rs.getString("description"));
-//		item.setPriceM(rs.getInt("price_m"));
-//		item.setPriceL(rs.getInt("price_l"));
-//		item.setImagePath(rs.getString("image_path"));
-//		item.setDeleted(rs.getBoolean("deleted"));
-//		return item;
-//	};
 
-	/** 口コミ情報含むItemオブジェクトを生成するローマッパー */
-	public static final RowMapper<Item> ITEM_REVIEW_ROW_MAPPER = (rs, i) -> {
+	/** Itemオブジェクトを生成するローマッパー */
+	public static final RowMapper<Item> ITEM_ROW_MAPPER = (rs, i) -> {
 		Item item = new Item();
 		item.setId(rs.getInt("id"));
 		item.setName(rs.getString("name"));
@@ -67,12 +53,7 @@ public class ItemRepository {
 		sql.append("( SELECT AVG(evaluation)AS ave_evaluation, COUNT(evaluation)AS count_evaluation, item_id ");
 		sql.append("FROM reviews GROUP BY item_id) AS B ");
 		sql.append("ON A.id=B.item_id ORDER BY A.price_m;");
-		return template.query(sql.toString(), ITEM_REVIEW_ROW_MAPPER);
-		// 口コミ情報追加のため以下コメントアウト
-//		sql.append("SELECT id,name,description,description,price_m,price_l,image_path,deleted ");
-//		sql.append("FROM items ");
-//		sql.append("ORDER BY price_m ");
-//		return template.query(sql.toString(), ITEM_ROW_MAPPER);
+		return template.query(sql.toString(), ITEM_ROW_MAPPER);
 	}
 
 	/**
@@ -91,13 +72,8 @@ public class ItemRepository {
 		sql.append("ON A.id=B.item_id ");
 		sql.append("WHERE A.name ILIKE :name ");
 		sql.append("ORDER BY A.price_m");
-		
-//		sql.append("SELECT id,name,description,description,price_m,price_l,image_path,deleted ");
-//		sql.append("FROM items ");
-//		sql.append("WHERE name ILIKE :name ");
-//		sql.append("ORDER BY price_m");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
-		return template.query(sql.toString(), param, ITEM_REVIEW_ROW_MAPPER);
+		return template.query(sql.toString(), param, ITEM_ROW_MAPPER);
 	}
 
 	/**
@@ -114,9 +90,8 @@ public class ItemRepository {
 		sql.append(" ( SELECT AVG(evaluation) AS ave_evaluation, COUNT(evaluation) AS count_evaluation, item_id");
 		sql.append(" FROM reviews GROUP BY item_id) AS B");
 		sql.append(" ON A.id=B.item_id WHERE id=:id;");
-//		String sql ="SELECT id, name, description, price_m, price_l, image_path, deleted FROM items WHERE id=:id;";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
-		Item item = template.queryForObject(sql.toString(), param, ITEM_REVIEW_ROW_MAPPER);
+		Item item = template.queryForObject(sql.toString(), param, ITEM_ROW_MAPPER);
 		return item;
 	}
 
@@ -135,14 +110,8 @@ public class ItemRepository {
 		sql.append("FROM reviews GROUP BY item_id) AS B ");
 		sql.append("ON A.id=B.item_id ORDER BY A.price_m ");
 		sql.append("LIMIT 6 OFFSET " + number);
-		
-//		sql.append("SELECT id,name,description,description,price_m,price_l,image_path,deleted ");
-//		sql.append("FROM items ");
-//		sql.append("ORDER BY price_m ");
-//		sql.append("LIMIT 6 OFFSET " + number);
 		SqlParameterSource param = new MapSqlParameterSource().addValue("number", number);
-//		return template.query(sql.toString(), param, ITEM_ROW_MAPPER);
-		return template.query(sql.toString(), param, ITEM_REVIEW_ROW_MAPPER);
+		return template.query(sql.toString(), param, ITEM_ROW_MAPPER);
 	}
 
 }

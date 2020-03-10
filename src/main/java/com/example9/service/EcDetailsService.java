@@ -10,6 +10,12 @@ import com.example9.domain.LoginUser;
 import com.example9.domain.User;
 import com.example9.repository.UserRepository;
 
+/**
+ * SpringSecurityを用いたログインのためのサービス.
+ * 
+ * @author mayumiono
+ *
+ */
 @Service
 public class EcDetailsService implements UserDetailsService {
 

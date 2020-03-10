@@ -42,8 +42,14 @@ public class ShowOrderHistoryController {
 		return new SerchHistoryForm();
 	}
 
-	// 1ページに表示する注文情報は5件
+	/** 1ページに表示する注文履歴件数 */
 	private static final int VIEW_SIZE = 5;
+	/** 絞り込み条件の最小日付 */
+	public Date minDate = null;
+	/** 絞り込み条件の最大日付 */
+	public Date maxDate = null;
+	/** 本日の日付 */
+	public LocalDate today = LocalDate.now();
 
 	/**
 	 * 注文履歴一覧の表示.
@@ -56,73 +62,14 @@ public class ShowOrderHistoryController {
 	@RequestMapping("")
 	public String showList(SerchHistoryForm form, Integer page, Model model) {
 
-		if (session.getAttribute("user") == null) {
-			// ログイン前の場合は、ログインページへ遷移
-			return "forward:/login";
-		}
-
 		// セッションスコープからユーザーID取得
 		User user = (User) session.getAttribute("user");
 		Integer userId = user.getId();
 
-	// -----日付絞り込み機能関連------------------------------------
-		
-		// 絞り込み日付の最小値・最大値を変数格納
-		Date minDate = form.getMinDate();
-		Date maxDate = form.getMaxDate();
-
-		// 絞り込み日付欄の未入力確認（未入力：true, 入力あり：false）
-		Boolean minDateIsEmpty = "".equals(form.getMinYear()) && "".equals(form.getMinMonth())
-				&& "".equals(form.getMinDay());
-		Boolean maxDateIsEmpty = "".equals(form.getMaxYear()) && "".equals(form.getMaxMonth())
-				&& "".equals(form.getMaxDay());
-
-		// 最大値のみ入力した場合は、最小値＝西暦始まりとする
-		if (minDateIsEmpty && !maxDateIsEmpty) {
-			form.setMinYear("0000");
-			form.setMinMonth("1");
-			form.setMinDay("1");
-			minDate = form.getMinDate();
-		}
-
-		// 最小値のみ入力した場合は最大値＝本日とする
-		LocalDate today = LocalDate.now();
-		if (!minDateIsEmpty && maxDateIsEmpty) {
-			form.setMaxYear(String.valueOf(today.getYear()));
-			form.setMaxMonth(String.valueOf(today.getMonthValue()));
-			form.setMaxDay(String.valueOf(today.getDayOfMonth()));
-			maxDate = form.getMaxDate();
-		}
-
-		// 最小年数・日数：入力済、最小月数：未入力の場合、不整値とみなす
-		// 例）2020-01-01：正常値、2020-null-01：不整値
-		if (form.getMinYear() != null && !"".equals(form.getMinYear()) && minDate == null) {
-			model.addAttribute("dayError", "正しい日付を入力してください");
-			return "order_history";
-		}
-		
-		// 最大年数・日数：入力済、最小月数：未入力の場合、不整値とみなす
-		// 例）2020-01-01：正常値、2020-null-01：不整値
-		if (form.getMaxYear() != null && !"".equals(form.getMaxYear()) && maxDate == null) {
-			model.addAttribute("dayError", "正しい日付を入力してください");
-			return "order_history";
-		}
-
-		// 最小日付欄への入力値が、本日以降の日付の場合、エラー
-		try {
-			LocalDate minLocalDate = LocalDate.parse(String.valueOf(minDate), DateTimeFormatter.ISO_DATE);
-			if (minLocalDate.compareTo(today) > 0) {
-				model.addAttribute("dayError", "左欄には、本日以前の日付を入力してください");
-				return "order_history";
-			}
-		} catch (DateTimeParseException e) {
-		}
-
-		// 最小日付よりも最大日付が小さな値の場合、エラー
-		if (maxDate != null && minDate != null && maxDate.compareTo(minDate) < 0) {
-			model.addAttribute("dayError", "右欄は、左欄以降の日付を入力するか、空欄にしてください");
-			return "order_history";
-		}
+		// -----日付絞り込み機能関連------------------------------------
+		complementDateForSearching(form); // 絞り込み日付を歯抜け入力した場合、数値補完をする
+		boolean checkDate = checkDateForSerching(form, model); // 入力値に不備がないか確認
+		if (!checkDate)	return "order_history"; // 不備ありの場合、一覧へ戻る
 
 		// ページング番号からも検索できるよう、最大・最小日付を保存しておく
 		session.setAttribute("minYear", form.getMinYear());
@@ -132,12 +79,7 @@ public class ShowOrderHistoryController {
 		session.setAttribute("maxMonth", form.getMaxMonth());
 		session.setAttribute("maxDay", form.getMaxDay());
 
-	// -----ページング機能関連------------------------------------
-		if (page == null) {
-			// ページ数の指定が無い場合は1ページ目を表示させる
-			page = 1;
-		}
-
+		// -----注文履歴出力------------------------------------
 		List<Order> orderList = null;
 		try {
 			orderList = showOrderHistoryService.getOrderHistoryList(userId, minDate, maxDate);
@@ -146,6 +88,12 @@ public class ShowOrderHistoryController {
 			String nonOrderMessage = "注文履歴がありません";
 			model.addAttribute("nonOrderMessage", nonOrderMessage);
 			return "order_history";
+		}
+
+		// -----ページング機能関連------------------------------------
+		if (page == null) {
+			// ページ数の指定が無い場合は1ページ目を表示させる
+			page = 1;
 		}
 
 		// 表示させたいページ数、ページサイズ、注文リストを渡し１ページに表示させる注文リストを絞り込み
@@ -184,7 +132,7 @@ public class ShowOrderHistoryController {
 	 * 
 	 * @param model     リクエストスコープ
 	 * @param orderPage ページング情報
-	 * @return　ページ番号リスト
+	 * @return ページ番号リスト
 	 */
 	private List<Integer> calcPageNumbers(Model model, Page<Order> orderPage) {
 		int totalPages = orderPage.getTotalPages();
@@ -196,5 +144,79 @@ public class ShowOrderHistoryController {
 			}
 		}
 		return pageNumbers;
+	}
+
+	/**
+	 * 絞り込み日付が歯抜け入力された場合、数値補完する.
+	 * 
+	 * @param form 絞り込み用日付情報
+	 */
+	public void complementDateForSearching(SerchHistoryForm form) {
+		// 絞り込み日付の最小値・最大値を変数格納
+		minDate = form.getMinDate();
+		maxDate = form.getMaxDate();
+
+		// 絞り込み日付欄の未入力確認（未入力：true, 入力あり：false）
+		Boolean minDateIsEmpty = "".equals(form.getMinYear()) && "".equals(form.getMinMonth())
+				&& "".equals(form.getMinDay());
+		Boolean maxDateIsEmpty = "".equals(form.getMaxYear()) && "".equals(form.getMaxMonth())
+				&& "".equals(form.getMaxDay());
+
+		// 最大値のみ入力した場合は、最小値＝西暦始まりとする
+		if (minDateIsEmpty && !maxDateIsEmpty) {
+			form.setMinYear("0000");
+			form.setMinMonth("1");
+			form.setMinDay("1");
+			minDate = form.getMinDate();
+		}
+
+		// 最小値のみ入力した場合は最大値＝本日とする
+		if (!minDateIsEmpty && maxDateIsEmpty) {
+			form.setMaxYear(String.valueOf(today.getYear()));
+			form.setMaxMonth(String.valueOf(today.getMonthValue()));
+			form.setMaxDay(String.valueOf(today.getDayOfMonth()));
+			maxDate = form.getMaxDate();
+		}
+	}
+
+	/**
+	 * 絞り込み日付の入力チェック.
+	 * 
+	 * @param form  絞り込み用日付情報
+	 * @param model リクエストスコープ
+	 * @return チェック結果：不備ありの場合false, 正常値の場合true
+	 */
+	public boolean checkDateForSerching(SerchHistoryForm form, Model model) {
+		// 最小年数・日数：入力済、最小月数：未入力の場合、不整値とみなす
+		// 例）2020-01-01：正常値、2020-null-01：不整値
+		if (form.getMinYear() != null && !"".equals(form.getMinYear()) && minDate == null) {
+			model.addAttribute("dayError", "正しい日付を入力してください");
+			return false;
+		}
+
+		// 最大年数・日数：入力済、最小月数：未入力の場合、不整値とみなす
+		// 例）2020-01-01：正常値、2020-null-01：不整値
+		if (form.getMaxYear() != null && !"".equals(form.getMaxYear()) && maxDate == null) {
+			model.addAttribute("dayError", "正しい日付を入力してください");
+			return false;
+		}
+
+		// 最小日付欄への入力値が、本日以降の日付の場合、エラー
+		try {
+			LocalDate minLocalDate = LocalDate.parse(String.valueOf(minDate), DateTimeFormatter.ISO_DATE);
+			if (minLocalDate.compareTo(today) > 0) {
+				model.addAttribute("dayError", "左欄には、本日以前の日付を入力してください");
+				return false;
+			}
+		} catch (DateTimeParseException e) {
+		}
+
+		// 最小日付よりも最大日付が小さな値の場合、エラー
+		if (maxDate != null && minDate != null && maxDate.compareTo(minDate) < 0) {
+			model.addAttribute("dayError", "右欄は、左欄以降の日付を入力するか、空欄にしてください");
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -5,7 +5,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example9.domain.User;
-import com.example9.form.LoginForm;
 import com.example9.repository.UserRepository;
 
 /**
@@ -37,6 +36,7 @@ public class LoginService {
 			return null;
 		}
 
+		//SpringSecurity導入に伴いコメントアウト
 //		// DB上のハッシュ化パスワードとフォームから来た平文パスワードを照合する
 //		if (!passwordEncoder.matches(loginForm.getPassword(), user.getPassword())) {
 //			return null;

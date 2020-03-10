@@ -43,6 +43,7 @@ public class OrderRepository {
 		insert = withTableName.usingGeneratedKeyColumns("id");
 	}
 
+	/** 注文情報のリストを作成 */
 	private ResultSetExtractor<List<Order>> RESULT_SET_EXTRACTOR = (rs) -> {
 		List<Order> orderList = new ArrayList<>();
 		List<OrderItem> orderItemList;
@@ -159,23 +160,25 @@ public class OrderRepository {
 		sql.append("FROM order_toppings AS D JOIN toppings AS E ");
 		sql.append("ON D.topping_id=E.id) AS G ON F.order_item_id=G.order_item_id ");
 		sql.append("WHERE A.user_id=:id ");
-
 		sql.append("AND A.status=:status ORDER BY A.id DESC; ");
+
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", userId).addValue("status", status);
 
 		List<Order> orderList = template.query(sql.toString(), param, RESULT_SET_EXTRACTOR);
+
 		if (orderList.size() == 0) {
 			return null;
 		}
+
 		return orderList;
 	}
 
 	/**
 	 * 引数のユーザーIDに該当する注文履歴のうち、minDate～maxDateの注文日付範囲に該当するデータを検索・取得する.
 	 * 
-	 * @param userId ユーザーID
-	 * @param        minDate 最小日付
-	 * @param        maxDate 最大日付
+	 * @param userId  ユーザーID
+	 * @param minDate 最小日付
+	 * @param maxDate 最大日付
 	 * @return 注文履歴情報（注文ID降順）
 	 */
 	public List<Order> findOrderedDateByOrderDateAndUserId(Integer userId, Date minDate, Date maxDate) {
