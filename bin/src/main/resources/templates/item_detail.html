@@ -25,9 +25,15 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> <!-- 企業ロゴ --> <img
-						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35">
-					</a>
+						<form th:action="@{/sortShowList}" method="post">
+								<input type="hidden" name="pagingNumber" value="1">
+								<input type="hidden" name="code" value="">
+								<input type="hidden" name="sortConditionNumber" value="0"><br>
+								<input type="image"  alt="main log"  class="navbar-link"  th:src="@{/img_curry/header_logo.png}" height="35">
+							</form>
+<!-- 					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> 企業ロゴ <img -->
+<!-- 						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35"> -->
+<!-- 					</a> -->
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -45,6 +51,21 @@
 			</div>
 			<!-- /.container-fluid -->
 		</nav>
+		<div class="col-xs-offset-5 col-xs-3">
+				<div class="form-group">
+						<form th:if="${session.sortConditionNumber==null || session.sortConditionNumber==0}" th:action="@{/}" method="post">
+								<input type="hidden" name="pagingNumber" th:value="${session.pageNum}">
+								<input type="hidden" name="code" th:value="${session.code}">
+								<button class="form-control btn btn-warning btn-block">商品一覧へ戻る</button>
+							</form>
+						<form th:if="${session.sortConditionNumber!=null && session.sortConditionNumber!=0}" th:action="@{/sortShowList}" method="post">
+								<input type="hidden" name="pagingNumber" th:value="${session.pageNum}">
+								<input type="hidden" name="code" th:value="${session.code}">
+								<input type="hidden" name="sortConditionNumber" th:value="${session.sortConditionNumber}">
+								<button class="form-control btn btn-warning btn-block">商品一覧へ戻る</button>
+						</form>
+				</div>
+			</div>
 
 		<form action="cart_list.html" th:action="@{/add_to_cart}" method="post">
 		<div class="row">
@@ -62,12 +83,7 @@
 							<h4 th:text="${item.name}">じゃがバターベーコン</h4> 
 							<a href="review_show.html" th:href="@{'/review?itemId='+${item.id}}">
 								<span th:text="'口コミ&nbsp;'+${item.countEvaluation}+'件：'">口コミ&nbsp;1件：&nbsp;</span>
-								<span th:if="${4<item.aveEvaluation && item.aveEvaluation<=5}" th:text="'★★★★★'">★★★★★</span>
-								<span th:if="${3<item.aveEvaluation && item.aveEvaluation<=4}" th:text="'★★★★☆'"></span>
-								<span th:if="${2<item.aveEvaluation && item.aveEvaluation<=3}" th:text="'★★★☆☆'"></span>
-								<span th:if="${1<item.aveEvaluation && item.aveEvaluation<=2}" th:text="'★★☆☆☆'"></span>
-								<span th:if="${0<item.aveEvaluation && item.aveEvaluation<=1}" th:text="'★☆☆☆☆'"></span>
-								<span th:if="${item.aveEvaluation==0}"  th:text="'☆☆☆☆☆'"></span>
+								<span   th:text="${item.stars}">★★★★★</span>
 								<span th:text="'('+${item.aveEvaluation}+'点/5点)'">(5/5点)</span>
 							</a>
 							<br>

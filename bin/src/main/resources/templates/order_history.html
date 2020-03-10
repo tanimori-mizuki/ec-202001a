@@ -25,9 +25,15 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> <!-- 企業ロゴ --> <img
-						alt="main log" src="../static/img_curry/header_logo.png"  th:src="@{/img_curry/header_logo.png}" height="35">
-					</a>
+							<form th:action="@{/sortShowList}" method="post">
+								<input type="hidden" name="pagingNumber" value="1">
+								<input type="hidden" name="code" value="">
+								<input type="hidden" name="sortConditionNumber" value="0"><br>
+								<input type="image"  alt="main log"  class="navbar-link"  th:src="@{/img_curry/header_logo.png}" height="35">
+							</form>
+<!-- 					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> 企業ロゴ <img -->
+<!-- 						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35"> -->
+<!-- 					</a> -->
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -48,6 +54,33 @@
 		<!-- 注文履歴なしの場合のメッセージ -->
 		<div class="text-center">
 		<h2 th:if="${nonOrderMessage}" th:text="${nonOrderMessage}"></h2>
+		</div>
+		
+				<!-- search form -->
+		<div class="row" th:unless="${nonOrderMessage}">
+			<div
+				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="panel-title">注文履歴を絞り込む</div>
+					</div>
+					<div class="panel-body">
+						<div class="text-center">
+						<div th:if="${dayError}" th:text="${dayError}" style="color:red"></div><br>
+							<form th:action="@{/order-history}" method="post" th:object="${serchHistoryForm}">
+									<input class="dateForm" type="text" th:name="minYear" size="2px" id="minYear" th:field="*{minYear}"><label for="minYear">年</label>&nbsp;
+									<input class="dateForm" type="text" th:name="minMonth" size="1px" id="minMonth" th:field="*{minMonth}"><label for="minMonth">月</label>&nbsp;
+									<input class="dateForm" type="text" th:name="minDay" size="1px" id="minDay" th:field="*{minDay}"><label for="minDay">日</label>&nbsp;&nbsp;～&nbsp;&nbsp;
+									<input class="dateForm" type="text" th:name="maxYear" size="2px" id="maxYear" th:field="*{maxYear}"><label for="maxYear">年</label>&nbsp;
+									<input class="dateForm" type="text" th:name="maxMonth" size="1px" id="maxMonth" th:field="*{maxMonth}"><label for="maxMonth">月</label>&nbsp;
+									<input class="dateForm" type="text" th:name="maxDay"  size="1px" id="maxDay" th:field="*{maxDay}"><label for="maxDay">日</label><br><br>
+									<button type="submit" value="検索" class="btn btn-primary">検索</button>
+									<button type="button" name="clear" class="btn btn-default">クリア</button>
+							</form>
+							</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!-- table -->
@@ -87,7 +120,7 @@
 								</div>
 							</th>
 						</tr>
-						<tr th:each="order:${orderList}">
+						<tr th:each="order:${orderPage}">
 							<td>
 							<div class="center">
 							&nbsp;&nbsp;&nbsp;&nbsp;
@@ -127,7 +160,23 @@
 				</a>
 							</td>
 						</tr>
-
+						<tr>
+						<td colspan="6">
+							<div class="text-center">
+							<div th:text="'現在：'+${session.pageNum}+'ページ目'"></div>
+							<form th:action="@{/order-history}" method="post" th:each="pageNumber:${pageNumbers}" style="display: inline">
+								<input type="hidden" name="page" th:value="${pageNumber}">
+								<input type="hidden" name="minYear" th:value="${session.minYear}">
+								<input type="hidden" name="minMonth" th:value="${session.minMonth}">
+								<input type="hidden" name="minDay" th:value="${session.minDay}">
+								<input type="hidden" name="maxYear" th:value="${session.maxYear}">
+								<input type="hidden" name="maxMonth" th:value="${session.maxMonth}">
+								<input type="hidden" name="maxDay" th:value="${session.maxDay}">
+								<button th:text="'&nbsp;'+${pageNumber}+'&nbsp;'">1</button>
+							</form>
+							</div>
+						</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -138,5 +187,6 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script th:src="@{/js/bootstrap.min.js}" src="../static/js/bootstrap.min.js"></script>
+	<script th:src="@{/js/history_date_form.js}" src="../static/js/history_date_form.js"></script>
 </body>
 </html>

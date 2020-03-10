@@ -25,9 +25,15 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> <!-- 企業ロゴ --> <img
-						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35">
-					</a>
+							<form th:action="@{/sortShowList}" method="post">
+								<input type="hidden" name="pagingNumber" value="1">
+								<input type="hidden" name="code" value="">
+								<input type="hidden" name="sortConditionNumber" value="0"><br>
+								<input type="image"  alt="main log"  class="navbar-link"  th:src="@{/img_curry/header_logo.png}" height="35">
+							</form>
+<!-- 					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> 企業ロゴ <img -->
+<!-- 						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35"> -->
+<!-- 					</a> -->
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -45,6 +51,15 @@
 			<!-- /.container-fluid -->
 		</nav>
 		
+				<div class="row">
+			<div class="col-xs-offset-4 col-xs-4">
+			<a href="order_history_detail.html" th:href="@{'/order-history/detail?orderId='+${orderId}}">
+						<input class="form-control btn btn-warning btn-block"
+							type="button" value="注文履歴詳細へ戻る">
+				</a>
+			</div>
+		</div>
+		<br>
 			<!-- table -->
 		<div class="row" th:unless="${nonOrderMessage}">
 			<div
@@ -71,7 +86,7 @@
 								</div>
 							</td>
 							<td>
-							<div th:text="${item.description}">やわらかくあっさりとしたヒレ肉を上質な衣で包み込みました。4種類の濃厚な味わいが一つで楽しめるカレーです</div>
+							<div class="text-center" th:text="${item.description}">やわらかくあっさりとしたヒレ肉を上質な衣で包み込みました。4種類の濃厚な味わいが一つで楽しめるカレーです</div>
 							</td>
 						</tr>
 					</tbody>
@@ -87,23 +102,27 @@
 						<fieldset>
 							<legend>口コミ投稿</legend>
 							<div class="form-group">
+								<div th:errors="*{authorName}" style="color:red"></div>
 								<label>名前:</label>
-								<input type="text" th:value="${userName}" name="authorName" th:field="*{authorName}">
+								<input type="text" th:unless="*{authorName}" th:value="${userName}" name="authorName" >
+								<input type="text" th:if="*{authorName}" th:field="*{authorName}" name="authorName" >
 							</div>
 							<div class="form-group">
+								<div th:errors="*{evaluation}" style="color:red"></div>
 								<label for="evaluation">評価:</label>
 								<select name="evaluation" id="evaluation">
 									<option selected>点数を選択してください</option>
-									<option value="5" th:field="*{evaluation}">★★★★★　(5点/5点)</option>
-									<option value="4" th:field="*{evaluation}">★★★★☆　(4点/5点)</option>
-									<option value="3" th:field="*{evaluation}">★★★☆☆　(3点/5点)</option>
-									<option value="2" th:field="*{evaluation}">★★☆☆☆　(2点/5点)</option>
-									<option value="1" th:field="*{evaluation}">★☆☆☆☆　(1点/5点)</option>
+									<option value="5">★★★★★　(5点/5点)</option>
+									<option value="4">★★★★☆　(4点/5点)</option>
+									<option value="3">★★★☆☆　(3点/5点)</option>
+									<option value="2">★★☆☆☆　(2点/5点)</option>
+									<option value="1">★☆☆☆☆　(1点/5点)</option>
 								</select>
 								
 							</div>
 							<div class="form-group">
 								<label>コメント:</label><br>
+								<div th:errors="*{review}" style="color:red"></div>
 							<textarea rows="5" cols="50px" name="review" th:field=*{review}></textarea>
 							</div>
 							<input type="hidden" name="orderId" th:value="${orderId}">
@@ -118,6 +137,8 @@
 				</div>
 			</div>
 		</div>
+	
+		<br><br><br><br>
 
 	</div>
 	<!-- end container -->

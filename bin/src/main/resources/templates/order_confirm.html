@@ -25,9 +25,15 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> <!-- 企業ロゴ --> <img
-						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35">
-					</a>
+						<form th:action="@{/sortShowList}" method="post">
+								<input type="hidden" name="pagingNumber" value="1">
+								<input type="hidden" name="code" value="">
+								<input type="hidden" name="sortConditionNumber" value="0"><br>
+								<input type="image"  alt="main log"  class="navbar-link"  th:src="@{/img_curry/header_logo.png}" height="35">
+							</form>
+<!-- 					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> 企業ロゴ <img -->
+<!-- 						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35"> -->
+<!-- 					</a> -->
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -230,7 +236,7 @@
 								</td>
 								<td>
 									<input type="text" name="telephone" th:field="*{telephone}">
-									<span style="color: red" th:errors="*{telephone}"></span>
+									<div style="color: red" th:errors="*{telephone}"></div>
 								</td>
 							</tr>
 							<tr>
@@ -244,10 +250,10 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<label
-													class="control-label" style="color: red" for="inputPeriod">配達日時を入力してください</label>
+													class="control-label" style="color: red" for="inputPeriod" th:errors="*{deliveryDate}"></label>
 											</div>
 											<div class="col-sm-5">
-												<input type="date" name="date" id="date"
+												<input type="date" name="deliveryDate" th:field="*{deliveryDate}" id="date"
 													class="form-control input-sm" />
 											</div>
 
@@ -256,47 +262,47 @@
 											<div class="col-sm-12">
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany" checked="checked">
+														name="deliveryHour" value="10:00:00" checked="checked">
 													10時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="deliveryHour" value="11:00:00">
 													11時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="deliveryHour" value="12:00:00">
 													12時
 												</label><br>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="deliveryHour" value="13:00:00">
 													13時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="deliveryHour" value="14:00:00">
 													14時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="deliveryHour" value="15:00:00">
 													15時
 												</label><br>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="deliveryHour" value="16:00:00">
 													16時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="deliveryHour" value="17:00:00">
 													17時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="deliveryHour" value="18:00:00">
 													18時
 												</label><br>
 											</div>
@@ -327,7 +333,7 @@
 										<div class="col-sm-12">
 											<label class="radio-inline">
 												<input type="radio"
-													name="paymentMethod" checked="checked" value="1">
+													name="paymentMethod" checked="checked" th:field="*{paymentMethod}" th:value="1">
 												代金引換
 											</label>
 										</div>
@@ -345,7 +351,7 @@
 										<div class="col-sm-12">
 											<label class="radio-inline">
 												<input type="radio"
-													name="paymentMethod"  value="2">
+													name="paymentMethod"  th:field="*{paymentMethod}" th:value="2">
 												クレジットカード
 											</label>
 										</div>
@@ -373,7 +379,7 @@
 								<td>
 									<div class="row">
 										<div class="col-sm-12">
-											<input type="text" name="cardNum">
+											<input type="text" name="card_number">
 										</div>
 									</div>
 								</td>
@@ -387,7 +393,7 @@
 								<td>
 									<div class="row">
 										<div class="col-sm-12">
-											<select name="month">
+											<select name="card_exp_month">
 												<option>01</option>
 												<option>02</option>
 												<option>03</option>
@@ -401,7 +407,7 @@
 												<option>11</option>
 												<option>12</option>
 											</select>
-											<select name="year">
+											<select name="card_exp_year">
 												<option th:each="year:${yearList}" th:text="${year}">2020</option>
 											</select>
 										</div>
@@ -417,7 +423,7 @@
 								<td>
 									<div class="row">
 										<div class="col-sm-12">
-											<input type="text" name="cardUserName">
+											<input type="text" name="card_name">
 										</div>
 									</div>
 								</td>
@@ -431,7 +437,7 @@
 								<td>
 									<div class="row">
 										<div class="col-sm-12">
-											<input type="text" name="securityCord">
+											<input type="text" name="card_cvv">
 										</div>
 									</div>
 								</td>
@@ -453,6 +459,6 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-	<script src="../static/js/input-credit-card.js" th:src="@{/js/input-credit-card.js}"></script>
+	<script src="../static/js/input_credit_card.js" th:src="@{/js/input_credit_card.js}"></script>
 </body>
 </html>

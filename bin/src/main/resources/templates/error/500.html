@@ -25,15 +25,9 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-						<form th:action="@{/sortShowList}" method="post">
-								<input type="hidden" name="pagingNumber" value="1">
-								<input type="hidden" name="code" value="">
-								<input type="hidden" name="sortConditionNumber" value="0"><br>
-								<input type="image"  alt="main log"  class="navbar-link"  th:src="@{/img_curry/header_logo.png}" height="35">
-							</form>
-<!-- 					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> 企業ロゴ <img -->
-<!-- 						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35"> -->
-<!-- 					</a> -->
+					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> <!-- 企業ロゴ --> <img
+						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35">
+					</a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -42,7 +36,6 @@
 					<p class="navbar-text navbar-right">
 						<a href="cart_list.html" th:href="@{/show_cart_list}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
 						<a href="order_history.html" th:if="${session.user}" th:text="'注文履歴'" th:href="@{/order-history}" class="navbar-link">注文履歴</a>&nbsp;&nbsp;
-						<a href="login.html" class="navbar-link" th:unless="${session.user}" th:href="@{/login}" th:text="ログイン">ログイン</a>&nbsp;&nbsp;
 						<a href="item_list.html" class="navbar-link" th:if="${session.user}" th:href="@{/login/logout}" th:text="ログアウト">ログアウト</a>
 					</p>
 				</div>
@@ -56,23 +49,16 @@
 		<div class="row">
 			<div
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
-			<div
-				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
-				<h3 class="text-center">決済が完了しました！</h3>
-				<div class="text-center">
-					<p>この度はご注文ありがとうございます。</p>
-					<p>お支払い先は、お送りしたメールに記載してありますのでご確認ください。</p>
-					<p>メールが届かない場合は「注文履歴」からご確認ください。</p><br><br>
-				<div class="form-group">
-					<form action="item_list_curry.html" th:action="@{/}" method="post">
+				<h3 class="text-center">このページはメンテナンス中です</h3>
+			<br><br>
+			<div class="form-group">
+				<form action="item_list_curry.html" th:action="@{/}" method="post">
 						<input class="form-control btn btn-warning btn-block"
 							type="submit" value="トップページへ戻る">
-					</form>
-				</div>
-				</div>
+				</form>
+			</div>
 			</div>
 		</div>
-</div>
 	</div>
 	<!-- end container -->
 	<script

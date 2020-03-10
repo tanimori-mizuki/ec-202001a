@@ -37,9 +37,16 @@ $( function() {
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> <!-- 企業ロゴ --> <img
-						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35">
-					</a>
+					
+						<form th:action="@{/sortShowList}" method="post">
+								<input type="hidden" name="pagingNumber" value="1">
+								<input type="hidden" name="code" value="">
+								<input type="hidden" name="sortConditionNumber" value="0"><br>
+								<input type="image"  alt="main log"  class="navbar-link"  th:src="@{/img_curry/header_logo.png}" height="35">
+							</form>
+<!-- 					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> 企業ロゴ <img -->
+<!-- 						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35"> -->
+<!-- 					</a> -->
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -66,7 +73,7 @@ $( function() {
 						<div class="panel-title">商品を検索する</div>
 					</div>
 					<div class="panel-body">
-						<form method="post" th:action="@{/searchResult}" class="form-horizontal">
+						<form method="post" th:action="@{/}" class="form-horizontal">
 							<div class="form-group">
 								<label for="code" class="control-label col-sm-2">商品名</label>
 								<div class="col-sm-9">
@@ -90,12 +97,20 @@ $( function() {
 		</font>
 	</div><br>
 	
+		<div style="text-align: center">
+		<font size="4">
+			<span  th:if="${session.code!=null && session.code!=''}" th:text="'「'+${session.code}+'」を含む検索結果'"></span>
+		</font>
+	</div>
+	
 		
 		<div style="text-align: center" >
 		<form th:action="@{/sortShowList}" method="post" th:object=${sortConditionNumberForm}> 
 		<font size="3">商品一覧ソート順&nbsp;&nbsp;：&nbsp;&nbsp;
 			<input type="radio" name="sortConditionNumber" value="0" th:field="*{sortConditionNumber}" id="sortPriceAsc"><label for="sortPriceAsc">価格の低い順</label>&nbsp;&nbsp;
 			<input type="radio" name="sortConditionNumber" value="1" th:field="*{sortConditionNumber}" id="sortPriceDesc"><label for="sortPriceDesc">価格の高い順</label>&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="2" th:field="*{sortConditionNumber}" id="sortEvaluation"><label for="sortEvaluation">評価の高い順</label>&nbsp;&nbsp;
+			<input type="radio" name="sortConditionNumber" value="3" th:field="*{sortConditionNumber}" id="sortCountEvaluation"><label for="sortCountEvaluation">口コミ件数の多い順</label>&nbsp;&nbsp;
 			<button>並び替える</button>
 		</font>
 		</form>
@@ -115,6 +130,9 @@ $( function() {
 								</a><br>
 								<a href="item_detail.html" th:href="@{'/item-detail/?id=' + ${item.id}}">
 								<span th:text="${item.name}">じゃがバターベーコン</span></a><br>
+								<span   th:text="${item.stars}">★★★★★</span>
+								<span th:text="'('+${item.aveEvaluation}+'点/5点)'">(5/5点)</span>
+								<span th:text="'&nbsp;'+${item.countEvaluation}+'件'">&nbsp;1件：&nbsp;</span><br>
 								<span class="price" >&nbsp;М&nbsp;</span>&nbsp;&nbsp;
 								<span th:text="${#numbers.formatInteger(item.priceM,2,'COMMA')+'円(税抜)'}">1,380円(税抜)</span><br>
 								<span class="price" >&nbsp;Ｌ&nbsp;</span>&nbsp;&nbsp;
@@ -123,15 +141,19 @@ $( function() {
 						</tr>
 					</tbody>
 				</table>
+				<!-- 商品一覧ページのページング切り替えボタン -->
+				<div class="text-center">
+				<span th:text="'現在：'+${session.pageNum}+'ページ目'" style="display: inline"></span>
+					<form th:action="@{/showPage}" method="post">
+						<span style="text-align: center" th:each="page:${pageNumbersOfFullItemList}">
+							<button th:text="${page}" type="submit" name="pagingNumber" th:value="${page}"></button>
+						</span><br>
+					</form>
+				</div><br>
 			</div>
 		</div>
 	</div>
 
-<div style="text-align: center"  th:each="page:${pageList}">
-		<form th:action="@{/}" method="post" th:object="${pagingNumberForm}">
-			<button type="submit" name="pagingNumber" th:text="${page}" >1</button>&nbsp;
-		</form>
-</div><br>
 	<!-- end container -->
 	<!-- オートコンプリート昨日のためにコメントアウト -->
 	<!-- <script

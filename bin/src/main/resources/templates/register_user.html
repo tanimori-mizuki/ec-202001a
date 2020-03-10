@@ -25,9 +25,15 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> <!-- 企業ロゴ --> <img
-						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35">
-					</a>
+						<form th:action="@{/sortShowList}" method="post">
+								<input type="hidden" name="pagingNumber" value="1">
+								<input type="hidden" name="code" value="">
+								<input type="hidden" name="sortConditionNumber" value="0"><br>
+								<input type="image"  alt="main log"  class="navbar-link"  th:src="@{/img_curry/header_logo.png}" height="35">
+							</form>
+<!-- 					<a class="navbar-brand" href="item_list.html" th:href="@{/}"> 企業ロゴ <img -->
+<!-- 						alt="main log" src="../static/img_curry/header_logo.png" th:src="@{/img_curry/header_logo.png}" height="35"> -->
+<!-- 					</a> -->
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -70,7 +76,7 @@
 									class="control-label" style="color: red" for="inputError" th:errors="*{zipcode}">郵便番号を入力してください</label>
 									<input type="button" value="住所検索" id="search_address">
 								<input type="text" id="inputZipcode" name="zipcode" th:field="*{zipcode}" class="form-control"
-									placeholder="Zipcode">
+									placeholder="Zipcode (例:1234567 ハイフン不要です)">
 								
 							</div>
 							<div class="form-group">
@@ -91,6 +97,7 @@
 								<label for="inputPassword">パスワード:</label>
 								<label
 									class="control-label" style="color: red" for="inputError" th:errors="*{password}">パスワードを入力してください</label>
+								<div style="color: red" id="passwordMessage" ></div>
 								<input type="password" id="inputPassword" name="password" th:field="*{password}" class="form-control"
 									placeholder="Password">
 							</div>
@@ -120,5 +127,6 @@
 	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script th:src="@{/js/get_address.js}" src="../static/js/get_address.js"></script>
+   	<script th:src="@{/js/password_check.js}" src="../static/js/password_check.js"></script>
 </body>
 </html>

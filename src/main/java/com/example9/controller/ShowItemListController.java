@@ -63,6 +63,13 @@ public class ShowItemListController {
 	 */
 	@RequestMapping("")
 	public String showList(String code, Model model, Integer pagingNumber) {
+
+		if (code == null && pagingNumber == null) {
+			session.removeAttribute("code");
+			session.removeAttribute("pageNum");
+			session.removeAttribute("sortConditionNumber");
+		}
+
 		// オートコンプリート用の記述
 		List<Item> fullItemList = showItemListService.showList();
 		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(fullItemList);

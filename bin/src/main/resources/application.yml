@@ -3,4 +3,12 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/ec-202001a
     username: postgres
-    password: postgres 
+    password: postgres
+    
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: rakurakucurry202001a@gmail.com
+    password: zowqccijmmvmotnk
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
