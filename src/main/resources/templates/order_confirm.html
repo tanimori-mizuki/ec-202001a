@@ -210,6 +210,7 @@
 								</td>
 								<td>
 									<input type="text" name="zipcode" th:field="*{zipcode}">&nbsp;&nbsp;<button type="button" id="search_address_again">住所検索</button>
+									<div style="color: red" th:errors="*{zipcode}"></div>
 								</td>
 							</tr>
 							<tr>
@@ -455,5 +456,7 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 	<script src="../static/js/input_credit_card.js" th:src="@{/js/input_credit_card.js}"></script>
+	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+	<script src="../static/js/get_address.js" th:src="@{/js/get_address.js}"></script>
 </body>
 </html>

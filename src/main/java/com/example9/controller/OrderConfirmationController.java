@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,11 +148,6 @@ public class OrderConfirmationController {
 			model.addAttribute("creditCard", "クレジットカード情報が不正です");
 		}
 
-		// 不正な入力が１つでもあれば、注文確認画面へ戻る
-		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
-			return "order_confirm";
-		}
-
 		Order updateOrder = new Order();
 
 		// 現在時刻を取得
@@ -167,12 +163,23 @@ public class OrderConfirmationController {
 		LocalDateTime allowedDeliveryDate = LocalDateTime.parse(deliver, dtf);
 
 		// ユーザが選んだ日付(String)をLocalDateTime型に変換する
-		String deliveryTime = form.getDeliveryDate() + " " + form.getDeliveryHour();
-		LocalDateTime selectedDate = LocalDateTime.parse(deliveryTime, dtf);
+		String deliveryTime = null;
+		LocalDateTime selectedDate = null;
+		try {
+			deliveryTime = form.getDeliveryDate() + " " + form.getDeliveryHour();
+			selectedDate = LocalDateTime.parse(deliveryTime, dtf);
+		} catch (DateTimeParseException e) {
+			result.rejectValue("deliveryDate", null, "配達日時を選択して下さい");
+		}
 
 		// 注文確認画面で選択した配達時間が「現在時刻 + 1時間」より前であれば、エラーを表示する
-		if (selectedDate.isBefore(allowedDeliveryDate)) {
+		if (selectedDate != null && selectedDate.isBefore(allowedDeliveryDate)) {
 			result.rejectValue("deliveryDate", null, "配達日時は現在時刻より1時間以上先を選択して下さい");
+//			return "order_confirm";
+		}
+
+		// 不正な入力が１つでもあれば、注文確認画面へ戻る
+		if (result.hasErrors() || "error".equals(checkedCard.getStatus())) {
 			return "order_confirm";
 		}
 
