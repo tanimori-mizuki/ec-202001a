@@ -272,7 +272,13 @@ public class ShowItemListController {
 			};
 		}
 
-		Collections.sort(itemList, sortCondition);
+		try {
+			Collections.sort(itemList, sortCondition);
+		} catch (Exception e) {
+			// ソート順の指定なしで「並び替える」ボタンを押下した場合は例外発生
+			// 例外発生の場合は何も処理しない
+		}
+
 		return itemList;
 	}
 
