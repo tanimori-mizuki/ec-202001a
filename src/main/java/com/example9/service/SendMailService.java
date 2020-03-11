@@ -1,5 +1,9 @@
 package com.example9.service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -81,7 +85,11 @@ public class SendMailService {
 		}
 		
 		text.append("【ご注文番号】" + order.getId() + "\n");
-		text.append("【ご注文日時】" + order.getOrderDate() + "\n");
+		// Date型をフォーマット
+		Date orderDate = order.getOrderDate();
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy年M月d日");
+		
+		text.append("【ご注文日時】" + dateFormatter.format(orderDate) + "\n");
 		text.append("【小計（税抜価格】" + String.format("%,d", order.getCalcTotalPrice()) + "円\n");
 		text.append("【消費税】" + String.format("%,d", order.getTax())  + "円\n");
 		text.append("【税込価格】" + String.format("%,d", order.getTotalPrice()+ order.getTax()) + "円\n\n");
@@ -95,17 +103,20 @@ public class SendMailService {
 		text.append("--- お届け先情報 ---\n\n");
 		text.append("【お名前】" + order.getDestinationName() + "\n");
 		text.append("【お届け先住所】" + order.getDestinationAddress() + "\n");
-		text.append("【電話番号】" + order.getDestinationTel() + "\n\n");
-        text.append("【配送希望日】" + order.getDeliveryTime() +"\n"); // deliver_timeの保存できるようになったら追加
-//		text.append("【配送希望時間帯】" + "\n\n"); // deliver_timeの保存できるようになったら追加
+		text.append("【電話番号】" + order.getDestinationTel() + "\n");
+		
+		// Timestamp型をLocalDateTimeに変換してフォーマットする
+		LocalDateTime deliveryTime = order.getDeliveryTime().toLocalDateTime();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月d日H時");
+		
+        text.append("【配送希望日時】" + deliveryTime.format(formatter) +"\n\n"); // deliver_timeの保存できるようになったら追加
 		
 		text.append("--- お支払情報 ---\n\n");
 		text.append("【お支払い方法】");
 		if ("1".equals(order.getPaymentMethod().toString())) {
 			text.append("代金引換\n");
-			text.append("【お支払い期限】oo/oo\n");
 		} else if ("2".equals(order.getPaymentMethod().toString())) {
-			text.append("クレジットカード\n");
+			text.append("クレジットカード\n\n");
 		}
 		 
 		text.append("ご不明な点などがございましたら、お気軽にご連絡ください。\n\n");
