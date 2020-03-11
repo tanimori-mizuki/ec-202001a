@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example9.ConvertEvaluationIntoStars;
 import com.example9.domain.Review;
 import com.example9.repository.ReviewRepository;
 
@@ -16,7 +15,7 @@ import com.example9.repository.ReviewRepository;
  *
  */
 @Service
-public class ReviewService extends ConvertEvaluationIntoStars {
+public class ReviewService {
 
 	@Autowired
 	private ReviewRepository reviewRepository;

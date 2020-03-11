@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example9.ConvertEvaluationIntoStars;
 import com.example9.domain.Item;
 import com.example9.domain.Review;
 import com.example9.domain.User;
@@ -73,7 +74,8 @@ public class ReviewController {
 		model.addAttribute("aveEvaluation", aveEvaluation);
 
 		// 評価平均値を星へ変換
-		String stars = reviewService.getStars(aveEvaluation);
+		ConvertEvaluationIntoStars convertEvaluationIntoStars = new ConvertEvaluationIntoStars();
+		String stars = convertEvaluationIntoStars.getStars(aveEvaluation);
 		model.addAttribute("stars", stars);
 		return "review_show";
 	}
