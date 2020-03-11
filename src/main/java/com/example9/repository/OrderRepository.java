@@ -66,6 +66,7 @@ public class OrderRepository {
 				order.setDestinationZipcode(rs.getString("destination_zipcode"));
 				order.setDestinationAddress(rs.getString("destination_address"));
 				order.setDestinationTel(rs.getString("destination_tel"));
+				order.setDeliveryTime(rs.getTimestamp("delivery_time"));
 				order.setPaymentMethod(rs.getInt("payment_method"));
 				orderItemList = new ArrayList<>();
 				order.setOrderItemList(orderItemList);

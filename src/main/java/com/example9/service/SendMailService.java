@@ -96,7 +96,7 @@ public class SendMailService {
 		text.append("【お名前】" + order.getDestinationName() + "\n");
 		text.append("【お届け先住所】" + order.getDestinationAddress() + "\n");
 		text.append("【電話番号】" + order.getDestinationTel() + "\n\n");
-//		text.append("【配送希望日】" + "\n"); // deliver_timeの保存できるようになったら追加
+        text.append("【配送希望日】" + order.getDeliveryTime() +"\n"); // deliver_timeの保存できるようになったら追加
 //		text.append("【配送希望時間帯】" + "\n\n"); // deliver_timeの保存できるようになったら追加
 		
 		text.append("--- お支払情報 ---\n\n");
