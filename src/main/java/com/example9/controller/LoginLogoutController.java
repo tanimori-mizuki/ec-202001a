@@ -100,7 +100,6 @@ public class LoginLogoutController {
 
 		// ログイン成功後、リファラ情報を取り出す
 		String url = (String) session.getAttribute("referer");
-		System.out.println(url);
 
 		// 「注文へ進む」ボタンからのリクエストがきた場合のみ、ログイン後に注文確認画面へ遷移する.
 		if ("http://localhost:8080/show_cart_list".equals(url)) {
