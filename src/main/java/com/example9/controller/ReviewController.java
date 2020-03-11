@@ -1,5 +1,6 @@
 package com.example9.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -65,13 +66,19 @@ public class ReviewController {
 			return "review_show";
 		}
 
-		// 評価平均値を算出
-		Integer sumEvaluations = 0;
+		// ----評価平均値を算出-----------------------
+		// 口コミ全件の評価点数を合計する
+		double sumEvaluations = 0.0;
 		for (Review review : reviewList) {
 			sumEvaluations += review.getEvaluation();
 		}
-		double aveEvaluation = sumEvaluations / reviewList.size();
+		// double型の計算では除算時に誤差が生じるためBigDecimal型で数値を扱う
+		BigDecimal sumEvaluationsBd = BigDecimal.valueOf(sumEvaluations);
+		BigDecimal reviewSizeBd = BigDecimal.valueOf(reviewList.size());
+		// 口コミ全件の評価点数÷口コミ件数＝評価平均点
+		BigDecimal aveEvaluation = sumEvaluationsBd.divide(reviewSizeBd, 1, BigDecimal.ROUND_HALF_EVEN);
 		model.addAttribute("aveEvaluation", aveEvaluation);
+		// ----------------------------------------------
 
 		// 評価平均値を星へ変換
 		ConvertEvaluationIntoStars convertEvaluationIntoStars = new ConvertEvaluationIntoStars();
@@ -127,6 +134,7 @@ public class ReviewController {
 			return "review_post";
 		}
 
+		// フォームへの入力内容をもとに口コミオブジェクトを作成
 		Review review = new Review();
 		review.setOrderId(Integer.parseInt(form.getOrderId()));
 		User user = (User) session.getAttribute("user");
@@ -136,6 +144,7 @@ public class ReviewController {
 		review.setEvaluation(Integer.parseInt(form.getEvaluation()));
 		review.setReview(form.getReview());
 		review.setItemId(Integer.parseInt(form.getItemId()));
+		
 		reviewService.postReview(review);
 		flash.addFlashAttribute("itemId", form.getItemId());
 		return "redirect:/review/posted";
