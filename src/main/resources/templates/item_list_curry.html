@@ -94,7 +94,7 @@ $( function() {
 	</div><br>
 	
 		<div style="text-align: center">
-			<div   th:unless="${message}" th:if="${session.code!=null && session.code!=''}" th:text="'「'+${session.code}+'」を含む検索結果'" style="font-size:large"></div>
+			<div   th:unless="${message}" th:if="${session.code!=null && session.code!=''}" th:text="'「'+${session.code}+'」を含む検索結果：'+${itemCount}+'件'" style="font-size:large"></div>
 			<span th:if="${session.sortConditionNumber!=null && session.sortConditionNumber=='0'}" th:text="ソート順：価格の低い順" style="font-size:large"></span>
 			<span th:if="${session.sortConditionNumber!=null && session.sortConditionNumber=='1'}" th:text="ソート順：価格の高い順" style="font-size:large"></span>
 			<span th:if="${session.sortConditionNumber!=null && session.sortConditionNumber=='2'}" th:text="ソート順：評価の高い順" style="font-size:large"></span>

@@ -101,6 +101,8 @@ public class ShowItemListController {
 		}
 		// ソート用にsessionスコープに残しておく
 		session.setAttribute("itemList", itemList);
+		// アイテム数表示用
+		model.addAttribute("itemCount", itemList.size());
 
 //		 -- ページング処理 -- 
 		if (pagingNumber == null) {
