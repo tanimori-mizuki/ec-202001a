@@ -107,7 +107,7 @@ public class SendMailService {
 		
 		// Timestamp型をLocalDateTimeに変換してフォーマットする
 		LocalDateTime deliveryTime = order.getDeliveryTime().toLocalDateTime();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月d日H時");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月d日h時");
 		
         text.append("【配送希望日時】" + deliveryTime.format(formatter) +"\n\n"); // deliver_timeの保存できるようになったら追加
 		
