@@ -74,6 +74,7 @@ public class ShowItemListController {
 			session.removeAttribute("code");
 			session.removeAttribute("pageNum");
 			session.removeAttribute("sortConditionNumber");
+			session.removeAttribute("itemCount");
 		}
 
 		// オートコンプリート用の記述
@@ -101,8 +102,8 @@ public class ShowItemListController {
 		}
 		// ソート用にsessionスコープに残しておく
 		session.setAttribute("itemList", itemList);
-		// アイテム数表示用
-		model.addAttribute("itemCount", itemList.size());
+		// 検索結果数表示用
+		session.setAttribute("itemCount", itemList.size());
 
 //		 -- ページング処理 -- 
 		if (pagingNumber == null) {
